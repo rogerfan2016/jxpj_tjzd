@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.wjdc.dao.daointerface.IWjgnysDao">
+	
+	<!-- 获取功能类别查询条件配置列表(用于问卷设置配置信息) -->
+	<select id="getGnlbCxtjPzAllList" resultType="com.zfsoft.wjdc.dao.entites.WjpzModel">
+		select a.zd,a.zdmc,a.bqlx,a.ylzd,a.yszd,b.sfqy from 
+		(select * from wjdc_sjypzzdb where lxid=#{lxid}) a 
+		left join 
+		(select * from wjdc_ffszcxtjpzb where gnlb=#{gnlb}) b 
+		on a.lxid=b.lxid and a.zd=b.zd order by to_number(b.xssx)
+	</select>
+	
+		
+</mapper>
+	

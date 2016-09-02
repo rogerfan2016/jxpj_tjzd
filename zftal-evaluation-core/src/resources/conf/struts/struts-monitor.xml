@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+  <package name="monitor" namespace="/monitor" extends="configuration">
+    <!-- 教学巡视 -->
+    <action name="monitor_*" class="monitorAction" method="{1}" >
+      <result name="patrol">/WEB-INF/pages/monitor/monitor/monitor_patrolPage.jsp</result>
+      <result name="patrolDetail">/WEB-INF/pages/monitor/monitor/monitor_patrolDetail.jsp</result>
+      <result name="manage">/WEB-INF/pages/monitor/monitor/monitor_patrolManagePage.jsp</result>
+      <result name="addPatrol">/WEB-INF/pages/monitor/monitor/monitor_patrolEdit.jsp</result>
+      <result name="addPatrolDetail">/WEB-INF/pages/monitor/monitor/monitor_patrolDetailAdd.jsp</result>
+      <result name="solveBySchool">/WEB-INF/pages/monitor/monitor/monitor_solveBySchool.jsp</result>
+      <result name="auditingBySchool">/WEB-INF/pages/monitor/monitor/monitor_auditingBySchool.jsp</result>
+      <result name="solveByDept">/WEB-INF/pages/monitor/monitor/monitor_solveByDept.jsp</result>
+      <result name="feedBackByDept">/WEB-INF/pages/monitor/monitor/monitor_feedBackByDept.jsp</result>
+      <result name="summary">/WEB-INF/pages/monitor/monitor/monitor_summary.jsp</result>
+    </action>
+    
+    <!-- 移动端 -->
+    <action name="mobile_*" class="mobileMonitorAction" method="{1}" >
+    	<interceptor-ref name="mobileBaseStack" />
+      	<result name="patrol">/WEB-INF/pages/monitor/mobile/mobileMonitor_patrolPage.jsp</result>
+      	<result name="patrolDetail">/WEB-INF/pages/monitor/mobile/mobileMonitor_patrolDetailPage.jsp</result>
+    </action>
+  </package>
+</struts>

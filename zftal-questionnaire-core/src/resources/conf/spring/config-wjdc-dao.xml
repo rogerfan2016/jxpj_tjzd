@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	
+	 <!-- 手机登陆首页 -->
+	 <bean id="mobileIndexDao" name="mobileIndexDao" class="org.mybatis.spring.mapper.MapperFactoryBean" scope="singleton">
+    	<property name="mapperInterface" value="com.zfsoft.wjdc.dao.daointerface.IMobileIndexDao"/>
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+   	 </bean>
+	 <!-- 问卷管理 -->
+	 <bean id="wjglDao" name="wjglDao" class="org.mybatis.spring.mapper.MapperFactoryBean" scope="singleton">
+    	<property name="mapperInterface" value="com.zfsoft.wjdc.dao.daointerface.IWjglDao"/>
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+   	 </bean>
+	
+	 <!-- 试题管理 -->
+	 <bean id="stglDao" name="stglDao" class="org.mybatis.spring.mapper.MapperFactoryBean" scope="singleton">
+    	<property name="mapperInterface" value="com.zfsoft.wjdc.dao.daointerface.IStglDao"/>
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+   	 </bean>
+   	 
+   	  <!-- 问卷公共Dao相关配置 -->
+	 <bean id="wjBaseDao" name="wjBaseDao" class="org.mybatis.spring.mapper.MapperFactoryBean" scope="singleton">
+    	<property name="mapperInterface" value="com.zfsoft.wjdc.dao.daointerface.IWjBaseDao"/>
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+   	 </bean>
+   	 
+   	 <!-- 问卷数据源相关配置 -->
+	 <bean id="wjpzDao" name="wjpzDao" class="org.mybatis.spring.mapper.MapperFactoryBean" scope="singleton">
+    	<property name="mapperInterface" value="com.zfsoft.wjdc.dao.daointerface.IWjpzDao"/>
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+   	 </bean>
+   	 
+   	 <!-- 问卷分发管理 -->
+   	 <bean id="wjffglDao" name="wjffglDao" class="org.mybatis.spring.mapper.MapperFactoryBean" scope="singleton">
+    	<property name="mapperInterface" value="com.zfsoft.wjdc.dao.daointerface.IWjffglDao"/>
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+   	 </bean>
+   	 
+   	 <!-- 用户答卷管理 -->
+	 <bean id="yhdjglDao" name="yhdjglDao" class="org.mybatis.spring.mapper.MapperFactoryBean" scope="singleton">
+    	<property name="mapperInterface" value="com.zfsoft.wjdc.dao.daointerface.IYhdjglDao"/>
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+   	 </bean>
+   	 
+   	 <!-- 问卷统计 -->
+	 <bean id="wjtjDao" name="wjtjDao" class="org.mybatis.spring.mapper.MapperFactoryBean" scope="singleton">
+    	<property name="mapperInterface" value="com.zfsoft.wjdc.dao.daointerface.IWjtjDao"/>
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+   	 </bean>
+   	 
+   	 <!-- 问卷功能约束 -->
+	 <bean id="wjgnysDao" name="wjgnysDao" class="org.mybatis.spring.mapper.MapperFactoryBean" scope="singleton">
+    	<property name="mapperInterface" value="com.zfsoft.wjdc.dao.daointerface.IWjgnysDao"/>
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+   	 </bean>
+   	 
+   	 
+   	 <!-- 文件调查功能补充DAO（目前包含复制） -->
+     <bean id="questionNaireDao" name="questionNaireDao" class="org.mybatis.spring.mapper.MapperFactoryBean" scope="singleton">
+        <property name="mapperInterface" value="com.zfsoft.wjdc.dao.daointerface.IQuestionNaireDao"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+     </bean>
+</beans>

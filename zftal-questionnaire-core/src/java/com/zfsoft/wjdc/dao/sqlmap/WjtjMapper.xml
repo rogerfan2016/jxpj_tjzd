@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.wjdc.dao.daointerface.IWjtjDao">
+
+
+	<!-- 获取问卷已分发的数据源_数据源类型列表 -->
+	<select id="getWjyffSjylxList" resultType="com.zfsoft.wjdc.dao.entites.WjpzSjylxModel">
+		select b.* from
+		(
+			select lxid from wjdc_djrffb 
+			where wjid=#{wjid} and sfff='1' 
+			<if test="djzt != null and djzt != ''">
+				and djzt = #{djzt}
+			</if>
+			group by lxid
+		) a
+		left join wjdc_sjypzlxb b on a.lxid=b.lxid order by to_number(xssx)
+	</select>
+	
+	<!-- 根据数据源指定的字段获取其列表 -->
+	<select id="getFieldPzListByFields" resultType="com.zfsoft.wjdc.dao.entites.WjpzModel">
+		select b.* from (
+		<foreach collection="fields" item="field" index="index"
+				separator=" union all ">
+			   select #{field} zd from dual 
+		</foreach>
+		) a left join wjdc_sjypzzdb b  on a.zd=b.zd where b.lxid=#{lxid}
+	</select> 
+
+	<!-- 直接获取sql对应的结果集列表 -->
+	<select id="getSqlMapList" parameterType="com.zfsoft.wjdc.dao.entites.WjtjModel" 
+	 resultType="java.util.HashMap">
+		select * from (${sql})
+	</select>
+	
+	<!-- 直接获取sql对应的结果集列表(分页) -->
+	<select id="getPagedSqlMapList" parameterType="com.zfsoft.wjdc.dao.entites.WjtjModel" 
+	 resultType="java.util.HashMap">
+		select * from (${sql})
+	</select>
+	
+	<!-- 获取试题和试题大类排序后的列表 -->
+	 <select id="getStxxAndStdlXxList" parameterType="com.zfsoft.wjdc.dao.entites.WjtjModel"
+	 		 resultType="com.zfsoft.wjdc.dao.entites.StglModel">
+	 	select a.*,b.mc stlxmc from (
+			select a.wjid,a.stid,a.stmc,a.stlx,a.dags dhxxgs,a.sfbd,a.stzf,a.xssx,rownum stbh from 
+			(select * from wjdc_wjstb where wjid=#{wjid} order by to_number(xssx)) 
+			a 
+			union all
+			select b.wjid,b.flid stid,b.flmc stmc,'STDL' stlx,'' dags,'' sfbd,'' stzf,b.xssx,rownum stbh from wjdc_stflb b where b.wjid=#{wjid}
+		) a left join wjdc_stlxb b on a.stlx=b.dm order by to_number(xssx)
+	 </select>
+	 
+	 <!-- 获取问卷选项试题列表 -->
+	<select id="getWjxxstxx" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel" resultType="com.zfsoft.wjdc.dao.entites.StglModel">
+		select * from wjdc_wjstb where stlx in('DX','DXS','DXZH','DXSZH') and wjid=#{wjid}
+	</select>
+	
+	<!-- 获取试题选项列表 -->
+	<select id="getStxxList" parameterType="com.zfsoft.wjdc.dao.entites.WjtjModel" resultType="com.zfsoft.wjdc.dao.entites.XxglModel">
+		select * from wjdc_wjstxxb where wjid=#{wjid} and stid=#{stidy} order by to_number(xssx)
+	</select>
+	
+	<!-- 获取交叉统计参数配置列表 -->
+	<select id="getJctjcspzList" parameterType="com.zfsoft.wjdc.dao.entites.WjtjModel" resultType="java.util.HashMap">
+		select tjtype,tjmc from wjdc_jctjcspzb where lxid=#{lxid} order by xssx
+	</select>
+	
+	<!-- 获取交叉统计参数配置分组字段 -->
+	<select id="getJctjcspzOne" parameterType="com.zfsoft.wjdc.dao.entites.WjtjModel" resultType="java.util.HashMap">
+		select groupfield from wjdc_jctjcspzb where lxid=#{lxid} and tjtype=#{tjtype}
+	</select>
+		
+</mapper>
+	

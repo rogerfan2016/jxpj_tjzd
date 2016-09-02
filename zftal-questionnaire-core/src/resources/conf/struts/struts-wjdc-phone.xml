@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <!-- 问卷调查 -->
+    <package name="wjdc_mobile" extends="configuration" namespace="/wjdc_mobile">
+    
+	     <!-- 用户登录验证ACTION -->
+	     <action name="login_*" class="wjdcMobileLoginAction" method="{1}">
+	        <interceptor-ref name="mobileWithoutLoginStack" />
+	        <result name="success" type="redirect">index_initMenu.html</result>
+	        <result name="login">/WEB-INF/pages/wjdc/mobile/login.jsp</result>
+	        <result name="false">/WEB-INF/pages/wjdc/mobile/login.jsp</result>
+	        <!-- <result name="timeout">/WEB-INF/pages/wjdc/mobile/timeout.jsp</result> -->
+	        <result name="timeout">/WEB-INF/pages/wjdc/mobile/login.jsp</result>
+	     </action>
+	     
+	     <!--  首页 -->
+         <action name="index_*" class="wjdcMobileLoginAction" method="{1}">
+            <interceptor-ref name="mobileBaseStack" />
+            <result name="initMenu">/WEB-INF/pages/wjdc/mobile/menu.jsp</result>           
+         </action>
+
+        <!-- 试题管理-->
+        <action name="stgl_*" class="stglAction" method="{1}">
+            <interceptor-ref name="mobileBaseStack" />
+            <result name="showStxx">/WEB-INF/pages/wjdc/mobile/showStxx.jsp</result>
+            <result name="textList">/WEB-INF/pages/wjdc/mobile/textList.jsp</result>
+            <result name="success">/WEB-INF/pages/wjdc/mobile/success.jsp</result>
+        </action>
+        
+        <!-- 用户答卷管理 -->
+        <action name="yhdjgl_*" class="yhdjglMobileAction" method="{1}">
+            <interceptor-ref name="mobileBaseStack" />
+            <result name="success">/WEB-INF/pages/wjdc/mobile/{1}.jsp</result>
+        </action>
+        
+        <!-- 问卷统计-->
+        <action name="wjtj_*" class="wjtjAction" method="{1}">
+            <interceptor-ref name="mobileBaseStack" />
+            <result name="sttj">/WEB-INF/pages/wjdc/mobile/sttj.jsp</result>
+        </action>
+        
+    </package>
+
+</struts>

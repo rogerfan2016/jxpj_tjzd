@@ -1,0 +1,1633 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.evaluation.dao.daointerface.IEvaluationDao">
+    <resultMap id="CurriculumScheduleMap" type="com.zfsoft.evaluation.entity.CurriculumScheduleEntity">
+        <result property="globalid"       column="GLOBALID" />
+        <result property="kcid"           column="KCID" />
+        <result property="kcmc"           column="KCMC" />
+        <result property="kcsj"           column="KCSJ" />
+        <result property="kcjc"           column="KCJC" />
+        <result property="rklsgh"         column="RKLSGH" />
+        <result property="rkls"           column="RKLS" />
+        <result property="skdd"           column="SKDD" />
+        <result property="bjid"           column="BJID" />
+        <result property="sszyid"         column="SSZYID" />
+        <result property="sszy"           column="SSZY" />
+        <result property="dept"           column="DWM" />
+        <result property="shzt"           column="SHZT" />
+    </resultMap>
+    
+    <resultMap id="TeachingLogMap" type="com.zfsoft.evaluation.entity.TeachingEntity">
+        <result property="globalid"       column="GLOBALID" />
+        <result property="kcid"           column="KCID" />
+        <result property="kcmc"           column="KCMC" />
+        <result property="kcsj"           column="KCSJ" />
+        <result property="rklsgh"         column="RKLSGH" />
+        <result property="rkls"           column="RKLS" />
+        <result property="jxnr"           column="JXNR" />
+        <result property="bjid"           column="BJID" />
+        <result property="kwzy"           column="KWZY" />
+        <result property="bzsm"           column="BZSM" />
+        <result property="kcjc"           column="KCJC" />
+        <result property="skdd"           column="SKDD" />
+    </resultMap>
+    
+    <resultMap id="CheckInMap" type="com.zfsoft.evaluation.entity.CheckInEntity">
+        <result property="globalid"       column="GLOBALID" />
+        <result property="kcid"           column="KCID" />
+        <result property="xsid"           column="XSID" />
+        <result property="xsxm"           column="XSXM" />
+        <result property="kqqk"           column="KQQK" />
+        <result property="sksj"           column="SKSJ" />
+        <result property="pjid"           column="PJID" />
+        <result property="bzsm"           column="BZSM" />
+        <result property="pjqk"           column="PJQK" />
+        <result property="scsj"           column="SCSJ" />
+        <result property="pjsj"           column="PJSJ" />
+        <result property="nj"             column="nj" />
+        <result property="xzb"           column="xzb" />
+        <result property="kcmc"           column="kcmc" />
+        <result property="skdd"           column="skdd" />
+        <result property="kkxy"           column="kkxy" />
+        <result property="jszgh"           column="jszgh" />
+        <result property="jsxm"           column="jsxm" />
+    </resultMap>
+    
+     <resultMap id="CheckInSurveyMap" type="com.zfsoft.evaluation.entity.CheckInSurveyEntity">
+        <result property="dept"       column="KKXY" />
+        <result property="ycqrs"           column="YCQRS" />
+        <result property="sjcqrs"           column="SJCQRS" />
+        <result property="qqrs"           column="QQRS" />
+        <result property="pjcyrs"           column="PJCYRS" />
+        <result property="xsid"           column="xsid" />
+        <result property="xsxm"           column="xsxm" />
+        <result property="jsxm"           column="jsxm" />
+        <result property="kcid"           column="kcid" />
+        <result property="kcmc"           column="kcmc" />
+        <result property="xy"           column="xy" />
+        <result property="zy"           column="zy" />
+        <result property="nj"           column="nj" />
+        <result property="xzb"           column="xzb" />
+        <result property="kqcs"           column="kqcs" />
+        <result property="cqcs"           column="cqcs" />
+        <result property="kkcs"           column="kkcs" />
+        <result property="sjcs"           column="sjcs" />
+        <result property="bjcs"           column="bjcs" />
+        <result property="cdcs"           column="cdcs" />
+        <result property="cqbl"           column="cqbl" />
+        <result property="qqbl"           column="qqbl" />
+        <result property="qqxs"           column="qqxs" />
+        <result property="kczxs"           column="kczxs" />
+    </resultMap>
+    
+    <resultMap id="OpenLessonSetMap" type="com.zfsoft.evaluation.entity.OpenLessonSettingEntity">
+        <result property="tksqid"         column="TKSQID" />
+        <result property="tksqpcmc"       column="TKSQPCMC" />
+        <result property="syzt"           column="SYZT" />
+        <result property="sqsjks"         column="SQSJKS" />
+        <result property="sqsjjs"         column="SQSJJS" />
+        <result property="kcsjks"         column="KCSJKS" />
+        <result property="kcsjjs"         column="KCSJJS" />
+    </resultMap>
+    
+    <resultMap id="OpenLessonMap" type="com.zfsoft.evaluation.entity.TeacherOpenLessonEntity">
+        <result property="shzt"           column="SHZT" />
+        <result property="bzsm"           column="BZSM" />
+        <result property="pjid"           column="PJID" />
+        <result property="globalid"       column="GLOBALID" />
+        <result property="sksj"           column="SKSJ" />
+        <result property="kcid"           column="KCID" />
+        <result property="tkjsid"         column="TKJSID" />
+        <result property="tkjsxm"         column="TKJSXM" />
+        <result property="dept"           column="DWM" />
+        <result property="pjqk"           column="PJQK" />
+        <result property="xwjid"          column="XWJID" />
+        <result property="sknr"           column="SKNR" />
+        <result property="yjjy"           column="YJJY" />
+        <collection property="curriculum" column="{globalid=GLOBALID}" select="com.zfsoft.evaluation.dao.daointerface.IEvaluationDao.getCurriculumScheduleById"/>
+    </resultMap>
+    
+    <resultMap id="SettingMap" type="com.zfsoft.evaluation.entity.SettingEntity">
+        <result property="globalid"       column="GLOBALID" />
+        <result property="wjid"           column="WJID" />
+        <result property="wjmc"           column="WJMC" />
+        <result property="djrylx"         column="DJRYLX" />
+        <result property="syzt"           column="SYZT" />
+        <result property="zcsj"           column="ZCSJ" />
+        <result property="zcry"           column="ZCRY" />
+        <result property="zcryxm"         column="ZCRYXM" />
+        <result property="xgsj"           column="XGSJ" />
+        <result property="xgry"           column="XGRY" />
+        <result property="xgryxm"         column="XGRYXM" />
+        <result property="pjlx"           column="PJLX" />
+    </resultMap>
+    
+    <resultMap id="ViewQuestionnaireMap" type="com.zfsoft.evaluation.entity.ViewQuestionnaireEntity">
+        <result property="wjid"           column="WJID" />
+        <result property="wjmc"           column="WJMC" />
+        <result property="xwjid"          column="XWJID" />
+        <result property="pjzt"           column="PJZT" />
+        <result property="pjsj"           column="PJSJ" />
+        <result property="pjryid"         column="PJRYID" />
+        <result property="pjid"           column="PJID" />
+        <result property="globalid"       column="GLOBALID" />
+        <collection property="curriculum" column="{globalid=GLOBALID}" select="com.zfsoft.evaluation.dao.daointerface.IEvaluationDao.getCurriculumScheduleById"/>
+    </resultMap>
+    
+    <resultMap type="com.zfsoft.evaluation.entity.OpinionEntity" id="OpinionMap">
+    	<result property="id" column="id"/>
+    	<result property="yjfk" column="yjfk"/>
+    	<result property="yhid" column="yhid"/>
+    	<result property="yhm" column="yhm"/>
+    	<result property="fksj" column="fksj"/>
+    	<result property="rylx" column="rylx"/>
+    	<result property="zt" column="zt"/>
+    </resultMap>
+
+	<!-- 获取教学周 -->
+    <select id="getTeachingWeek" resultType="int">
+        SELECT t.djz FROM jxpj_jcsj_rqkszb t WHERE t.nyr = #{dateStr }
+    </select>
+    
+    <!-- 最大节次 -->
+    <select id="getMaxJc" resultType="int">
+        select nvl(max(t.kcjc), 0)
+          from jxpj_jcsj_kcbxx t
+         where
+           to_date(t.kcsj, 'yyyy-MM-dd') between to_date(#{firstDay}, 'yyyy-MM-dd') and to_date(#{lastDay}, 'yyyy-MM-dd')
+    </select>
+    
+    <!-- 查询课表 -->
+    <select id="getCurriculumSchedule" resultMap="CurriculumScheduleMap">
+        select t.*,
+         (select xm from jxpj_jcsj_jsxx where zgh = t.rklsgh) as rkls,
+         (select zymc from jxpj_jcsj_zyxx where zydm = t.sszyid) as sszy
+          from jxpj_jcsj_kcbxx t
+         where
+           <if test="userlx == 'teacher'">
+             t.rklsgh = #{userid}
+           </if>
+           <if test="userlx != 'teacher'">
+             t.kcid in (select xkkh from jxpj_jcsj_xskcb where xh = #{userid})
+           </if>
+           <if test="kcid != null and kcid != ''">
+           and t.kcid = #{kcid}
+           </if>
+           <if test="kcjc != null and kcjc != ''">
+           and t.kcjc = #{kcjc}
+           </if>
+           <if test="jcs != null and (!jcs.empty)">
+           <!-- 
+           <foreach collection="jcs" item="jc" open=" and t.kcjc in (" separator="," close=")">
+             #{jc} 
+           </foreach>
+            -->
+            and t.kcjc in ('1','3','5','7','9')
+           </if>
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date(#{firstDay}, 'yyyy-MM-dd') and to_date(#{lastDay}, 'yyyy-MM-dd')
+           and (t.dsz is null or
+		       t.dsz = (case when (select  MOD(t.djz,2) from jxpj_jcsj_rqkszb t WHERE t.nyr=to_char(SYSDATE,'yyyy-MM-dd'))= 0 then '双' else '单' end))
+        order by t.kcsj, t.kcjc
+    </select>
+    
+    <!-- 查询课表 -->
+    <select id="getCurriculumScheduleById" resultMap="CurriculumScheduleMap">
+        select t.*,
+         (select xm from jxpj_jcsj_jsxx where zgh = t.rklsgh) as rkls,
+         (select zymc from jxpj_jcsj_zyxx where zydm = t.sszyid) as sszy,
+         (select bm from jxpj_jcsj_jsxx where zgh = t.rklsgh) as dwm
+          from jxpj_jcsj_kcbxx t
+         where t.globalid = #{globalid}
+    </select>
+    
+        <!-- 根据条件查询课表信息 -->
+    <select id="countCurriculumByParam" resultType="int">
+        SELECT COUNT(1) FROM jxpj_jcsj_kcbxx t WHERE 1=1
+        <if test="kcsj != null and kcsj != ''">
+           and t.kcsj = #{kcsj}
+        </if>
+        <if test="kcjc != null and kcjc != ''">
+           and t.kcjc = #{kcjc}
+        </if>
+        <if test="tkjsid != null and tkjsid != ''">
+           and t.rklsgh = #{tkjsid}
+        </if>
+    </select>
+    
+    <!-- 查询课表 -->
+    <select id="getTeachingById" resultMap="TeachingLogMap">
+        select t.globalid,
+               t.kcid,
+               t.kcmc,
+               t.kcsj,
+               t.kcjc,
+               t.rklsgh,
+               (select xm from jxpj_jcsj_jsxx where zgh = t.rklsgh) as rkls,
+               t.bjid,
+               t.skdd,
+               t1.jxnr,
+               t1.kwzy,
+               t1.bzsm
+          from jxpj_jcsj_kcbxx t, jxpj_sspj_jxrz t1
+         where t.globalid = #{globalid}
+               <![CDATA[
+               and t.globalid = t1.globalid(+)
+               ]]>
+    </select>
+    
+    <!-- 取得学生 -->
+    <select id="getStudents" resultMap="CheckInMap">
+        select distinct sub.xh as xsid, sub.xzb, sub.xsxm, t1.kqqk, t1.bzsm
+		  from (select kc.xh, xs.xm xsxm, xs.xzb, t.globalid
+		          from jxpj_jcsj_kcbxx t, jxpj_jcsj_xsxkb kc, jxpj_jcsj_xsxx xs
+		         where t.globalid = #{globalid}
+		           and t.kcid = kc.xkkh
+		           and kc.xh = xs.xh(+)) sub,
+		       jxpj_sspj_skkqglb t1
+		 where sub.globalid = t1.globalid(+)
+		   and sub.xh = t1.xsid(+)
+		 order by sub.xzb, sub.xh
+    </select>
+    
+    <!-- 保存教学日志 -->
+    <insert id="insertTeachingLog">
+        <![CDATA[
+            insert into
+                jxpj_sspj_jxrz (
+                    globalid,
+                    kcid,
+                    kwzy,
+                    bzsm,
+                    jxnr
+                )
+            values(
+                #{globalid},
+                #{kcid},
+                #{kwzy},
+                #{bzsm},
+                #{jxnr}
+            )
+        ]]>
+    </insert>
+
+    <!-- 考勤录入 -->
+    <insert id="insertCheckIn">
+        <![CDATA[
+            insert into
+                jxpj_sspj_skkqglb (
+                    globalid,
+                    kcid,
+                    xsid,
+                    xsxm,
+                    kqqk,
+                    bzsm,
+                    sksj,
+                    pjid
+                )
+            values(
+                #{globalid},
+                #{kcid},
+                #{xsid},
+                (select xm from jxpj_jcsj_xsxx where xh = #{xsid}),
+                #{kqqk},
+                #{bzsm, jdbcType=VARCHAR},
+                #{sksj},
+                #{pjid}
+            )
+        ]]>
+    </insert>
+    
+    <!-- 取得教学日志 -->
+    <select id="getTeachingLogById" resultType="int">
+        select count(*)
+          from jxpj_sspj_jxrz t
+         where t.globalid = #{globalid}
+    </select>
+    
+    <!-- 考勤取得 -->
+    <select id="getCheckIn" resultType="int">
+        select count(*)
+          from jxpj_sspj_skkqglb t
+         where t.globalid = #{globalid}
+               and t.xsid = #{xsid}
+    </select>
+    
+    <!-- 修改教学日志 -->
+    <update id="modifyTeachingLog">
+        update jxpj_sspj_jxrz 
+        set kwzy = #{kwzy},
+            bzsm = #{bzsm},
+            jxnr = #{jxnr}
+        where globalid = #{globalid}
+    </update>
+
+    <!-- 修改考勤 -->
+    <update id="modifyCheckIn">
+        update jxpj_sspj_skkqglb 
+        set kqqk = #{kqqk},
+            bzsm = #{bzsm, jdbcType=VARCHAR}
+        where globalid = #{globalid}
+              and xsid = #{xsid}
+    </update>
+    
+    <!-- 评教记录数 -->
+    <select id="getXsEvaluationCnt" resultType="int">
+        select count(*)
+          from jxpj_sspj_skkqglb t1
+               <if test="table != null or table != ''">
+               ${table}
+               </if>
+         where t1.globalid = #{globalid}
+               and t1.kqqk = '0'
+               <if test="condition != null or condition != ''">
+               ${condition}
+               </if>
+    </select>
+    
+    <!-- 评教记录数 -->
+    <select id="getJsEvaluationCnt" resultType="int">
+        select count(*)
+          from jxpj_jshp_tkgl t1
+               <if test="table != null or table != ''">
+               ${table}
+               </if>
+         where t1.globalid = #{globalid}
+               and t1.shzt = '3'
+               <if test="condition != null or condition != ''">
+               ${condition}
+               </if>
+    </select>
+
+    <!-- 插入评教记录 -->
+    <insert id="insertXsEvaluation">
+        insert into jxpj_sspj_xspj (pjid, xsid, pjqk, scsj) 
+            select t1.pjid, t1.xsid, '0', sysdate
+              from jxpj_sspj_skkqglb t1
+             where t1.globalid = #{globalid} and t1.kqqk = '0'
+    </insert>
+    
+    <!-- 插入评教记录 -->
+    <insert id="insertJsEvaluation">
+        insert into jxpj_jshp_tkpj (pjid, tkjsid, pjqk, scsj) 
+            select t1.pjid, t1.tkjsid, '0', sysdate
+              from jxpj_jshp_tkgl t1
+             where t1.globalid = #{globalid} and t1.shzt = '3'
+    </insert>
+
+    <!-- 查询课表 -->
+    <select id="getCheckInSurveyEntities" resultMap="CurriculumScheduleMap">
+        select t.*,
+         (select xm from jxpj_jcsj_jsxx where zgh = t.rklsgh) as rkls,
+         (select zymc from jxpj_jcsj_zyxx where zydm = t.sszyid) as sszy
+          from jxpj_jcsj_kcbxx t
+        <include refid="cisWhere"/>
+        order by t.kcsj, t.kcjc
+    </select>
+    
+    <sql id="cisWhere">
+      	<where>
+           <if test="userlx == 'teacher' and sfckzj == 'yes'">
+             t.rklsgh = #{userid} and t.kcjc in ('1','3','5','7','9')
+           </if>
+           <if test="userlx == 'teacher' and sfckzj == 'no'">
+           <![CDATA[
+             t.rklsgh <> #{userid} and t.kcjc in ('1','3','5','7','9')
+           ]]>
+           </if>
+           <if test="userlx != 'teacher' and userlx != null" >
+             t.kcid in (select xkkh from jxpj_jcsj_xskcb where xh = #{userid})
+           </if>
+           <if test="kcmc != null and kcmc != ''">
+           and t.kcmc = #{kcmc}
+           </if>
+           <if test="year != null and year != ''">
+           and substr(t.kcsj, 1, 4) = #{year}
+           </if>
+           <if test="firstDay != null and firstDay != '' and lastDay != null and lastDay != ''">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date(#{firstDay}, 'yyyy-MM-dd') and to_date(#{lastDay}, 'yyyy-MM-dd')
+           </if>
+           <if test="kcsjFrom != null and kcsjFrom != '' and kcsjTo != null and kcsjTo != ''">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+           </if>
+           <if test="(kcsjFrom == null or kcsjFrom == '') and kcsjTo != null and kcsjTo != ''">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date('0001-01-01', 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+           </if>
+           <if test="kcsjFrom != null and kcsjFrom != '' and (kcsjTo == null or kcsjTo == '')">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date('9999-12-31', 'yyyy-MM-dd')
+           </if>
+           and (t.dsz is null or
+		       t.dsz = (case when (select  MOD(t.djz,2) from jxpj_jcsj_rqkszb t WHERE t.nyr=to_char(SYSDATE,'yyyy-MM-dd'))= 0 then '双' else '单' end))
+        </where>
+    </sql>
+    
+    <!-- 查询评教数目 -->
+    <select id="getEvaluationCount" resultType="hashmap">
+        <![CDATA[
+        select
+            (select count(*)
+               from jxpj_sspj_skkqglb t
+              where t.globalid = #{globalid}) as ycqrs,
+            (select count(*)
+               from jxpj_sspj_skkqglb t
+              where t.globalid = #{globalid}
+                    and t.kqqk = '0') as sjcqrs,
+            (select count(*)
+               from jxpj_sspj_skkqglb t
+              where t.globalid = #{globalid}
+                    and t.kqqk <> '0') as qqrs,
+            (select count(*)
+               from jxpj_sspj_skkqglb t, jxpj_sspj_xspj t1
+              where t.globalid = #{globalid}
+                    and t.pjid = t1.pjid
+                    and t.kqqk = '0') as pjcyrs
+        from dual
+        ]]>
+    </select>
+    
+     <!-- 查询评教数目按学院 by zhangqy -->
+    <select id="getEvaluationCountByCollege" resultMap="CheckInSurveyMap">
+        SELECT c.kkxy,
+		       count(1) as ycqrs,
+		       sum(CASE WHEN c.kqqk = '0' THEN 1 ELSE 0 END ) as sjcqrs,
+		       sum(CASE WHEN c.kqqk != '0' THEN 1 ELSE 0 END ) as qqrs,
+		       round(sum(CASE when c.kqqk = '0' THEN 1 ELSE 0 END)/count(1),3)*100 cqbl,
+		       round(sum(CASE when c.kqqk != '0' THEN 1 ELSE 0 END)/count(1),3)*100 qqbl,
+		       sum(CASE when c.kqqk = '0' THEN (select 1 from jxpj_sspj_xspj t1 where t1.pjid = c.pjid) ELSE 0 END) as pjcyrs
+		  FROM (SELECT k.kkxy, t.*
+		          FROM jxpj_sspj_skkqglb t,
+		               (SELECT w.kkxy, w.xkkh
+		                  FROM jxpj_jcsj_jxrwb w
+		                 GROUP BY w.xkkh, w.kkxy) k
+		<where> 
+		   t.kcid = k.XKKH 
+		 <if test="dept != null and dept != ''">
+           and k.kkxy=#{dept} 
+         </if>
+         <if test="globalid != null and globalid != ''">
+           and j.globalid=#{globalid} 
+         </if>
+          <if test="year != null and year != ''">
+           and substr(t.sksj, 1, 4) = #{year}
+           </if>
+           <if test="firstDay != null and firstDay != '' and lastDay != null and lastDay != ''">
+           and to_date(t.sksj, 'yyyy-MM-dd') between to_date(#{firstDay}, 'yyyy-MM-dd') and to_date(#{lastDay}, 'yyyy-MM-dd')
+           </if>
+           <if test="kcsjFrom != null and kcsjFrom != '' and kcsjTo != null and kcsjTo != ''">
+           and to_date(t.sksj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+           </if>
+           <if test="(kcsjFrom == null or kcsjFrom == '') and kcsjTo != null and kcsjTo != ''">
+           and to_date(t.sksj, 'yyyy-MM-dd') between to_date('0001-01-01', 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+           </if>
+           <if test="kcsjFrom != null and kcsjFrom != '' and (kcsjTo == null or kcsjTo == '')">
+           and to_date(t.sksj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date('9999-12-31', 'yyyy-MM-dd')
+           </if>
+		  ) c group by c.kkxy
+		  order by sum(CASE when c.kqqk = '0' THEN 1 ELSE 0 END)/count(1) DESC
+		  </where>
+    </select>
+    
+     <!-- 查询学生考勤数量  -->
+    <select id="getStudentAttendanceCount" resultType="int">
+    	<![CDATA[
+    	SELECT count(1) from (
+    	SELECT count(1)
+		  from view_jxpj_kqqk t
+		]]>
+		  <include refid="checkInCountWhere"/>
+		<![CDATA[
+		 group by t.kcid, t.kcmc, t.xsid, t.xsxm, t.xzb, t.kkxybm)
+		 ]]>   	
+    </select>
+    
+     <!-- 按学生统计考勤列表  -->
+    <select id="getStudentAttendanceList" resultMap="CheckInSurveyMap">
+    	<![CDATA[
+    	select * from (select a.*, rownum rn from (
+    	SELECT t.kcid,
+		       t.kcmc,
+		       t.xsid,
+		       t.xsxm,
+		       t.xzb,
+		       t.kkxybm xy,
+		       count(1) kqcs,
+		       sum(CASE when t.kqqk = '0' THEN 1 ELSE 0 end) cqcs,
+		       sum(CASE when t.kqqk = '1' THEN 1 ELSE 0 end) kkcs,
+		       sum(CASE when t.kqqk = '2' THEN 1 ELSE 0 end) sjcs,
+		       sum(CASE when t.kqqk = '3' THEN 1 ELSE 0 end) bjcs,
+		       sum(CASE when t.kqqk = '4' THEN 1 ELSE 0 end) cdcs,
+		       round(sum(CASE when t.kqqk = '0' THEN 1 ELSE 0 end)/count(1),3)*100||'%' cqbl,
+		       round(sum(CASE when t.kqqk != '0' THEN 1 ELSE 0 end)/count(1),3)*100||'%' qqbl
+		  from view_jxpj_kqqk t
+		]]>
+		  <include refid="checkInCountWhere"/>
+		<![CDATA[
+		 group by t.kcid, t.kcmc, t.xsid, t.xsxm, t.xzb, t.kkxybm
+		 ORDER BY sum(CASE when t.kqqk != '0' THEN 1 ELSE 0 end)/count(1)
+        ) a )
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]> 
+    </select>
+    
+    <!-- 查询学生查询缺勤明细数量  -->
+    <select id="getNoCheckinDetailCount" resultType="int">
+    	<![CDATA[
+    	SELECT COUNT(1)
+			  FROM view_jxpj_kqqkmx t
+		]]> 
+		<where>
+			t.jszgh = #{gh}
+         	<if test="xsxm != null and xsxm != ''">
+           		AND t.xsxm like '%' || #{xsxm} || '%'
+         	</if>
+         	<if test="xsid != null and xsid != ''">
+           		AND t.xsid = #{xsid}
+         	</if>
+        </where>  	
+    </select>
+    
+     <!-- 按学生查询缺勤明细列表  -->
+    <select id="getNoCheckinDetail" resultMap="CheckInMap">
+    	<![CDATA[
+    	select * from (select a.*, rownum rn from (
+			SELECT *
+			  FROM view_jxpj_kqqkmx t
+		]]> 
+		<where>
+			t.jszgh = #{gh}
+         	<if test="xsxm != null and xsxm != ''">
+           		AND t.xsxm like '%' || #{xsxm} || '%'
+         	</if>
+         	<if test="xsid != null and xsid != ''">
+           		AND t.xsid = #{xsid}
+         	</if>
+        </where>
+        <![CDATA[
+			 ORDER BY t.sksj DESC
+        ) a )
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]> 
+    </select>
+    
+     <!-- 按班级课程统计缺勤学生数量  -->
+    <select id="getSummaryAbsentCountByClass" resultType="int">
+    	<![CDATA[
+    	SELECT COUNT(1) FROM(
+    	SELECT COUNT(1)
+		  FROM (SELECT t.kkxy,
+		               t.xzb,
+		               t.kcdm,
+		               t.kcmc,
+		               t.jszgh,
+		               t.jsxm,
+		               t.xsid,
+		               t.xsxm || '(' || COUNT(1) || '学时)' qqxs,
+		               t.kczxs
+		          FROM view_jxpj_kqqk t
+		 ]]>
+		  <include refid="checkInCountWhere"/>
+		<![CDATA[
+		         AND t.kqqk != '0'
+		         GROUP BY t.kkxy,
+		                  t.kcdm,
+		                  t.kcmc,
+		                  t.jszgh,
+		                  t.jsxm,
+		                  t.xsid,
+		                  t.xsxm,
+		                  t.xzb,
+		                  t.kczxs) a
+		 GROUP BY a.kkxy, a.xzb, a.kcdm, a.kcmc, a.jsxm, a.kczxs) b
+		 ]]>   	
+    </select>
+    
+     <!-- 按班级课程统计缺勤学生  -->
+    <select id="getSummaryAbsentListByClass" resultMap="CheckInSurveyMap">
+    	<![CDATA[
+    	select * from (select a.*, rownum rn from (
+	    SELECT a.kkxy xy, a.xzb, a.kcmc, a.jsxm, a.kczxs, WM_CONCAT(a.qqxs) qqxs
+		  FROM (SELECT t.kkxy,
+		               t.xzb,
+		               t.kcdm,
+		               t.kcmc,
+		               t.jszgh,
+		               t.jsxm,
+		               t.xsid,
+		               t.xsxm || '(' || COUNT(1)*2 || '学时)' qqxs,
+		               t.kczxs
+		          FROM view_jxpj_kqqk t
+		]]>
+		  <include refid="checkInCountWhere"/>
+		<![CDATA[
+		         AND t.kqqk != '0'		
+		         GROUP BY t.kkxy,
+		                  t.kcdm,
+		                  t.kcmc,
+		                  t.jszgh,
+		                  t.jsxm,
+		                  t.xsid,
+		                  t.xsxm,
+		                  t.xzb,
+		                  t.kczxs) a
+		 GROUP BY a.kkxy, a.xzb, a.kcdm, a.kcmc, a.jsxm, a.kczxs
+	     ) a )
+        where rn >= #{startRow} and rn <= #{endRow}
+	   	]]>
+    </select>
+    
+     <!-- 按班级统计学生考勤数量  -->
+    <select id="getCheckSummaryCountByClass" resultType="int">
+    	<![CDATA[
+    	SELECT count(1) from (
+    	SELECT count(1)
+		  from view_jxpj_kqqk t
+		]]>
+		  <include refid="checkInCountWhere"/>
+		<![CDATA[
+		 group by t.xzb,t.kkxy,t.zymc)
+		 ]]>   	
+    </select>
+    
+     <!-- 按班级统计学生考勤  -->
+    <select id="getCheckSummaryListByClass" resultMap="CheckInSurveyMap">
+    	<![CDATA[
+    	select * from (select a.*, rownum rn from (
+	    SELECT t.xzb,
+	           t.kkxy xy,
+	           t.zymc zy,
+	           count(1) kqcs,
+	           sum(CASE when t.kqqk = '0' THEN 1 ELSE 0 end) cqcs,
+	           sum(CASE when t.kqqk = '1' THEN 1 ELSE 0 end) kkcs,
+	           sum(CASE when t.kqqk = '2' THEN 1 ELSE 0 end) sjcs,
+	           sum(CASE when t.kqqk = '3' THEN 1 ELSE 0 end) bjcs,
+	           sum(CASE when t.kqqk = '4' THEN 1 ELSE 0 end) cdcs,
+	           round(sum(CASE when t.kqqk = '0' THEN 1 ELSE 0 end)/count(1),3)*100||'%' cqbl,
+	           round(sum(CASE when t.kqqk != '0' THEN 1 ELSE 0 end)/count(1),3)*100||'%' qqbl
+	      from view_jxpj_kqqk t
+	   	]]>
+			  <include refid="checkInCountWhere"/>
+		<![CDATA[
+	     group by t.xzb,t.kkxy,t.zymc
+	     ORDER BY sum(CASE when t.kqqk = '0' THEN 1 ELSE 0 end)/count(1) DESC,t.xzb
+	     ) a )
+        where rn >= #{startRow} and rn <= #{endRow}
+	   	]]>
+    </select>
+    
+     <!-- 按年级统计学生考勤数量  -->
+    <select id="getCheckSummaryCountByGrade" resultType="int">
+    	<![CDATA[
+    	SELECT count(1) from (
+    	SELECT count(1)
+		  from view_jxpj_kqqk t
+		]]>
+		  <include refid="checkInCountWhere"/>
+		<![CDATA[
+		 group by t.kkxy,t.nj)
+		 ]]>   	
+    </select>
+    
+     <!-- 按年级统计学生考勤  -->
+    <select id="getCheckSummaryListByGrade" resultMap="CheckInSurveyMap">
+    	<![CDATA[
+    	select * from (select a.*, rownum rn from (
+	    SELECT t.kkxy xy,t.nj,
+             count(1) kqcs,
+             sum(CASE when t.kqqk = '0' THEN 1 ELSE 0 end) cqcs,
+             sum(CASE when t.kqqk = '1' THEN 1 ELSE 0 end) kkcs,
+             sum(CASE when t.kqqk = '2' THEN 1 ELSE 0 end) sjcs,
+             sum(CASE when t.kqqk = '3' THEN 1 ELSE 0 end) bjcs,
+             sum(CASE when t.kqqk = '4' THEN 1 ELSE 0 end) cdcs,
+             round(sum(CASE when t.kqqk = '0' THEN 1 ELSE 0 end)/count(1),3)*100||'%' cqbl,
+             round(sum(CASE when t.kqqk != '0' THEN 1 ELSE 0 end)/count(1),3)*100||'%' qqbl
+        from view_jxpj_kqqk t
+	   	]]>
+			  <include refid="checkInCountWhere"/>
+		<![CDATA[
+	     group by t.kkxy,t.nj
+       	 ORDER BY sum(CASE when t.kqqk = '0' THEN 1 ELSE 0 end)/count(1) desc,t.kkxy,t.nj
+	     ) a )
+        where rn >= #{startRow} and rn <= #{endRow}
+	   	]]>
+    </select>
+    
+    <!-- 提取查询条件 -->	
+    <sql id="checkInCountWhere">
+    	<where>
+        	1=1
+         	<if test="kcsjFrom != null and kcsjFrom != '' and kcsjTo != null and kcsjTo != ''">
+           		and to_date(t.sksj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+         	</if>
+         	<if test="nj != null and nj != ''">
+           		and t.nj like '%' || #{nj} || '%'
+         	</if>
+		 	<if test="xzb != null and xzb != ''">
+           		and t.xzb like '%' || #{xzb} || '%'
+         	</if>
+         	<if test="xsxm != null and xsxm != ''">
+           		and t.xsxm like '%' || #{xsxm} || '%'
+         	</if>
+         	<if test="jsxm != null and jsxm != ''">
+           		and t.jsxm like '%' || #{jsxm} || '%'
+         	</if>
+         	<if test="xy != null and xy != ''">
+           		and t.kkxybm = #{xy}
+         	</if>
+         	<if test="condition != null or condition != ''">
+               	${condition}
+         	</if>
+        </where>
+    </sql> 
+    
+     <!-- 查询学院列表  by zhangqy -->
+    <select id="getCollegeList" resultType="String">
+     <![CDATA[
+        select  t.kkxy  from jxpj_jcsj_jxrwb t group by t.kkxy
+         ]]>
+    </select>
+    
+    <!-- 查询考勤和评教 -->
+    <select id="getEvaluationDetail" resultMap="CheckInMap">
+        select
+               t.globalid,
+               t.kcid,
+               t.xsid,
+               t.xsxm,
+               t.kqqk,
+               t.sksj,
+               t.pjid,
+               t.bzsm,
+               t1.pjqk,
+               to_char(t1.scsj, 'yyyy-MM-dd') as scsj,
+               to_char(t1.pjsj, 'yyyy-MM-dd') as pjsj
+          from jxpj_sspj_skkqglb t, jxpj_sspj_xspj t1
+         where 
+         		1=1
+         	   <if test="globalid != null and globalid != ''">
+                and t.globalid = #{globalid}
+               </if>
+               <if test="type == 'sj'">
+               and t.kqqk = '0'
+               </if>
+               <if test="type == 'qq'">
+               <![CDATA[
+               and t.kqqk <> '0'
+               ]]>
+               </if>
+               <![CDATA[
+               and t.xsid = t1.xsid(+)
+               and t.pjid = t1.pjid(+)
+               ]]>
+    </select>
+    
+    <!-- 查询教学日志 -->
+    <select id="getTeachingLog" resultMap="CurriculumScheduleMap">
+        select t.*,
+         js.xm as rkls,
+         js.bm as dwm,
+         (select zymc from jxpj_jcsj_zyxx where zydm = t.sszyid) as sszy
+          from jxpj_jcsj_kcbxx t, jxpj_jcsj_jsxx js
+         where
+           t.rklsgh = js.zgh
+           <if test="condition != null and condition != ''">
+             ${condition}
+           </if>
+           <if test="zy != null and zy != ''">
+             and t.sszyid = #{zy}
+           </if>
+           <if test="firstDay != null and firstDay != '' and lastDay != null and lastDay != ''">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date(#{firstDay}, 'yyyy-MM-dd') and to_date(#{lastDay}, 'yyyy-MM-dd')
+           </if>
+           <if test="kcsjFrom != null and kcsjFrom != '' and kcsjTo != null and kcsjTo != ''">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+           </if>
+           <if test="(kcsjFrom == null or kcsjFrom == '') and kcsjTo != null and kcsjTo != ''">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date('0001-01-01', 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+           </if>
+           <if test="kcsjFrom != null and kcsjFrom != '' and (kcsjTo == null or kcsjTo == '')">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date('9999-12-31', 'yyyy-MM-dd')
+           </if>
+        order by t.kcsj, t.kcjc
+    </select>
+    
+    <!-- 查询评教 -->
+    <select id="getStudentEvaluations" resultMap="CheckInMap">
+        select
+               t.globalid,
+               t.kcid,
+               t.xsid,
+               t.xsxm,
+               t.kqqk,
+               t.sksj,
+               t.pjid,
+               t.bzsm,
+               t1.pjqk,
+               to_char(t1.scsj, 'yyyy-MM-dd') as scsj,
+               to_char(t1.pjsj, 'yyyy-MM-dd') as pjsj
+          from jxpj_sspj_skkqglb t, jxpj_sspj_xspj t1
+         where t.xsid = #{userid}
+               and t.kqqk = '0'
+               and t.xsid = t1.xsid
+               and t.pjid = t1.pjid
+               <if test="pjqk != null and pjqk != ''">
+               and t1.pjqk = #{pjqk}
+               </if>
+        order by t1.scsj
+    </select>
+    
+    <!-- 刷新状态 -->
+    <update id="modifyStatusBySave">
+        update jxpj_jshp_tksqsz 
+        set syzt = '2'
+    </update>
+    
+    <!-- 刷新状态 -->
+    <update id="modifyStatusByRefresh">
+        update jxpj_jshp_tksqsz 
+        set syzt = '1'
+        where syzt = '0'
+    </update>
+    
+    <!-- 保存申请听课设置 -->
+    <insert id="saveSetting">
+        <![CDATA[
+            insert into
+                jxpj_jshp_tksqsz (
+                    tksqid,
+                    tksqpcmc,
+                    syzt,
+                    sqsjks,
+                    sqsjjs,
+                    kcsjks,
+                    kcsjjs
+                )
+            values (
+                #{tksqid},
+                #{tksqpcmc},
+                '0',
+                #{sqsjks},
+                #{sqsjjs},
+                #{kcsjks},
+                #{kcsjjs}
+            )
+        ]]>
+        <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="tksqid">
+            <![CDATA[
+            SELECT SYS_GUID() ID FROM DUAL
+            ]]>
+        </selectKey>
+    </insert>
+    
+    <!-- 查询申请听课设置 -->
+    <select id="getOpenLessonSettingCount" resultType="int">
+        select count(*)
+        from jxpj_jshp_tksqsz t
+    </select>
+    
+    <!-- 查询申请听课设置 -->
+    <select id="getOpenLessonSettingAll" resultMap="OpenLessonSetMap">
+        select * from (select a.*, rownum rn from (
+        select t.*
+          from jxpj_jshp_tksqsz t
+      order by t.syzt asc, t.sqsjks desc, t.sqsjjs desc
+        ) a )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+    
+    <!-- 查询申请听课设置 -->
+    <select id="getOpenLessonSetting" resultMap="OpenLessonSetMap">
+        select t.*
+          from jxpj_jshp_tksqsz t
+         where t.syzt = '0'
+    </select>
+    
+    <!-- 预约听课列表 -->
+    <select id="getDeclareOpenLessonCount" resultType="int">
+        select count(*)
+         from jxpj_jshp_tkgl t
+         where t.tkjsid = #{tkjsid}
+         <if test="tkyf != null and tkyf != ''">
+             and substr(t.sksj, 1, 7) = #{tkyf}
+         </if>
+         <if test="shzt != null and shzt != '' and shzt == 0">
+             and t.shzt = 0
+         </if>
+         <if test="shzt != null and shzt != '' and shzt == 1">
+             and t.shzt in ('1', '2')
+         </if>
+         <if test="shzt != null and shzt != '' and shzt == 2">
+             and t.shzt = '3'
+         </if>
+         <if test="shzt != null and shzt != '' and shzt == 3">
+             and t.shzt = '4'
+         </if>
+    </select>
+    
+    <!-- 预约听课列表 -->
+    <select id="getDeclareOpenLesson" resultMap="OpenLessonMap">
+        select * from (select a.*, rownum rn from (
+        select t.globalid,
+               t.shzt,
+               t.bzsm,
+               t.pjid,
+               t.sksj,
+               t.kcid,
+               t.tkjsid
+          from jxpj_jshp_tkgl t
+         where t.tkjsid = #{tkjsid}
+         <if test="tkyf != null and tkyf != ''">
+             and substr(t.sksj, 1, 7) = #{tkyf}
+         </if>
+         <if test="shzt != null and shzt != '' and shzt == 0">
+             and t.shzt = 0
+         </if>
+         <if test="shzt != null and shzt != '' and shzt == 1">
+             and t.shzt in ('1', '2')
+         </if>
+         <if test="shzt != null and shzt != '' and shzt == 2">
+             and t.shzt = '3'
+         </if>
+         <if test="shzt != null and shzt != '' and shzt == 3">
+             and t.shzt = '4'
+         </if>
+      order by t.sksj asc
+        ) a )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+    
+    <!-- 开放预约听课列表 -->
+    <select id="getOpenLessonCount" resultType="int">
+        select count(*)
+          from jxpj_jcsj_kcbxx t 
+          left join jxpj_jshp_tkgl t1 on t.globalid = t1.globalid and t1.tkjsid = #{userid} 
+          left join overall js on t.rklsgh = js.gh
+         where t.kcjc in ('1','3','5','7','9')
+           <if test="userlx == 'teacher' and sfckzj == 'yes'">
+             and t.rklsgh = #{userid}
+           </if>
+           <if test="userlx == 'teacher' and sfckzj == 'no'">
+           <![CDATA[
+             and t.rklsgh <> #{userid}
+           ]]>
+           </if>
+           <if test="userlx != 'teacher'">
+             and t.kcid in (select xkkh from jxpj_jcsj_xskcb where xh = #{userid})
+           </if>
+           <if test="year != null and year != ''">
+           and substr(t.kcsj, 1, 4) = #{year}
+           </if>
+           <if test="firstDay != null and firstDay != '' and lastDay != null and lastDay != ''">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date(#{firstDay}, 'yyyy-MM-dd') and to_date(#{lastDay}, 'yyyy-MM-dd')
+           </if>
+           <if test="kcsjFrom != null and kcsjFrom != '' and kcsjTo != null and kcsjTo != ''">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+           </if>
+           <if test="(kcsjFrom == null or kcsjFrom == '') and kcsjTo != null and kcsjTo != ''">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date('0001-01-01', 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+           </if>
+           <if test="kcsjFrom != null and kcsjFrom != '' and (kcsjTo == null or kcsjTo == '')">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date('9999-12-31', 'yyyy-MM-dd')
+           </if>
+           <if test="condition != null and condition != ''">
+             ${condition}
+           </if>
+        order by t.kcsj, t.kcjc
+    </select>
+    
+    <!-- 开放预约听课列表 -->
+    <select id="getOpenLesson" resultMap="CurriculumScheduleMap">
+        select * from (select a.*, rownum rn from (
+        select t.*, t1.shzt,
+         js.xm as rkls,
+         (select zymc from jxpj_jcsj_zyxx where zydm = t.sszyid) as sszy
+          from jxpj_jcsj_kcbxx t 
+          left join jxpj_jshp_tkgl t1 on t.globalid = t1.globalid and t1.tkjsid = #{userid} 
+          left join overall js on t.rklsgh = js.gh
+         where t.kcjc in ('1','3','5','7','9')
+           <if test="userlx == 'teacher' and sfckzj == 'yes'">
+             and t.rklsgh = #{userid}
+           </if>
+           <if test="userlx == 'teacher' and sfckzj == 'no'">
+           <![CDATA[
+             and t.rklsgh <> #{userid}
+           ]]>
+           </if>
+           <if test="userlx != 'teacher'">
+             and t.kcid in (select xkkh from jxpj_jcsj_xskcb where xh = #{userid})
+           </if>
+           <if test="year != null and year != ''">
+           and substr(t.kcsj, 1, 4) = #{year}
+           </if>
+           <if test="firstDay != null and firstDay != '' and lastDay != null and lastDay != ''">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date(#{firstDay}, 'yyyy-MM-dd') and to_date(#{lastDay}, 'yyyy-MM-dd')
+           </if>
+           <if test="kcsjFrom != null and kcsjFrom != '' and kcsjTo != null and kcsjTo != ''">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+           </if>
+           <if test="(kcsjFrom == null or kcsjFrom == '') and kcsjTo != null and kcsjTo != ''">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date('0001-01-01', 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+           </if>
+           <if test="kcsjFrom != null and kcsjFrom != '' and (kcsjTo == null or kcsjTo == '')">
+           and to_date(t.kcsj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date('9999-12-31', 'yyyy-MM-dd')
+           </if>
+           <if test="condition != null and condition != ''">
+             ${condition}
+           </if>
+        order by t.kcsj, t.kcjc
+        ) a )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+
+    <!-- 提交预约 -->
+    <insert id="doSubmit">
+        <![CDATA[
+            insert into
+                jxpj_jshp_tkgl (
+                    globalid,
+                    sksj,
+                    kcid,
+                    tkjsid,
+                    shzt,
+                    bzsm,
+                    pjid
+                )
+            select t1.globalid, t1.kcsj, t1.kcid, #{tkjsid}, '0', '', t1.globalid || #{tkjsid}
+              from jxpj_jcsj_kcbxx t1
+             where t1.globalid = #{globalid}
+        ]]>
+    </insert>
+
+    <!-- 改变审核状态 -->
+    <update id="changeStatus">
+        update jxpj_jshp_tkgl 
+        set shzt = #{shzt}
+        <if test="shzt == 3">
+            ,pjid = globalid || tkjsid
+        </if>
+        where globalid = #{globalid}
+    </update>
+    
+    <!-- 取消预约 -->
+    <delete id="cancelSubmit">
+        delete from jxpj_jshp_tkgl
+         where globalid = #{globalid}
+         <if test="tkjsid != null and tkjsid != ''">
+            and tkjsid = #{tkjsid}
+         </if>
+    </delete>
+
+    <!-- 听课管理 -->
+    <select id="getAuditOpenLessonCount" resultType="int">
+        select count(*)
+         from jxpj_jshp_tkgl t
+         inner join jxpj_jcsj_kcbxx t1 on t.globalid = t1.globalid
+         left join jxpj_jcsj_zyxx zy on t1.sszyid = zy.zydm
+         left join jxpj_jcsj_jsxx js on t.tkjsid = js.zgh
+         <include refid="auditWhere"/>
+    </select>
+    
+    <!-- 听课管理 -->
+    <select id="getAuditOpenLesson" resultMap="OpenLessonMap">
+        select * from (select a.*, rownum rn from (
+        select t.globalid,
+               t.shzt,
+               t.bzsm,
+               t.pjid,
+               t.sksj,
+               t.kcid,
+               t.tkjsid,
+               js.xm tkjsxm
+          from jxpj_jshp_tkgl t
+               inner join jxpj_jcsj_kcbxx t1 on t.globalid = t1.globalid
+               left join jxpj_jcsj_zyxx zy on t1.sszyid = zy.zydm
+               left join jxpj_jcsj_jsxx js on t.tkjsid = js.zgh
+         <include refid="auditWhere"/>
+      order by t.tkjsid, t.sksj asc
+        ) a )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+    
+    <sql id="auditWhere">
+        <where>
+            <if test="phase == 1 and (shzt == null or shzt == '')">
+            t.shzt in ('1', '2', '3', '4')
+            </if>
+            <if test="phase == 2 and (shzt == null or shzt == '')">
+            t.shzt in ('2', '3', '4')
+            </if>
+            <if test="phase == 1 and shzt != null and shzt != '' and shzt == 1">
+            t.shzt in ('1', '2')
+            </if>
+            <if test="phase == 2 and shzt != null and shzt != '' and shzt == 1">
+            t.shzt = '2'
+            </if>
+            <if test="shzt != null and shzt != '' and shzt == 2">
+            t.shzt = '3'
+            </if>
+            <if test="shzt != null and shzt != '' and shzt == 3">
+            t.shzt = '4'
+            </if>
+            <if test="kcsjFrom != null and kcsjFrom != '' and kcsjTo != null and kcsjTo != ''">
+            and to_date(t1.kcsj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+            </if>
+            <if test="(kcsjFrom == null or kcsjFrom == '') and kcsjTo != null and kcsjTo != ''">
+            and to_date(t1.kcsj, 'yyyy-MM-dd') between to_date('0001-01-01', 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+            </if>
+            <if test="kcsjFrom != null and kcsjFrom != '' and (kcsjTo == null or kcsjTo == '')">
+            and to_date(t1.kcsj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date('9999-12-31', 'yyyy-MM-dd')
+            </if>
+            <if test="condition != null and condition != ''">
+            ${condition}
+            </if>
+        </where>
+    </sql>
+    
+    <!-- 听课查询 -->
+    <select id="getSearchOpenLessonCount" resultType="int">
+        select count(*)
+         from jxpj_jshp_tkgl t
+         inner join jxpj_jcsj_kcbxx t1 on t.globalid = t1.globalid
+         left join jxpj_jcsj_zyxx zy on t1.sszyid = zy.zydm
+         left join overall js on t.tkjsid = js.gh
+         left join jxpj_jshp_tkpj pj on t.pjid = pj.pjid
+         <if test="tableSql != null and tableSql != ''">
+         ${tableSql}
+         </if>
+         <include refid="searchWhere"/>
+    </select>
+    
+    <!-- 听课查询 -->
+    <select id="getSearchOpenLesson" resultMap="OpenLessonMap">
+        select * from (select a.*, rownum rn from (
+        select t.globalid,
+               t.shzt,
+               t.bzsm,
+               t.pjid,
+               t.sksj,
+               t.kcid,
+               t.tkjsid,
+               js.xm tkjsxm,
+               js.dwm as dwm,
+               pj.pjqk,
+               gx.xwjid,
+               (SELECT hd.txnr FROM wjdc_wjhdb hd WHERE hd.wjid=gx.xwjid AND hd.djrid=t.tkjsid AND hd.stid='stid_11') sknr,
+               ((SELECT hd.txnr FROM wjdc_wjhdb hd WHERE hd.wjid=gx.xwjid AND hd.djrid=t.tkjsid AND hd.stid='stid_12')) yjjy
+          from jxpj_jshp_tkgl t
+               inner join jxpj_jcsj_kcbxx t1 on t.globalid = t1.globalid
+               left join jxpj_jcsj_zyxx zy on t1.sszyid = zy.zydm
+               left join overall js on t.tkjsid = js.gh
+               left join jxpj_jshp_tkpj pj on t.pjid = pj.pjid
+               left join jxpj_jbpz_pjgxb gx on t.pjid = gx.pjid
+               <if test="tableSql != null and tableSql != ''">
+               ${tableSql}
+               </if>
+         <include refid="searchWhere"/>
+      order by t.sksj asc
+        ) a )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+    
+    <sql id="searchWhere">
+        <where>
+            t.shzt = '3'
+            <if test="sfpj != null and sfpj != ''">
+            and pj.pjqk = #{sfpj}
+            </if>
+            <if test="firstDay != null and firstDay != '' and lastDay != null and lastDay != ''">
+            and to_date(t1.kcsj, 'yyyy-MM-dd') between to_date(#{firstDay}, 'yyyy-MM-dd') and to_date(#{lastDay}, 'yyyy-MM-dd')
+            </if>
+            <if test="kcsjFrom != null and kcsjFrom != '' and kcsjTo != null and kcsjTo != ''">
+            and to_date(t1.kcsj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+            </if>
+            <if test="(kcsjFrom == null or kcsjFrom == '') and kcsjTo != null and kcsjTo != ''">
+            and to_date(t1.kcsj, 'yyyy-MM-dd') between to_date('0001-01-01', 'yyyy-MM-dd') and to_date(#{kcsjTo}, 'yyyy-MM-dd')
+            </if>
+            <if test="kcsjFrom != null and kcsjFrom != '' and (kcsjTo == null or kcsjTo == '')">
+            and to_date(t1.kcsj, 'yyyy-MM-dd') between to_date(#{kcsjFrom}, 'yyyy-MM-dd') and to_date('9999-12-31', 'yyyy-MM-dd')
+            </if>
+            <if test="condition != null and condition != ''">
+            ${condition}
+            </if>
+        </where>
+    </sql>
+    
+    <!-- 听课评价查询 -->
+    <select id="getEvaluationOpenLessonCount" resultType="int">
+        select count(*)
+         from jxpj_jshp_tkgl t
+         inner join jxpj_jcsj_kcbxx t1 on t.globalid = t1.globalid
+         left join jxpj_jcsj_jsxx js on t1.rklsgh = js.zgh
+         left join jxpj_jshp_tkpj pj on t.pjid = pj.pjid
+         <include refid="evaluationWhere"/>
+    </select>
+    
+    <!-- 听课评价查询 -->
+    <select id="getEvaluationOpenLesson" resultMap="OpenLessonMap">
+        select * from (select a.*, rownum rn from (
+        select t.globalid,
+               t.shzt,
+               t.bzsm,
+               t.pjid,
+               t.sksj,
+               t.kcid,
+               t.tkjsid,
+               (select xm from jxpj_jcsj_jsxx where zgh = t.tkjsid) as tkjsxm,
+               gx.xwjid
+          from jxpj_jshp_tkgl t
+               inner join jxpj_jcsj_kcbxx t1 on t.globalid = t1.globalid
+               left join overall js on t1.rklsgh = js.gh
+               left join jxpj_jshp_tkpj pj on t.pjid = pj.pjid
+               left join jxpj_jbpz_pjgxb gx on t.pjid = gx.pjid
+         <include refid="evaluationWhere"/>
+      order by t.sksj asc
+        ) a )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+    
+    <sql id="evaluationWhere">
+        <where>
+            t.shzt = '3'
+            and t.pjid is not null
+            <if test="firstDay != null and firstDay != '' and lastDay != null and lastDay != ''">
+            and to_date(t1.kcsj, 'yyyy-MM-dd') between to_date(#{firstDay}, 'yyyy-MM-dd') and to_date(#{lastDay}, 'yyyy-MM-dd')
+            </if>
+            <if test="condition != null and condition != ''">
+            ${condition}
+            </if>
+            <if test="sfpj != null and sfpj != ''">
+            and pj.pjqk = #{sfpj}
+            </if>
+        </where>
+    </sql>
+    
+    <!-- 取得问卷 -->
+    <select id="getQuestionnairesCount" resultType="int">
+        select count(*)
+         from jxpj_jbpz_wjpzb t
+        <where>
+          <if test="wjmc != null and wjmc != ''">
+            and t.wjmc like '%' || #{wjmc} || '%'
+          </if>
+          <if test="djrylx != null and djrylx != ''">
+            and t.djrylx = #{djrylx}
+          </if>
+          <if test="syzt != null and syzt != ''">
+            and t.syzt = #{syzt}
+          </if>
+          <if test="pjlx != null and pjlx != ''">
+            and t.pjlx = #{pjlx}
+          </if>
+        </where>
+    </select>
+    
+    <!-- 取得问卷 -->
+    <select id="getQuestionnaires" resultMap="SettingMap">
+        select * from (select a.*, rownum rn from (
+        select t.globalid,
+               t.wjid,
+               t.wjmc,
+               t.djrylx,
+               t.syzt,
+               t.pjlx,
+               to_char(zcsj, 'yyyy-MM-dd') zcsj,
+               t.zcry,
+               (select xm from zftal_xtgl_yhb where zgh = t.zcry) zcryxm,
+               to_char(xgsj, 'yyyy-MM-dd') xgsj,
+               t.xgry,
+               (select xm from zftal_xtgl_yhb where zgh = t.xgry) xgryxm
+          from jxpj_jbpz_wjpzb t
+        <where>
+          <if test="wjmc != null and wjmc != ''">
+            and t.wjmc like '%' || #{wjmc} || '%'
+          </if>
+          <if test="djrylx != null and djrylx != ''">
+            and t.djrylx = #{djrylx}
+          </if>
+          <if test="syzt != null and syzt != ''">
+            and t.syzt = #{syzt}
+          </if>
+          <if test="pjlx != null and pjlx != ''">
+            and t.pjlx = #{pjlx}
+          </if>
+        </where>
+      order by t.djrylx, t.zcsj desc
+        ) a )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+
+    <!-- 取得问卷 -->
+    <select id="getQuestionnaireById" resultMap="SettingMap">
+        select t.globalid,
+               t.wjid,
+               t.wjmc,
+               t.djrylx,
+               t.syzt,
+               t.pjlx,
+               to_char(zcsj, 'yyyy-MM-dd') zcsj,
+               t.zcry,
+               (select xm from zftal_xtgl_yhb where zgh = t.zcry) zcryxm,
+               to_char(xgsj, 'yyyy-MM-dd') xgsj,
+               t.xgry,
+               (select xm from zftal_xtgl_yhb where zgh = t.xgry) xgryxm
+          from jxpj_jbpz_wjpzb t
+         where t.globalid = #{globalid}
+    </select>
+
+    <!-- 增加问卷 -->
+    <insert id="saveQuestionnaire">
+        <![CDATA[
+            insert into
+                jxpj_jbpz_wjpzb (
+                    globalid,
+                    wjid,
+                    wjmc,
+                    djrylx,
+                    syzt,
+                    zcsj,
+                    zcry,
+                    xgsj,
+                    xgry,
+                    pjlx
+                )
+            values(
+                #{globalid},
+                #{wjid},
+                #{wjmc},
+                #{djrylx},
+                '0',
+                sysdate,
+                #{zcry},
+                sysdate,
+                #{xgry},
+                #{pjlx}
+            )
+        ]]>
+        <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="globalid">
+            <![CDATA[
+            SELECT SYS_GUID() ID FROM DUAL
+            ]]>
+        </selectKey>
+    </insert>
+    
+    <!-- 修改问卷 -->
+    <update id="modifyQuestionnaire">
+        update jxpj_jbpz_wjpzb 
+        set xgsj = sysdate
+            ,xgry = #{xgry}
+        <if test="wjid != null and wjid != ''">
+            ,wjid = #{wjid}
+        </if>
+        <if test="wjmc != null and wjmc != ''">
+            ,wjmc = #{wjmc}
+        </if>
+        <if test="djrylx != null and djrylx != ''">
+            ,djrylx = #{djrylx}
+        </if>
+        <if test="syzt != null and syzt != ''">
+            ,syzt = #{syzt}
+        </if>
+        <if test="pjlx != null and pjlx != ''">
+            ,pjlx = #{pjlx}
+        </if>
+        where globalid = #{globalid}
+    </update>
+    
+    <!-- 存在判断 -->
+    <select id="isExistSetting" resultType="int">
+        select count(*)
+         from jxpj_jbpz_wjpzb t
+        <where>
+          <if test="djrylx != null and djrylx != ''">
+            and t.djrylx = #{djrylx}
+          </if>
+          <if test="wjid != null and wjid != ''">
+            and t.wjid = #{wjid}
+          </if>
+          <if test="pjlx != null and pjlx != ''">
+            and t.pjlx = #{pjlx}
+          </if>
+        </where>
+    </select>
+    
+    <!-- 查询实时评教信息 -->
+    <select id="getSspjInfo" resultType="string">
+        select t1.xsid
+          from jxpj_sspj_skkqglb t1
+         where t1.globalid = #{globalid} and t1.kqqk = '0'
+    </select>
+    
+    <!-- 查询教师互评信息 -->
+    <select id="getJshpInfo" resultType="String">
+        select t1.tkjsid
+          from jxpj_jshp_tkgl t1
+          left join overall o on o.gh=t1.tkjsid
+         where t1.globalid = #{globalid} and t1.shzt = '3'
+    </select>
+    
+    <!-- 增加评教关系 -->
+    <insert id="addPjgx">
+        insert into jxpj_jbpz_pjgxb (pjid, wjid, xwjid, pjzt, pjrylx) 
+            select t1.pjid, #{wjid}, #{xwjid}, '0', #{pjrylx}
+              from ${tableSql} t1
+             where t1.globalid = #{globalid}
+            <if test="condition != null and condition != ''">
+            ${condition}
+            </if>
+    </insert>
+    
+    <!-- 取得GUID -->
+    <select id="getGuid" resultType="string">
+        select sys_guid() id from dual
+    </select>
+    
+    <!-- 取得评教人员类型 -->
+    <select id="getPjrylx" resultType="string">
+        select distinct(t.pjrylx)
+          from jxpj_jbpz_pjgxb t
+         where t.pjid = #{pjid}
+    </select>
+    
+    <!-- 取得评教人员类型 -->
+    <select id="getKcfl" resultType="string">
+        SELECT t.fldm
+		  FROM jxpj_jcsj_kcflxx t
+		 WHERE t.kcdm = substr(#{pjid}, 15, 8)
+		   AND rownum = 1
+    </select>
+    
+    <!-- 取得所有问卷 -->
+    <select id="getQuestionnaireByPjid" resultMap="ViewQuestionnaireMap">
+        select t.pjid,
+               t.wjid,
+               t.xwjid,
+               t.pjzt,
+               p.wjmc,
+               to_char(t.pjsj, 'yyyy-MM-dd') pjsj
+               <if test="pjryfiled != null and pjryfiled != ''">
+               ${pjryfiled}
+               </if>
+          from jxpj_jbpz_pjgxb t,
+               jxpj_jbpz_wjpzb p
+               <if test="tableSql != null and tableSql != ''">
+               ${tableSql}
+               </if>
+         where t.pjid = #{pjid}
+           and t.wjid = p.wjid
+           and p.djrylx = t.pjrylx
+           <if test="tableSql != null and tableSql != ''">
+               and t.pjid = t1.pjid
+               and t1.pjid = t2.pjid
+           </if>
+    </select>
+    
+    <!-- 查看我的问卷 -->
+    <select id="getMyResponse" resultMap="ViewQuestionnaireMap">
+        select t.pjid,
+               t.wjid,
+               t.xwjid,
+               t.pjzt,
+               p.wjmc,
+               to_char(t.pjsj, 'yyyy-MM-dd') pjsj,
+               ${pjryfiled}
+          from jxpj_jbpz_pjgxb t,
+               jxpj_jbpz_wjpzb p,
+               ${tableSql}
+         where t.wjid = p.wjid
+           and p.djrylx = t.pjrylx
+           and t.pjid = t1.pjid
+           and t1.pjid = t2.pjid
+           ${whereSql}
+           and t.pjzt = #{pjzt}
+    </select>
+    
+    <!-- 查看我的评价 -->
+    <select id="getMyEvaluation" resultMap="ViewQuestionnaireMap">
+    	SELECT a.wjid, a.xwjid, a.wjmc, a.globalid
+		  FROM (SELECT DISTINCT t.wjid, t.xwjid, p.wjmc, kb.globalid, kb.kcsj
+		          FROM jxpj_jcsj_kcbxx   kb,
+		               jxpj_jbpz_pjgxb   t,
+		               jxpj_jbpz_wjpzb   p,
+		               jxpj_sspj_skkqglb t1,
+		               jxpj_sspj_xspj    t2
+		         WHERE kb.globalid = t1.globalid
+		           AND t1.pjid = t2.pjid
+		           AND t2.pjid = t.pjid
+		           AND t.wjid = p.wjid
+		           AND p.djrylx = t.pjrylx
+		           <if test="rklsgh != null and rklsgh != ''">
+		           and kb.rklsgh = #{rklsgh}
+		           </if>
+		        UNION
+		        SELECT DISTINCT t.wjid, t.xwjid, p.wjmc, kb.globalid, kb.kcsj
+		          FROM jxpj_jcsj_kcbxx kb,
+		               jxpj_jbpz_pjgxb t,
+		               jxpj_jbpz_wjpzb p,
+		               jxpj_jshp_tkgl  t3,
+		               jxpj_jshp_tkpj  t4
+		         WHERE kb.globalid = t3.globalid
+		           AND t3.pjid = t4.pjid
+		           AND t4.pjid = t.pjid
+		           AND t.wjid = p.wjid
+		           AND p.djrylx = t.pjrylx
+		           <if test="rklsgh != null and rklsgh != ''">
+		           and kb.rklsgh = #{rklsgh}
+		           </if>
+           		) a
+		 ORDER BY a.kcsj DESC
+    </select>
+    
+    <!-- 改变问卷回答状态 -->
+    <update id="updateWjzt">
+        update jxpj_jbpz_pjgxb 
+        set pjzt = #{pjzt}
+        where xwjid = #{xwjid}
+          and pjid = #{pjid}
+    </update>
+    
+    <!-- 保存意见 -->
+    <insert id="saveOpinion">
+        <![CDATA[
+            insert into
+                jxpj_yjfkb (
+                	id,
+                    yjfk,
+                    yhid,
+                    yhm,
+                    fksj,
+                    rylx,
+                    zt
+                )
+            values(
+            	#{yjid},
+                #{opinion, jdbcType=VARCHAR},
+                #{userId, jdbcType=VARCHAR},
+                #{userNm, jdbcType=VARCHAR},
+                sysdate,
+                #{rylx, jdbcType=VARCHAR},
+                '1'
+            )
+        ]]>
+        <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="yjid">
+            <![CDATA[
+            SELECT SYS_GUID() ID FROM DUAL
+            ]]>
+        </selectKey>
+    </insert>
+    
+    <!-- 查看意见列表数量 -->
+    <select id="getOpinionListCount" resultType="int">
+    	<![CDATA[
+    		SELECT count(1)
+			  FROM jxpj_yjfkb t
+			 WHERE t.zt <> '0'
+    	]]>
+    	<if test="yhm != null and yhm != ''">
+    		and t.yhm like  '%' || #{yhm} || '%'
+    	</if>
+    	<if test="rylx != null and rylx != ''">
+    		and t.rylx = #{rylx}
+    	</if>
+    </select>
+    
+    <!-- 查看意见列表 -->
+    <select id="getOpinionList" resultMap="OpinionMap">
+    	<![CDATA[
+    	select * from (select b.*, rownum rn from (
+    		SELECT t.id, t.yjfk, t.yhid, t.yhm, t.rylx, 
+    			to_char(t.fksj, 'yyyy-MM-dd') fksj,t.zt
+			  FROM jxpj_yjfkb t
+			 WHERE t.zt <> '0'
+    	]]>
+    	<if test="yhm != null and yhm != ''">
+    		and t.yhm like  '%' || #{yhm} || '%'
+    	</if>
+    	<if test="rylx != null and rylx != ''">
+    		and t.rylx = #{rylx}
+    	</if>
+    		) b )
+	        <![CDATA[
+				where rn>=#{startRow} and rn<=#{endRow}
+			]]>
+    </select>
+    
+    <!-- 修改意见状态 -->
+    <update id="updateYjzt">
+        update jxpj_yjfkb 
+        set zt = '0'
+        where id = #{id}
+    </update>
+</mapper>

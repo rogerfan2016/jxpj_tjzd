@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.wjdc_xc.dao.IInspectionTaskResultDao">
+    <insert id="insert">
+        insert into XC_TASK_RESULT(id,memberId,dcdx,dcr,status,dcsj
+           )
+        values(
+            #{id,jdbcType=VARCHAR},
+            #{memberId,jdbcType=VARCHAR},
+            #{dcdx,jdbcType=VARCHAR},
+            #{dcr,jdbcType=VARCHAR},
+            '0',
+            sysdate
+        )
+        <selectKey resultType="java.lang.String" order="BEFORE"
+            keyProperty="id">
+            <![CDATA[
+            SELECT SYS_GUID() ID FROM DUAL
+            ]]>
+        </selectKey>
+    </insert>
+    <delete id="remove">
+        delete from XC_TASK_RESULT where id= #{id}
+    </delete>
+     
+    <update id="update">
+        update XC_TASK_RESULT set id=#{id}
+        <if test="status != null and status != ''">
+           ,status = #{status}
+        </if>
+        <if test="zf != null and zf != ''">
+           ,zf = #{zf}
+        </if>
+        where id=#{id}
+    </update>
+     
+    <select id="findById" resultType="com.zfsoft.wjdc_xc.entites.InspectionTaskResult">
+        select t.*,task.taskDate,task.wjid,task.zt rwzt,wj.wjmc as wjText,o.xm as dcdxText,wj.wjzt,dj.djzt
+             from XC_TASK_RESULT t
+             left join XC_TASK_MEMBER member on (member.id = t.memberId)
+             left join XC_TASK task on (MEMBER.TASKID= TASK.ID)
+             left join wjdc_wjxxb wj on (wj.wjid=task.wjid)
+             left join overall o on (o.gh=t.dcdx)
+             left join wjdc_djrffb dj on (dj.zjz=t.id and dj.lxid='WJDC_XC')
+        where t.id = #{0}
+    </select>
+    
+    <select id="getPagingInfoList" resultType="com.zfsoft.wjdc_xc.entites.InspectionTaskResult">
+         select * from (select a.*, rownum rn from(
+             select t.*,task.taskDate,task.wjid,task.zt rwzt,wj.wjmc as wjText,o.xm as dcdxText,wj.wjzt,dj.djzt
+             from XC_TASK_RESULT t
+             left join XC_TASK_MEMBER member on (member.id = t.memberId)
+             left join XC_TASK task on (MEMBER.TASKID= TASK.ID)
+             left join wjdc_wjxxb wj on (wj.wjid=task.wjid)
+             left join overall o on (o.gh=t.dcdx)
+             left join wjdc_djrffb dj on (dj.zjz=t.id and dj.lxid='WJDC_XC')
+             <include refid="wherePaging"/>
+             order by task.taskDate desc
+         ) a )
+        <![CDATA[
+            where rn>=#{startRow}  and rn<=#{endRow}
+        ]]>
+    </select>
+    
+    <select id="getPagingInfoCount" resultType="int">
+        select count(0) from XC_TASK_RESULT t 
+        left join XC_TASK_MEMBER member on (member.id = t.memberId)
+        left join XC_TASK task on (MEMBER.TASKID= TASK.ID)
+        left join overall o on (o.gh=t.dcdx)
+        left join wjdc_djrffb dj on (dj.zjz=t.id and dj.lxid='WJDC_XC')
+        <include refid="wherePaging"/>
+    </select>
+    
+    <select id="getFzSum" resultType="int">
+        SELECT SUM(nvl(xx.xxfz, 0)) AS fz
+		  FROM xc_task_result res
+		  LEFT JOIN wjdc_wjhdb hd ON (hd.djrid = res.ID)
+		  LEFT JOIN wjdc_wjstxxb xx ON (xx.wjid = hd.wjid AND hd.stid = xx.stid AND
+		                               hd.xxid = xx.xxid)
+		 WHERE res.id = #{id}
+    </select>
+    
+    <sql id="wherePaging">
+        <where>
+            
+            task.config_type=#{configType}
+            <if test="gh != null and gh != ''">
+                and member.gh=#{gh}
+            </if>
+            <if test="memberId != null and memberId != ''">
+                and member.id=#{memberId}
+            </if>
+            <if test="dcdx != null and dcdx != ''">
+                and t.dcdx=#{dcdx}
+            </if>
+            <if test="dcdxText != null and dcdxText != ''">
+                and o.xm like '%'||#{dcdxText}||'%'
+            </if>
+            <if test="status != null and status != ''">
+                and t.status=#{status}
+            </if>
+            <if test="start != null">
+                and task.taskDate>=#{start}
+            </if>
+            <if test="end != null">
+                and #{end}>=task.taskDate
+            </if>
+        </where>
+    </sql>
+    
+</mapper>

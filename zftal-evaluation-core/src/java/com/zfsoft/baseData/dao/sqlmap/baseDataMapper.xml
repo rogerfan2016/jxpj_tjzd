@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.baseData.dao.daointerface.IBaseDataDao">
+    
+    <resultMap id="ProcedureMap" type="com.zfsoft.baseData.entity.ProcedureEntity">
+        <result property="classId"          column="XXLID" />
+        <result property="className"        column="XXLMC" />
+        <result property="procedureName"    column="CCGCMC" />
+        <result property="procedureId"      column="CCGCID" />
+        <result property="executeCyc"       column="ZXZQ" />
+        <result property="regularSwitch"    column="DSKG" />
+    </resultMap>
+    
+    <resultMap id="ViewPropertyMap" type="com.zfsoft.baseData.entity.ViewPropertyEntity">
+        <result property="classId"          column="XXLID" />
+        <result property="propertyId"       column="SXID" />
+        <result property="viewStatus"       column="SFXS" />
+        <result property="conditionStatus"  column="SFTJ" />
+    </resultMap>
+    
+    <sql id="whereNoUniqable">
+        <where>
+            <if test="deleted != null">
+                and (t.deleted = #{deleted} or t.deleted is null)
+            </if>
+            
+            <if test="express != null and express != ''">
+                and ${express}
+            </if>
+        </where>
+    </sql>
+    
+    <!-- 获取同步数据条数 -->
+    <select id="getSynchronizedBaseDataCount" resultType="int">
+        select count(1) from ${clazz.identityName} t
+        <include refid="whereNoUniqable" />
+    </select>
+    
+    <!-- 获取同步数据 -->
+    <select id="getSynchronizedBaseDataList" resultType="hashmap" >
+        select * from (select a.*, rownum rn from (
+            select t.*
+            <foreach collection="clazz.properties" item="property" >
+                <if test="property.virtual">
+                    <if test="property.displayFormula != null">
+                        ,${property.getDisplayFormula('t') } as ${property.fieldName}
+                    </if>
+                </if>
+            </foreach>
+            from ${clazz.identityName} t
+            <include refid="whereNoUniqable" />
+            <if test="orderStr != null and orderStr != ''">
+                order by ${orderStr}
+            </if>
+            ) a )
+        <![CDATA[
+            where rn>=#{startRow} and rn<=#{endRow}
+        ]]>
+    </select>
+    
+    <!-- 执行数据存储 -->
+    <select id="executeProcedure" statementType="CALLABLE">  
+        ${procedure}
+    </select>
+    
+    <!-- 获取存储过程 -->
+    <select id="getProcedures" resultMap="ProcedureMap" >
+        select a.xxlbh as xxlid, a.xxlmc, c.ccgcmc, c.ccgcid, c.zxzq, c.dskg
+        from xxlysjb a, xxlmlb b, jxpj_jcsj_ccgcsz c
+        where a.xxlssml = b.mlid
+          and b.mlid = #{catalogId}
+          and b.mlfl = #{catalogType}
+          <![CDATA[
+          and a.xxlbh = c.xxlid(+)
+          ]]>
+        order by b.MLXH, a.XXLXH
+    </select>
+    
+    <!-- 获取存储过程 -->
+    <select id="getProceduresById" resultMap="ProcedureMap" >
+        select a.xxlid, a.ccgcmc, a.ccgcid, a.zxzq, a.dskg
+        from jxpj_jcsj_ccgcsz a
+        <where>
+        <if test="procedureId != null and procedureId != ''">
+        a.ccgcid = #{procedureId}
+        </if>
+        <if test="classId != null and classId != ''">
+        a.xxlid = #{classId}
+        </if>
+        </where>
+    </select>
+    
+    <!-- 添加 -->
+    <insert id="insertProcedure">
+        insert into jxpj_jcsj_ccgcsz (
+            xxlid,
+            ccgcmc,
+            ccgcid,
+            zxzq,
+            dskg
+        ) values (
+            #{classId},
+            #{procedureName},
+            #{procedureId},
+            #{executeCyc},
+            #{regularSwitch}
+        )
+        <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="procedureId">
+            <![CDATA[
+            select SYS_GUID() GUID from DUAL
+            ]]>
+        </selectKey>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="modifyProcedure">
+        update jxpj_jcsj_ccgcsz
+        <set>
+          <if test="procedureName != null and procedureName != ''">
+          ccgcmc = #{procedureName},
+          </if>
+          <if test="executeCyc != null and executeCyc != ''">
+          zxzq = #{executeCyc},
+          </if>
+          <if test="regularSwitch != null and regularSwitch != ''">
+          dskg = #{regularSwitch},
+          </if>
+        </set>
+        where ccgcid = #{procedureId}
+    </update>
+
+    <!-- 取得DB中存储过程 -->
+    <select id="getDBProcedures" resultType="String" >
+        select object_name from user_procedures where object_type = 'PROCEDURE'
+    </select>
+    
+    <!-- 增加显示属性 -->
+    <insert id="addViewPro">
+        insert into jxpj_jcsj_xssz (
+            xxlid,
+            sxid,
+            sfxs,
+            sftj
+        ) values (
+            #{classId},
+            #{propertyId},
+            #{viewStatus},
+            #{conditionStatus}
+        )
+    </insert>
+    
+    <!-- 移除显示属性 -->
+    <delete id="removeViewPro">
+        delete jxpj_jcsj_xssz t
+        where t.xxlid = #{classId}
+        <if test="propertyId != null and propertyId != ''">
+          and t.sxid = #{propertyId}
+        </if>
+    </delete>
+
+    <!-- 修改显示属性 -->
+    <update id="modifyViewPro">
+        update jxpj_jcsj_xssz
+        <set>
+          <if test="viewStatus != null and viewStatus != ''">
+          sfxs = #{viewStatus},
+          </if>
+          <if test="conditionStatus != null and conditionStatus != ''">
+          sftj = #{conditionStatus},
+          </if>
+        </set>
+        where xxlid = #{classId}
+          and sxid = #{propertyId}
+    </update>
+
+    <!-- 获取显示属性 -->
+    <select id="findViewPro" resultMap="ViewPropertyMap" >
+        select * from jxpj_jcsj_xssz t
+         where t.xxlid = #{classId}
+    </select>
+    
+    <!-- 获取显示属性 -->
+    <select id="findViewProByPIds" resultMap="ViewPropertyMap" >
+        select * from jxpj_jcsj_xssz t
+         where t.xxlid = #{classId}
+         <if test="vpros != null and (!vpros.empty)">
+           <foreach collection="vpros" item="vp" open=" and t.sxid in (" separator="," close=")">
+             #{vp.guid} 
+           </foreach>
+         </if>
+    </select>
+    
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <!-- 巡查问卷-->
+    <package name="inspection" extends="configuration" namespace="/inspection">
+        <!-- 设置管理-->
+        <action name="config_*" class="inspectionConfigAction" method="{1}">
+            <result name="setup">/WEB-INF/pages/wjdc_xc/setup/wjdc_xc_setup.jsp</result>
+            <result name="pj_setup">/WEB-INF/pages/wjdc_xc/setup/wjdc_pj_setup.jsp</result>
+            <result name="personList">/WEB-INF/pages/wjdc_xc/setup/personList.jsp</result>
+            <result name="dcwjList">/WEB-INF/pages/wjdc_xc/setup/dcwjList.jsp</result>
+        </action>
+        <!-- 任务管理-->
+        <action name="task_*" class="inspectionTaskAction" method="{1}">
+            <result name="page">/WEB-INF/pages/wjdc_xc/task/taskList.jsp</result>
+            <result name="detail">/WEB-INF/pages/wjdc_xc/task/task_detail.jsp</result>
+            <result name="taskSummer">/WEB-INF/pages/wjdc_xc/task/task_summer.jsp</result>
+            <result name="resultSummer">/WEB-INF/pages/wjdc_xc/task/task_resultsummer.jsp</result>
+            <result name="searchMember">/WEB-INF/pages/wjdc_xc/task/task_memberList.jsp</result>
+        </action>
+        <!-- 反馈管理-->
+        <action name="result_*" class="inspectionTaskResultAction" method="{1}">
+            <result name="list">/WEB-INF/pages/wjdc_xc/result/resultList.jsp</result>
+            <result name="choose">/WEB-INF/pages/wjdc_xc/result/result_choose.jsp</result>
+            <result name="detail">/WEB-INF/pages/wjdc_xc/result/result_detail.jsp</result>
+        </action>
+        
+    </package>
+
+</struts>

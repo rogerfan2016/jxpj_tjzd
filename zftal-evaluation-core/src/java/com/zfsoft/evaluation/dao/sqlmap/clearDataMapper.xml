@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.evaluation.dao.daointerface.IClearDataDao">
+	<resultMap id="clearDataMap" type="com.zfsoft.evaluation.entity.ClearDataEntity">
+        <result property="id"       column="id" /> <!-- 存档记录ID -->
+        <result property="xn"       column="xn" /> <!-- 学年 -->
+        <result property="xq"       column="xq" /> <!-- 学期 -->
+        <result property="xh"       column="xh" /> <!-- 学号 -->
+        <result property="xsxm"     column="xsxm" /> <!-- 学生姓名 -->
+        <result property="xkkh"     column="xkkh" /> <!-- 选课课号 -->
+        <result property="kcdm"     column="kcdm" /> <!-- 课程代码 -->
+        <result property="kcmc"     column="kcmc" /> <!-- 课程名称 -->
+        <result property="jszgh"    column="jszgh" /> <!-- 教师职工号-->
+        <result property="jsxm"     column="jsxm" /> <!-- 教师姓名-->
+        <result property="yx"       column="yx" /> <!-- 院系 -->
+        <result property="jxbjs"    column="jxbjs" /> <!-- 教学班教师 -->
+        <result property="jxbkc"    column="jxbkc" /> <!-- 教学班课程 -->
+        <result property="zf"       column="zf" /> <!-- 总分 -->
+        <result property="qxtj"     column="qxtj" /> <!-- 清洗条件 -->
+        <result property="cdsj"     column="cdsj" /> <!-- 存档时间 -->
+        <result property="cdlx"     column="cdlx" /> <!-- 存档类型 -->
+        <result property="tjid"     column="tjid" /> <!-- 条件ID -->
+        <result property="tjmc"     column="tjmc" /> <!-- 条件名称 -->
+        <result property="tjbds"    column="tjbds" /> <!-- 条件表达式 -->
+        <result property="zt"       column="zt" /> <!-- 状态（0删除，1启用；2未启用） -->
+        
+        <result property="skjssl"    column="skjssl" /> <!-- 授课教师数量 -->
+        <result property="jxbsl"    column="jxbsl" /> <!-- 教学班数量 -->
+        <result property="sksl"    column="sksl" /> <!-- 授课数量 -->
+        
+        <result property="fc"    column="fc" /> <!-- 方差 -->
+        <result property="zs"    column="zs" /> <!-- 众数 -->
+        <result property="pjzs"    column="pjzs" /> <!-- 评价总数 -->
+        <result property="qxsl"    column="qxsl" /> <!-- 清洗数量 -->
+        <result property="yxsl"    column="yxsl" /> <!-- 有效数量 -->
+        <result property="zdz"    column="zdz" /> <!-- 最大值 -->
+        <result property="zxz"    column="zxz" /> <!-- 最小值 -->
+    </resultMap>
+
+    <!-- 查询清洗条件列表 -->
+    <select id="getConditionList" resultMap="clearDataMap">
+        select t.tjid,t.tjmc,t.tjbds,t.zt
+         from JXPJ_SJQX_QXTJPZB t
+        <where>
+            1=1
+          <if test="zt == null or zt == ''">
+        	and (t.zt = '1' or t.zt = '2')
+          </if>
+          <if test="tjmc != null and tjmc != ''">
+            and t.tjmc like '%' || #{tjmc} || '%'
+          </if>
+          <if test="zt != null and zt != ''">
+            and t.zt = #{zt}
+          </if>
+          <if test="tjid != null and tjid != ''">
+            and t.tjid = #{tjid}
+          </if>
+        </where>
+    </select>
+    
+    <!-- 保存清洗条件记录 -->
+    <insert id="insertCondition" parameterType="com.zfsoft.evaluation.entity.ClearDataEntity">
+        <![CDATA[
+            insert into
+                JXPJ_SJQX_QXTJPZB t(
+                    t.tjid,
+                    t.tjmc,
+                    t.tjbds,
+                    t.zt
+                )
+            values(
+                #{tjid},
+                #{tjmc,jdbcType=VARCHAR},
+                #{tjbds,jdbcType=VARCHAR},
+                '2'
+            )
+        ]]>
+        <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="tjid">
+            <![CDATA[
+            SELECT SYS_GUID() ID FROM DUAL
+            ]]>
+        </selectKey>
+    </insert>
+    
+    <!-- 修改清洗条件 -->
+    <update id="modifyCondition">
+        update JXPJ_SJQX_QXTJPZB 
+        set xgsj = sysdate
+        <if test="tjmc != null and tjmc != ''">
+            ,tjmc = #{tjmc}
+        </if>
+        <if test="tjbds != null and tjbds != ''">
+            ,tjbds = #{tjbds}
+        </if>
+        <if test="zt != null and zt != ''">
+            ,zt = #{zt}
+        </if>
+        where tjid = #{tjid}
+    </update>
+    
+<!-- =========================================================================================== -->
+    <!-- 查询个人加权评分记录数据数量 -->
+    <select id="getPersonalWeightCount" resultType="int">
+        SELECT count(1)
+		  FROM (SELECT a.xn, a.xq, a.jszgh, round(AVG(a.zf), 2) zf
+		          FROM (SELECT t.xn, t.xq, t.xh, t.xkkh, t.jszgh, t.zf, t.cj, t.cjbz, t.jd, t.jdz
+		                  FROM jxpj_sjcd_xspfjgb t
+		                 WHERE 1=1 
+		                 <if test="condition != null and condition != ''">
+				            ${condition }
+				        </if>
+        				) a
+		         GROUP BY a.xn, a.xq, a.jszgh) b
+		  LEFT JOIN overall o ON o.gh = b.jszgh
+		  LEFT JOIN hrm_bzgl_zzjgb z ON z.bmdm = o.dwm
+		<include refid="listWhere"/>
+    </select>
+    
+    <!-- 查询个人加权评分结果记录列表 -->
+    <select id="getPersonalWeightList" resultMap="clearDataMap">
+    select * from (select c.*, rownum rn from (
+        SELECT b.*, o.xm jsxm, z.bmdm, z.bmmc yx
+		  FROM (SELECT a.xn, a.xq, a.jszgh, round(AVG(a.zf), 2) zf
+		          FROM (SELECT t.xn, t.xq, t.xh, t.xkkh, t.jszgh, t.zf, t.cj, t.cjbz, t.jd, t.jdz
+		          		  FROM jxpj_sjcd_xspfjgb t
+		                 WHERE 1=1 
+		                 <if test="condition != null and condition != ''">
+				            ${condition }
+				        </if>
+        				) a
+		         GROUP BY a.xn, a.xq, a.jszgh) b
+		  LEFT JOIN overall o ON o.gh = b.jszgh
+		  LEFT JOIN hrm_bzgl_zzjgb z ON z.bmdm = o.dwm
+        <include refid="listWhere"/>
+    	) c )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+    
+    <!-- 查询课程加权评分记录数据数量 -->
+    <select id="getCourseWeightCount" resultType="int">
+        SELECT count(1)
+		  FROM (SELECT a.xn, a.xq, a.xkkh, round(AVG(a.zf), 2) zf
+				  FROM (SELECT t.xn, t.xq, t.xh, t.xkkh, t.jszgh, t.zf, t.cj, t.cjbz, t.jd, t.jdz
+				          FROM jxpj_sjcd_xspfjgb t
+				         WHERE 1=1 
+				        <if test="condition != null and condition != ''">
+				            ${condition }
+				        </if>
+        				) a
+				 GROUP BY a.xn, a.xq, a.xkkh) b
+		  LEFT JOIN jxpj_jcsj_kcdmb k ON k.kcdm = substr(b.xkkh, 15, 8)
+		<include refid="listWhere"/>
+    </select>
+    
+    <!-- 查询课程加权评分结果记录列表 -->
+    <select id="getCourseWeightList" resultMap="clearDataMap">
+    select * from (select c.*, rownum rn from (
+        SELECT b.*, k.kczwmc kcmc
+		  FROM (SELECT a.xn, a.xq, a.xkkh, round(AVG(a.zf), 2) zf
+				  FROM (SELECT t.xn, t.xq, t.xh, t.xkkh, t.jszgh, t.zf, t.cj, t.cjbz, t.jd, t.jdz
+				          FROM jxpj_sjcd_xspfjgb t
+				         WHERE 1=1 
+				        <if test="condition != null and condition != ''">
+				            ${condition }
+				        </if>
+        				) a
+				 GROUP BY a.xn, a.xq, a.xkkh) b
+		  LEFT JOIN jxpj_jcsj_kcdmb k ON k.kcdm = substr(b.xkkh, 15, 8)
+        <include refid="listWhere"/>
+    	) c )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+    
+    <!-- 提取查询条件 -->	
+    <sql id="listWhere">
+    	<where>
+        	1=1
+          <if test="xn != null and xn != ''">
+            and b.xn = #{xn}
+          </if>
+          <if test="xq != null and xq != ''">
+            and b.xq = #{xq}
+          </if>
+          <if test="yx != null and yx != ''">
+            and z.bmdm = #{yx}
+          </if>
+          <if test="jszgh != null and jszgh != ''">
+            and b.jszgh like '%' || #{jszgh} || '%'
+          </if>
+          <if test="jsxm != null and jsxm != ''">
+            and o.xm like '%' || #{jsxm} || '%'
+          </if>
+          <if test="kcmc != null and kcmc != ''">
+            and k.kczwmc like '%' || #{kcmc} || '%'
+          </if>
+        </where>
+    </sql>
+<!-- =========================================================================================== -->
+    
+    <!-- 修改学生评分记录清洗状态 -->
+    <update id="modifyClearData">
+        update jxpj_sjcd_xspfjgb t
+        set t.sfqx = #{sfqx}
+        <if test="qxtj != null and qxtj != ''">
+            ,t.qxtj = t.qxtj || #{qxtj }
+        </if>
+        <if test="qxtj == null or qxtj == ''">
+            ,t.qxtj = ''
+        </if>    
+        <where>
+        	1=1
+          <if test="tjbds != null and tjbds != ''">
+            ${tjbds}
+          </if>
+        </where>
+    </update>
+    
+    <!-- 查询学生评分记录数据数量 -->
+    <select id="getStudentsEvaluationCount" resultType="int">
+        SELECT count(1)
+		  FROM jxpj_sjcd_xspfjgb t
+		  LEFT JOIN jxpj_jcsj_kcdmb k ON k.kcdm = substr(t.xkkh, 15, 8)
+		  LEFT JOIN overall a ON a.gh=t.xh
+		  LEFT JOIN hrm_bzgl_zzjgb z ON z.bmdm=a.dwm
+         <include refid="evaluateWhere"/>
+    </select>
+    
+    <!-- 查询学生评分记录列表 -->
+    <select id="getStudentsEvaluationList" resultMap="clearDataMap">
+    select * from (select a.*, rownum rn from (
+       	SELECT t.xn, t.xq, t.xh, a.xm xsxm, t.xkkh, k.kczwmc kcmc, t.jszgh,
+		       (SELECT o.xm FROM overall o WHERE o.gh = t.jszgh) jsxm,
+		       z.bmdm, z.bmmc yx, t.zf, t.cj, t.cjbz, t.jd, t.jdz, t.sfqx, t.qxtj
+		  FROM jxpj_sjcd_xspfjgb t
+		  LEFT JOIN jxpj_jcsj_kcdmb k ON k.kcdm = substr(t.xkkh, 15, 8)
+		  LEFT JOIN overall a ON a.gh = t.xh
+		  LEFT JOIN hrm_bzgl_zzjgb z ON z.bmdm = a.dwm
+         <include refid="evaluateWhere"/>
+    	) a )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+    
+    <!-- 提取查询条件 -->	
+    <sql id="evaluateWhere">
+    	<where>
+        	1=1
+          <if test="sfqx != null and sfqx != ''">
+            and t.sfqx = #{sfqx}
+          </if>	
+          <if test="xn != null and xn != ''">
+            and t.xn = #{xn}
+          </if>
+          <if test="xq != null and xq != ''">
+            and t.xq = #{xq}
+          </if>
+          <if test="yx != null and yx != ''">
+            and z.bmdm = #{yx}
+          </if>
+          <if test="kcmc != null and kcmc != ''">
+            and k.kczwmc like '%' || #{kcmc} || '%'
+          </if>
+          <if test="xh != null and xh != ''">
+            and t.xh like '%' || #{xh} || '%'
+          </if>
+          <if test="xsxm != null and xsxm != ''">
+            and a.xm like '%' || #{xsxm} || '%'
+          </if>
+          <if test="jsxm != null and jsxm != ''">
+            and t.jszgh in (select gh from overall where xm like '%' || #{jsxm} || '%')
+          </if>
+          <if test="jszgh != null and jszgh != ''">
+            and t.jszgh = #{jszgh}
+          </if>
+          <if test="qxtj != null and qxtj != ''">
+            and t.qxtj like '%' || #{qxtj} || '%'
+          </if>
+          <if test="condition != null and condition != ''">
+            ${condition }
+          </if>
+        </where>
+    </sql>
+    
+<!-- =========================================================================================== -->
+    <!-- 删除学生评价存档记录数据 -->
+    <delete id="deleteStudentsEvaluationFile">
+        delete from jxpj_sjcd_xspfjgb t
+        <where>
+        	1=1
+          <if test="xn != null and xn != ''">
+            and t.xn = #{xn}
+          </if>
+          <if test="xq != null and xq != ''">
+            and t.xq = #{xq}
+          </if>
+        </where>
+    </delete>
+    
+    <!-- 查询学生评分存档记录数量 -->
+    <select id="getStuEvaFileCount" resultType="int">
+        SELECT count(1)
+		  FROM jxpj_sjcd_xspfjgb t
+        <include refid="stuEvaWhere"/>
+    </select>
+    
+    <!-- 查询学生评分存档记录列表 -->
+    <select id="getStuEvaFileList" resultMap="clearDataMap">
+    select * from (select a.*, rownum rn from (
+       	SELECT t.cdsj, t.xn, t.xq, t.xh, t.xsxm, t.xkkh, t.kcmc,t.jszgh,t.jsxm, t.bmdm, t.yx, t.zf, t.cj, t.cjbz, t.jd, t.jdz, t.sfqx, t.qxtj
+		  FROM jxpj_sjcd_xspfjgb t
+         <include refid="evaluateWhere"/>
+    	) a )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+    
+    <!-- 存档学生评价数据 -->
+    <insert id="filingStudentsEvaluation" parameterType="com.zfsoft.evaluation.entity.ClearDataEntity">
+        <![CDATA[
+           INSERT INTO jxpj_sjcd_xspfjgb b
+		        (b.cdsj, b.xn, b.xq, b.xh, b.xsxm, b.xkkh, b.kcdm, b.kcmc, b.jszgh, b.jsxm, b.bmdm,
+		         b.yx, b.jxb, b.zf, b.cj, b.cjbz, b.jd, b.jdz, b.sfqx, b.qxtj, b.cjsj)
+		        SELECT (SELECT to_char(SYSDATE, 'yyyy-mm-dd') FROM dual) cdsj,
+		               t.xn, t.xq, t.xh, t.xsxm, t.xkkh, substr(t.xkkh,'15','8') kcdm,t.kcmc, 
+		               t.jszgh, t.jsxm, t.bmdm, t.yx, substr(t.xkkh,'30','2') jxb,
+		               t.zf, t.cj, t.cjbz, t.jd, t.jdz, t.sfqx, t.qxtj, SYSDATE
+		          FROM jxpj_sjcd_xspfjgb t
+        ]]>
+        <where>
+        	1=1
+          <if test="xn != null and xn != ''">
+            and t.xn = #{xn}
+          </if>
+          <if test="xq != null and xq != ''">
+            and t.xq = #{xq}
+          </if>
+          <if test="condition != null and condition != ''">
+            ${condition}
+          </if>
+        </where>
+    </insert>
+    
+    <!-- 提取查询条件 -->	
+    <sql id="stuEvaWhere">
+    	<where>
+        	1=1
+          <if test="sfqx != null and sfqx != ''">
+            and t.sfqx = #{sfqx}
+          </if>	
+          <if test="xn != null and xn != ''">
+            and t.xn = #{xn}
+          </if>
+          <if test="xq != null and xq != ''">
+            and t.xq = #{xq}
+          </if>
+          <if test="yx != null and yx != ''">
+            and t.bmdm = #{yx}
+          </if>
+          <if test="kcmc != null and kcmc != ''">
+            and t.kcmc like '%' || #{kcmc} || '%'
+          </if>
+          <if test="xsxm != null and xsxm != ''">
+            and t.xsxm like '%' || #{xsxm} || '%'
+          </if>
+          <if test="jsxm != null and jsxm != ''">
+            and t.jsxm like '%' || #{jsxm} || '%'
+          </if>
+        </where>
+    </sql>  
+
+<!-- =========================================================================================== -->    
+    <!-- 删除教学评价存档数据 -->
+    <delete id="deleteScoreRecordFile">
+        delete from JXPJ_SJCD_JSPJJGB t
+        <where>
+        	1=1
+          <if test="xn != null and xn != ''">
+            and t.xn = #{xn}
+          </if>
+          <if test="xq != null and xq != ''">
+            and t.xq = #{xq}
+          </if>
+          <if test="cdlx != null and cdlx != ''">
+            and t.cdlx = #{cdlx}
+          </if>
+        </where>
+    </delete>
+    
+    <!-- 存档教学评价数据 -->
+    <insert id="filingScoreRecord" parameterType="com.zfsoft.evaluation.entity.ClearDataEntity">
+           INSERT INTO JXPJ_SJCD_JSPJJGB c
+               (c.cdsj,c.cdlx, c.xn, c.xq, c.jszgh,c.zf, c.jsxm, c.yx,c.qxtj)
+	         SELECT (SELECT to_char(SYSDATE, 'yyyy-mm-dd') FROM dual) cdsj,#{cdlx},
+	                b.xn,b.xq,b.jszgh,b.zf,o.xm jsxm,z.bmmc yx,b.qxtj
+	          FROM (SELECT a.xn, a.xq, a.jszgh, round(AVG(a.zf), 2) zf
+	                  FROM (SELECT t.xn, t.xq, t.xh, t.xkkh, t.jszgh, t.zf, t.cj, t.cjbz, t.jd, t.qxtj FROM jxpj_sjcd_xspfjgb t
+	                         WHERE t.sfqx='0') a
+	                 GROUP BY a.xn, a.xq, a.jszgh) b
+	          LEFT JOIN overall o ON o.gh = b.jszgh
+	          LEFT JOIN hrm_bzgl_zzjgb z ON z.bmdm = o.dwm
+        <where>
+        	1=1
+          <if test="xn != null and xn != ''">
+            and t.xn = #{xn}
+          </if>
+          <if test="xq != null and xq != ''">
+            and t.xq = #{xq}
+          </if>
+          <if test="cdlx != null and cdlx != ''">
+            and t.cdlx = #{cdlx}
+          </if>
+        </where>
+    </insert>  
+<!-- =====================================【统计分析】====================================================== -->
+    <!-- 查询个人加权评分汇总数据数量 -->
+    <select id="getPersonalWeightSumCount" resultType="int">
+        SELECT COUNT(1)
+		  FROM (SELECT t.xn,
+		               t.xq,
+		               t.jszgh,
+		               COUNT(DISTINCT t.kcdm) sksl,
+		               COUNT(t.jxb) jxbsl,
+		               round(AVG(t.zf), 2) zf
+		          FROM view_tjfx_pjjg t
+		         GROUP BY t.jszgh, t.xn, t.xq) b
+		  LEFT JOIN jxpj_jcsj_jsxx j ON b.jszgh = j.zgh
+		  <include refid="sumListWhere"/>
+    </select>
+    
+    <!-- 查询个人加权评分结果汇总列表 -->
+    <select id="getPersonalWeightSumList" resultMap="clearDataMap">
+    select * from (select c.*, rownum rn from (
+        SELECT b.xn, b.xq, b.jszgh, j.xm jsxm, b.sksl, b.jxbsl, b.zf
+		  FROM (SELECT t.xn,
+		               t.xq,
+		               t.jszgh,
+		               COUNT(DISTINCT t.kcdm) sksl,
+		               COUNT(t.jxb) jxbsl,
+		               round(AVG(t.zf), 2) zf
+		          FROM view_tjfx_pjjg t
+		         GROUP BY t.jszgh, t.xn, t.xq) b
+		  LEFT JOIN jxpj_jcsj_jsxx j ON b.jszgh = j.zgh
+		  <include refid="sumListWhere"/>
+    	) c )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+    
+    <!-- 查询课程加权评分记录汇总数量 -->
+    <select id="getCourseWeightSumCount" resultType="int">
+        SELECT COUNT(1)
+		  FROM (SELECT t.xn,
+		               t.xq,
+		               t.kcdm,
+		               COUNT(DISTINCT jszgh) skjssl,
+		               COUNT(jxb) jxbsl,
+		               round(AVG(t.zf), 2) zf
+		          FROM view_tjfx_pjjg t
+		         GROUP BY t.kcdm, t.xn, t.xq) b
+		 LEFT JOIN jxpj_jcsj_kcdmb k ON b.kcdm = k.kcdm
+		 <include refid="sumListWhere"/>
+    </select>
+    
+    <!-- 查询课程加权评分结果汇总列表 -->
+    <select id="getCourseWeightSumList" resultMap="clearDataMap">
+    select * from (select c.*, rownum rn from (
+        SELECT b.xn, b.xq, b.kcdm, k.kczwmc kcmc, b.skjssl, b.jxbsl, b.zf
+		  FROM (SELECT t.xn,
+		               t.xq,
+		               t.kcdm,
+		               COUNT(DISTINCT jszgh) skjssl,
+		               COUNT(jxb) jxbsl,
+		               round(AVG(t.zf), 2) zf
+		          FROM view_tjfx_pjjg t
+		         GROUP BY t.kcdm, t.xn, t.xq) b
+		  LEFT JOIN jxpj_jcsj_kcdmb k ON b.kcdm = k.kcdm
+		  <include refid="sumListWhere"/>
+    	) c )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+    
+    <!-- 提取查询条件 -->	
+    <sql id="sumListWhere">
+    	<where>
+        	1=1
+          <if test="xn != null and xn != ''">
+            and b.xn = #{xn}
+          </if>
+          <if test="xq != null and xq != ''">
+            and b.xq = #{xq}
+          </if>
+          <if test="kcmc != null and kcmc != ''">
+            and k.kczwmc like '%' || #{kcmc} || '%'
+          </if>
+          <if test="jsxm != null and jsxm != ''">
+            and j.xm like '%' || #{jsxm} || '%'
+          </if>
+        </where>
+    </sql>  
+<!-- =========================================================================================== -->
+	<!-- 统计汇总图形展示 -->
+    <select id="getReportViewList" resultMap="clearDataMap">
+    	SELECT t.kcmc || '(' || t.kcdm || ')' kcmc,
+		       t.jsxm || '(' || t.jszgh || ')' jsxm,
+		       '教学' || t.jxb || '班(' || t.jsxm ||')' jxbjs,
+		       '教学' || t.jxb || '班(' || t.kcmc ||')' jxbkc,
+		       t.zf
+		  FROM view_tjfx_pjjg t
+		 <where>
+        	1=1
+          <if test="xn != null and xn != ''">
+            and t.xn = #{xn}
+          </if>
+          <if test="xq != null and xq != ''">
+            and t.xq = #{xq}
+          </if>
+          <if test="kcdm != null and kcdm != ''">
+            and t.kcdm = #{kcdm}
+          </if>
+          <if test="jszgh != null and jszgh != ''">
+            and t.jszgh = #{jszgh}
+          </if>
+        </where>
+    </select>
+  
+    <!-- 统计分析方差最大最小值 -->
+    <select id="getVarianceResult" resultMap="clearDataMap">
+    	SELECT t.jszgh,
+		       (SELECT COUNT(1) FROM jxpj_sjcd_xspfjgb t WHERE 1=1 
+		      <if test="kcdm != null and kcdm != ''">
+	            and t.kcdm = #{kcdm}
+	          </if>
+	          <if test="jszgh != null and jszgh != ''">
+	            and t.jszgh = #{jszgh}
+	          </if>
+		       ) pjzs,
+		       COUNT(1) yxsl,
+		       round(STDDEV(t.zf), 2) fc,
+		       MAX(zf) zdz,
+		       MIN(zf) zxz
+		  FROM jxpj_sjcd_xspfjgb t
+		 <where>
+        	1=1
+          <if test="xn != null and xn != ''">
+            and t.xn = #{xn}
+          </if>
+          <if test="xq != null and xq != ''">
+            and t.xq = #{xq}
+          </if>
+          <if test="kcdm != null and kcdm != ''">
+            and t.kcdm = #{kcdm}
+          </if>
+          <if test="jszgh != null and jszgh != ''">
+            and t.jszgh = #{jszgh}
+          </if>
+          <if test="condition != null and condition != ''">
+            ${condition}
+          </if>
+        </where>
+        GROUP BY t.jszgh
+    </select>
+    
+    <!-- 清洗记录统计 -->
+    <select id="countQxsl" resultType="int">
+    	SELECT COUNT(1)
+		  FROM jxpj_sjcd_xspfjgb t
+		 <where>
+        	1=1
+          <if test="xn != null and xn != ''">
+            and t.xn = #{xn}
+          </if>
+          <if test="xq != null and xq != ''">
+            and t.xq = #{xq}
+          </if>
+          <if test="kcdm != null and kcdm != ''">
+            and t.kcdm = #{kcdm}
+          </if>
+          <if test="jszgh != null and jszgh != ''">
+            and t.jszgh = #{jszgh}
+          </if>
+		  <if test="condition != null and condition != ''">
+	        ${condition}
+	      </if>
+        </where>
+    </select>
+</mapper>

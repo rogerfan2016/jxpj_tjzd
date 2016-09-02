@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <!-- 问卷调查 -->
+    <package name="inspection_mobile" extends="configuration" namespace="/inspection_mobile">
+         <interceptors>
+            <interceptor name="mobileLoginInterceptor" class="com.zfsoft.wjdc.interceptor.WjdcMobileInterceptor"></interceptor>
+            <interceptor-stack name="mobileBaseStack">
+                <interceptor-ref name="defaultStack" />
+                <interceptor-ref name="mobileLoginInterceptor" />
+                <interceptor-ref name="ajaxException"/>
+            </interceptor-stack>
+            <interceptor-stack name="mobileWithoutLoginStack">
+                <interceptor-ref name="defaultStack" />
+                <interceptor-ref name="ajaxException"/>
+            </interceptor-stack>
+        </interceptors>
+            <!-- 用户登录验证ACTION -->
+         <action name="login_*" class="wjdcMobileLoginAction" method="{1}">
+            <interceptor-ref name="mobileWithoutLoginStack" />
+            <result name="success" type="redirect">index_initMenu.html</result>
+            <result name="login">/WEB-INF/pages/wjdc/mobile/login.jsp</result>
+            <result name="false">/WEB-INF/pages/wjdc/mobile/login.jsp</result>
+            <result name="timeout">/WEB-INF/pages/wjdc/mobile/timeout.jsp</result>
+         </action>
+         
+         <!-- 首页 -->
+         <action name="index_*" class="wjdcMobileLoginAction" method="{1}">
+            <interceptor-ref name="mobileBaseStack" />
+            <result name="initMenu">/WEB-INF/pages/wjdc/mobile/menu.jsp</result>
+         </action>
+
+        <!-- 试题管理-->
+        <action name="stgl_*" class="stglAction" method="{1}">
+            <interceptor-ref name="mobileBaseStack" />
+            <result name="success">/WEB-INF/pages/wjdc_xc/result/success.jsp</result>
+        </action>
+        <!-- 反馈管理-->
+        <action name="result_*" class="inspectionTaskResultAction" method="{1}">
+            <interceptor-ref name="mobileBaseStack" />
+            <result name="list">/WEB-INF/pages/wjdc_xc/result/mobile_resultList.jsp</result>
+            <result name="choose">/WEB-INF/pages/wjdc_xc/result/mobile_result_choose.jsp</result>
+            <result name="detail">/WEB-INF/pages/wjdc_xc/result/mobile_resultdetail.jsp</result>
+        </action>
+        
+    </package>
+
+</struts>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.wjdc.dao.daointerface.IYhdjglDao">
+	
+		<!-- 查询单位列表 -->
+	<select id="getPagedList" parameterType="com.zfsoft.wjdc.dao.entites.YhdjglModel"
+			resultType="com.zfsoft.wjdc.dao.entites.YhdjglModel">
+		select a.djzt,b.wjid,b.wjmc,b.wjlx,b.wjzt,b.gqsj,c.mc wjlxmc from wjdc_djrffb a 
+		left join wjdc_wjxxb b on a.wjid=b.wjid
+		left join wjdc_wjlxb c on b.wjlx=c.dm
+		where a.lxid=#{sjyLxid} and a.zjz=#{djrid} and (b.wjzt='运行' or b.wjzt='停止') and a.sfff='1'
+		<if test="djzt!=null and djzt!=''">
+		  and a.djzt=#{djzt}
+		</if>
+		order by a.djzt
+	</select>
+	
+	<insert id="insert" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel">
+		insert into WJDC_WJXXB(wjid,wjmc,wjlx,wjzt,jsy,jwy,wjzf,dags,cjr) 
+		values(#{wjid},#{wjmc},#{wjlx},#{wjzt},#{jsy},#{jwy},#{wjzf},#{dags},#{cjr})
+	</insert>
+	
+	<select id="getModel" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel"
+			resultType="com.zfsoft.wjdc.dao.entites.WjglModel">
+		select * from WJDC_WJXXB where wjid=#{wjid}
+	</select>
+	
+	<update id="update" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel">
+		update WJDC_WJXXB set wjmc=#{wjmc},wjlx=#{wjlx},jsy=#{jsy},jwy=#{jwy},wjzf=#{wjzf},dags=#{dags} where wjid=#{wjid}
+	</update>
+	
+	<delete id="delete" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel">
+		delete from WJDC_WJXXB where wjid=#{wjid}
+	</delete>
+	
+	<delete id="deleteWjSt" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel">
+		delete from WJDC_WJSTB where wjid=#{wjid}
+	</delete>
+	
+	<delete id="deleteWjStXx" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel">
+		delete from WJDC_WJSTXXB where wjid=#{wjid}
+	</delete>
+	
+</mapper>
+	

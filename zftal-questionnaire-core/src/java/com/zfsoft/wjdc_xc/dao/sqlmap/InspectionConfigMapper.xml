@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.wjdc_xc.dao.IInspectionConfigDao">
+    <resultMap id="InspectionConfigMap" type="com.zfsoft.wjdc_xc.entites.InspectionConfig">
+    	<result property="key"       column="config_key" />
+    	<result property="value"       column="config_val" />
+    	<result property="append"       column="config_append" />
+    	<result property="configType"       column="config_type" />
+    	<result property="remark"       column="remark" />
+    </resultMap>
+    <!-- =================================================================================== -->
+    <select id="findConfig" resultMap="InspectionConfigMap">
+        SELECT config_key, config_val, config_append, config_type, remark
+		  FROM xc_config
+		 WHERE 1=1
+		 <if test="key != null and key != ''">
+		   AND config_key = #{key}
+		 </if>
+		 <if test="configtype != null and configtype != ''">
+		   AND config_type = #{configtype}
+		 </if>
+    </select>
+    <!-- =================================================================================== -->
+    <insert id="addValue">
+        insert into XC_CONFIG(config_key,config_val,config_append,config_type
+           )
+        values(
+            #{key,jdbcType=VARCHAR},
+            #{value,jdbcType=VARCHAR},
+            #{append,jdbcType=VARCHAR},
+            #{configType,jdbcType=VARCHAR}
+        )
+    </insert>
+    <delete id="removeValue">
+        delete from XC_CONFIG where config_key= #{key} and config_type = #{configType}
+        <if test="value!=null and value != ''">
+            and config_val = #{value}
+        </if>
+    </delete>
+     
+    <select id="findValue" resultType="java.lang.String">
+        select config_val from XC_CONFIG where config_key = #{key} and config_type = #{configType}
+    </select>
+    
+    <select id="findAppendValue" resultType="java.lang.String">
+        select CONFIG_APPEND from XC_CONFIG where config_key = #{key} and config_type = #{configType}
+    </select>
+    
+    <select id="getPagingInfoList" resultType="hashmap">
+         select * from (select a.*, rownum rn from(
+        select * from ${table} where (${express})
+         <if test="orderStr != null and orderStr != ''">
+            order by ${orderStr}
+        </if> 
+     ) a )
+        <![CDATA[
+            where rn>=#{startRow}  and rn<=#{endRow}
+        ]]>
+    </select>
+    
+    <select id="getPagingInfoCount" resultType="int">
+        select count(0) from ${table} where ${express}
+    </select>
+</mapper>

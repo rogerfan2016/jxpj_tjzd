@@ -1,0 +1,147 @@
+.searchbox2 {
+	border: 1px solid #3a7ed3;
+	width: 500px;
+	padding: 0;
+	height: 30px;
+	margin: 0 auto;
+}
+
+.searchbox2 #inputbox {
+	float: left;
+	margin: 4px 6px 0 4px;
+	_margin: 6px 6px 0 4px;
+	display: inline;
+}
+
+.searchbox2 #inputbox input {
+	background: none;
+	padding: 2px;
+	height: 20px;
+	line-height: normal;
+	width: 349px;
+	border: none;
+	font-size: 12px;
+	font-family: "宋体";
+	color: #999;
+}
+
+.searchbox2 #inputbox input.focus_text {
+	color: #333;
+}
+
+.searchbox2 #inputbox input.blur_text {
+	color: #999;
+}
+
+.searchbox2 .sreachbtn {
+	width: 58px;
+	_width: 60px;
+	height: 30px;
+	line-height: 30px;
+	overflow: hidden;
+	cursor: pointer;
+	padding: 0;
+	border: none;
+	background: #5090df;
+	font-size: 14px;
+	color: #fff;
+	font-weight: 800;
+}
+
+/* options */
+#mhcx_options {
+	float: left;
+	width: 79px;
+	height: 28px;
+	color: #333;
+}
+
+#mhcx_options dl {
+	position: relative;
+	z-index: 4;
+	width: 79px;
+}
+
+#mhcx_options dt {
+	overflow: hidden;
+	width: 69px;
+	height: 30px;
+	padding: 0px 0px 0px 9px;
+	background: none;
+	border-right: 1px solid #659bdf;
+}
+
+#mhcx_options dt b {
+	width: 0px;
+	height: 0px;
+	overflow: hidden;
+	line-height: 0px;
+	font-size: 0px;
+	border-width: 5px;
+	border-style: solid solid solid solid;
+	border-color: #ccc #fff #fff #fff;
+}
+
+#mhcx_options dt b {
+	position: absolute;
+	right: 6px;
+	top: 11px;
+	zoom: 1;
+	_position: relative;
+	_left: 53px;
+	_top: -50px;
+	z-index: 999;
+}
+
+#mhcx_options dt input {
+	width: 60px;
+	height: 26px;
+	line-height: 26px;
+	margin: 1px 6px 0px 0px;
+	border: 0px;
+	font-size: 12px;
+	background: none;
+	color: #555;
+}
+
+#mhcx_options dd {
+	display: none;
+	width: 77px;
+	line-height: 22px;
+	padding: 0px 0px 1px 1px;
+	font-size: 12px;
+}
+
+#mhcx_options.hover dl {
+	position: relative;
+	cursor: pointer;
+	width: 76px;
+}
+
+#mhcx_options.hover dt b {
+	border-color: #fff #fff #ccc #fff;
+	top: 6px;
+	_top: -24px;
+}
+
+#mhcx_options.hover dd {
+	display: block;
+	_position: relative;
+	color: #666;
+	margin-left: -1px;
+	border-style: solid;
+	border-color: #3a7ed3;
+	border-width: 0px 1px 1px 1px;
+	background: #fff;
+}
+
+#mhcx_options dd div {
+	display: block;
+	zoom: 1;
+	padding-left: 9px;
+}
+
+#mhcx_options div.hover {
+	background: #f5f5f5;
+	color: #333;
+}

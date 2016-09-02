@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+  <package name="evaluation" namespace="/evaluation" extends="configuration">
+  		<interceptors>
+            <interceptor name="mobileLoginInterceptor" class="com.zfsoft.wjdc.interceptor.WjdcMobileInterceptor"></interceptor>
+            <interceptor-stack name="mobileBaseStack">
+                <interceptor-ref name="defaultStack" />
+                <interceptor-ref name="mobileLoginInterceptor" />
+                <interceptor-ref name="ajaxException"/>
+            </interceptor-stack>
+        </interceptors>
+    
+    <!-- 教学评价数据清洗 -->
+    <action name="clearData_*" class="clearDataAction" method="{1}" >
+    	<result name="searchConditionList">/WEB-INF/pages/evaluation/clearData/searchConditionList.jsp</result>
+      	<result name="editCondition">/WEB-INF/pages/evaluation/clearData/editCondition.jsp</result>
+      	<result name="searchStudentsEvaluationList">/WEB-INF/pages/evaluation/clearData/searchStudentsEvaluationList.jsp</result>
+       	<result name="searchPersonalWeightList">/WEB-INF/pages/evaluation/clearData/searchPersonalWeightList.jsp</result>
+       	<result name="searchCourseWeightList">/WEB-INF/pages/evaluation/clearData/searchCourseWeightList.jsp</result>
+       	<result name="searchPersonalWeightSumList">/WEB-INF/pages/evaluation/clearData/searchPersonalWeightSumList.jsp</result>
+       	<result name="searchCourseWeightSumList">/WEB-INF/pages/evaluation/clearData/searchCourseWeightSumList.jsp</result>
+       	<result name="viewReportByPieChart">/WEB-INF/pages/evaluation/clearData/viewReportByPieChart.jsp</result>
+       	<result name="viewReportByBarChart">/WEB-INF/pages/evaluation/clearData/viewReportByBarChart.jsp</result>
+       	<result name="analysis">/WEB-INF/pages/evaluation/clearData/analysis.jsp</result>
+    </action>
+    
+    <!-- 任课说明书管理 -->
+    <action name="class_*" class="classInstructionsAction" method="{1}" >
+    	<result name="searchClassInstructionsList">/WEB-INF/pages/evaluation/classInstructions/searchClassInstructionsList.jsp</result>
+      	<result name="searchClassInstructionsDetailList">/WEB-INF/pages/evaluation/classInstructions/searchClassInstructionsDetailList.jsp</result>
+      	<result name="checkClassInstructionsList">/WEB-INF/pages/evaluation/classInstructions/checkClassInstructionsList.jsp</result>
+      	<result name="checkClassInstructionsDetailList">/WEB-INF/pages/evaluation/classInstructions/checkClassInstructionsDetailList.jsp</result>
+      	<result name="checkClassInstructionsList2">/WEB-INF/pages/evaluation/classInstructions/checkClassInstructionsList_yx.jsp</result>
+      	<result name="checkClassInstructionsDetailList2">/WEB-INF/pages/evaluation/classInstructions/checkClassInstructionsDetailList_yx.jsp</result>
+      	<result name="editClassInstructions">/WEB-INF/pages/evaluation/classInstructions/editClassInstructions.jsp</result>
+      	<result name="editClassInstructionsDetail">/WEB-INF/pages/evaluation/classInstructions/editClassInstructionsDetail.jsp</result>	
+    </action>
+    
+    <!-- 实时评教 -->
+    <action name="student_*" class="studentEvaluationAction" method="{1}" >
+    	<interceptor-ref name="mobileBaseStack" />
+      	<result name="curriculum">/WEB-INF/pages/evaluation/student/studentEvaluation_curriculum.jsp</result>
+      	<result name="curriculumDetail">/WEB-INF/pages/evaluation/student/studentEvaluation_curriculumDetail.jsp</result>
+      	<result name="checkin">/WEB-INF/pages/evaluation/student/studentEvaluation_checkin.jsp</result>
+      	<result name="checkinStatistics">/WEB-INF/pages/evaluation/student/studentEvaluation_checkinStatistics.jsp</result>
+      	<result name="teachinglogset">/WEB-INF/pages/evaluation/student/studentEvaluation_teachinglogset.jsp</result>
+      	<result name="teachinglogview">/WEB-INF/pages/evaluation/student/studentEvaluation_teachinglogview.jsp</result>
+      	<result name="evaluation">/WEB-INF/pages/evaluation/student/studentEvaluation_evaluation.jsp</result>
+      	<result name="statistics">/WEB-INF/pages/evaluation/student/studentEvaluation_statistics.jsp</result>
+      	<result name="showkq">/WEB-INF/pages/evaluation/student/studentEvaluation_showkq.jsp</result>
+      	<result name="showpj">/WEB-INF/pages/evaluation/student/studentEvaluation_showpj.jsp</result>
+      	<result name="teachingLodDetail">/WEB-INF/pages/evaluation/student/studentEvaluation_teachingLodDetail.jsp</result>
+      	<result name="chooseCurriculum">/WEB-INF/pages/evaluation/student/studentEvaluation_chooseCurriculum.jsp</result>
+      	<result name="checkinCollege">/WEB-INF/pages/evaluation/student/studentEvaluation_checkinCollege.jsp</result>
+      	<result name="checkinAll">/WEB-INF/pages/evaluation/student/studentEvaluation_checkinAll.jsp</result>
+      	<result name="checkinAllByClass">/WEB-INF/pages/evaluation/student/studentEvaluation_checkinAllByClass.jsp</result>
+    	<result name="checkinAllByGrade">/WEB-INF/pages/evaluation/student/studentEvaluation_checkinAllByGrade.jsp</result>
+    	<result name="summaryAbsentByClass">/WEB-INF/pages/evaluation/student/studentEvaluation_summaryAbsentByClass.jsp</result>
+    	<result name="checkinDetail">/WEB-INF/pages/evaluation/student/studentEvaluation_checkinDetail.jsp</result>
+    </action>
+    
+    <!-- 教师互评 -->
+    <action name="teacher_*" class="teacherEvaluationAction" method="{1}" >
+    	<interceptor-ref name="mobileBaseStack" />
+      	<result name="setOpenLesson">/WEB-INF/pages/evaluation/teacher/teacherEvaluation_setOpenLesson.jsp</result>
+      	<result name="setting">/WEB-INF/pages/evaluation/teacher/teacherEvaluation_setting.jsp</result>
+      	<result name="declareOpenLesson">/WEB-INF/pages/evaluation/teacher/teacherEvaluation_declareOpenLesson.jsp</result>
+      	<result name="chooseOpenLesson">/WEB-INF/pages/evaluation/teacher/teacherEvaluation_chooseOpenLesson.jsp</result>
+      	<result name="auditOpenLesson">/WEB-INF/pages/evaluation/teacher/teacherEvaluation_auditOpenLesson.jsp</result>
+      	<result name="active">/WEB-INF/pages/evaluation/teacher/teacherEvaluation_openLessonByActive.jsp</result>
+      	<result name="passive">/WEB-INF/pages/evaluation/teacher/teacherEvaluation_openLessonByPassive.jsp</result>
+      	<result name="evaluation">/WEB-INF/pages/evaluation/teacher/teacherEvaluation_evaluation.jsp</result>
+      	<result name="searchOpinionList">/WEB-INF/pages/evaluation/teacher/teacherEvaluation_opinionList.jsp</result>
+    </action>
+    
+    <!-- 评教设置 -->
+    <action name="setting_*" class="evaluationSettingAction" method="{1}" >
+    	<interceptor-ref name="mobileBaseStack" />
+      	<result name="setting">/WEB-INF/pages/evaluation/setting/evaluationSetting_setting.jsp</result>
+      	<result name="addView">/WEB-INF/pages/evaluation/setting/evaluationSetting_addView.jsp</result>
+      	<result name="evaluation">/WEB-INF/pages/evaluation/setting/evaluationSetting_evaluation.jsp</result>
+    </action>
+    
+    <!-- 移动端 -->
+    <action name="mobile_*" class="mobileEvaluationAction" method="{1}" >
+    	<interceptor-ref name="mobileBaseStack" />
+      	<result name="curriculum">/WEB-INF/pages/evaluation/mobile/mobileEvaluation_curriculum.jsp</result>
+      	<result name="curriculumDetail">/WEB-INF/pages/evaluation/mobile/mobileEvaluation_curriculumDetail.jsp</result>
+      	<result name="checkin">/WEB-INF/pages/evaluation/mobile/mobileEvaluation_checkin.jsp</result>
+      	<result name="response">/WEB-INF/pages/evaluation/mobile/mobileEvaluation_response.jsp</result>
+      	<result name="response2">/WEB-INF/pages/evaluation/mobile/mobileEvaluation_response2.jsp</result>
+      	<result name="myEvaluation">/WEB-INF/pages/evaluation/mobile/mobileEvaluation_myEvaluation.jsp</result>
+      	<result name="opinion">/WEB-INF/pages/evaluation/mobile/mobileEvaluation_opinion.jsp</result>
+	  	<result name="pendingAffairList">/WEB-INF/pages/evaluation/mobile/mobilePendingAffair_list.jsp</result>
+	  	<result name="pendingAffairByType">/WEB-INF/pages/evaluation/mobile/mobilePendingAffair_byType.jsp</result>
+	  	<result name="pendingAffairDetail">/WEB-INF/pages/evaluation/mobile/mobilePendingAffair_detail.jsp</result>
+	  	
+    </action>
+     <!-- 移动端include页面 -->
+    <action name="mobile_billList" class="spBillInstanceAction" method="list" >
+    	<interceptor-ref name="mobileBaseStack" />
+	  	<result name="list">/WEB-INF/pages/evaluation/mobile/bill/mobileBill_list.jsp</result>
+    </action>
+    
+     <!-- 移动端调停课、学籍异动 -->
+    <action name="mobileBusiness_*" class="mobileBusinessAction" method="{1}" >
+    	<interceptor-ref name="mobileBaseStack" />
+	  	<result name="center">/WEB-INF/pages/evaluation/mobile/business/mobileBusiness_center.jsp</result>
+	  	<result name="detail">/WEB-INF/pages/evaluation/mobile/business/mobileBusiness_detail.jsp</result>
+    </action>
+    
+  </package>
+</struts>

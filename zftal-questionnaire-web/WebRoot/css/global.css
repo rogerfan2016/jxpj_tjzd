@@ -1,0 +1,123 @@
+.txt_left {
+	text-align: left;
+}
+.txt_right {
+	text-align: right;
+}
+.txt_center {
+	text-align: center;
+}
+.floatleft {
+	float: left;
+}
+.floatright {
+	float: right;
+}
+.bold {
+	font-weight: bold;
+}
+.normal {
+	font-weight: normal;
+}
+.size14 {
+	font-size: 14px;
+}
+.pointer {
+	cursor: pointer;
+}
+.cur_default {
+	cursor: default;
+}
+.underline {
+	text-decoration: underline;
+}
+.nounderline {
+	text-decoration: none;
+}
+.black {
+	color: rgb(0, 0, 0);
+}
+.blue {
+	color: blue;
+}
+.red {
+	color: red;
+}
+.yellow {
+	background: rgb(252, 249, 244);
+}
+.orange {
+	color: rgb(255, 102, 0);
+}
+.linkColor {
+	color: rgb(21, 95, 190); text-decoration: none;
+}
+.linkColor:hover {
+	color: rgb(65, 127, 205);
+}
+.nowrap {
+	white-space: nowrap;
+}
+.tablenowrap td {
+	white-space: nowrap;
+}
+.tablenowrap th {
+	white-space: nowrap;
+}
+.breakword {
+	-ms-word-break: break-all; -ms-word-wrap: break-word;
+}
+.noime {
+	-ms-ime-mode: disabled;
+}
+.clearall {
+	clear: both;
+}
+.clearl {
+	clear: left;
+}
+.clearr {
+	clear: right;
+}
+.noborder {
+	border-width: 0px;
+}
+.pos {
+	position: relative; z-index: 99;
+}
+.border_01 {
+	border: 1px solid rgb(176, 203, 224); margin-bottom: 4px;
+}
+.have {
+	color: green; font-weight: bold;
+}
+.non {
+	color: red; font-weight: bold;
+}
+.after::after {
+	height: 0px; clear: both; display: block; visibility: hidden; content: ".";
+}
+.text_nor {
+	background: rgb(255, 255, 255); padding: 0px 2px; border: 1px solid rgb(185, 205, 231); height: 19px; line-height: 19px; vertical-align: middle;
+}
+.text_nor:hover {
+	background: url("../images/text_nor.gif") repeat-x left bottom; border: 1px solid rgb(203, 202, 195);
+}
+.text_nor01 {
+	background: url("../images/blue/text_nor01.gif") repeat-x left top rgb(255, 255, 255); padding: 7px 2px; border: 1px solid rgb(123, 137, 155); vertical-align: middle;
+}
+.text_nor01:hover {
+	background: rgb(254, 255, 221); border: 1px solid rgb(123, 137, 155);
+}
+.input_noborder {
+	background: rgb(255, 255, 255); padding: 0px 2px; border: currentColor; height: 19px; line-height: 19px; vertical-align: middle;
+}
+.textarea_nobor {
+	background: rgb(255, 255, 255); padding: 0px 2px; border: currentColor; line-height: 19px; overflow: auto;
+}
+.text_unline {
+	border-width: 0px 0px 1px; border-style: none none solid; border-color: currentColor currentColor rgb(0, 0, 0); padding: 0px 2px; height: 19px; line-height: 19px; vertical-align: middle;
+}
+.text_nobor {
+	padding: 0px 2px; border: currentColor; height: 19px; line-height: 19px; vertical-align: middle;
+}

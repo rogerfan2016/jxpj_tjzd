@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.wjdc.dao.daointerface.IMobileIndexDao">
+	
+	<!-- 根据用户查询巡视任务数 -->
+	<select id="getPatrolCount" resultType="int">
+		select count(*)
+         from jxpj_rcjxjk_xsrw t
+        <where>
+        	t.zt = '1'
+          AND to_date(t.xsrq, 'yyyy-MM-dd') BETWEEN SYSDATE - 2 AND SYSDATE
+          <if test="xsry != null and xsry != ''">
+            and t.xsry like '%${xsry}%'
+          </if>
+        </where>
+	</select>
+	
+	<!-- 根据条件查询评教数量 -->
+    <select id="getEvaluateCount" resultType="int">
+        select count(1)
+          from jxpj_jbpz_pjgxb t,
+               jxpj_jbpz_wjpzb p,
+               ${tableSql}
+         where t.wjid = p.wjid
+           and p.djrylx = t.pjrylx
+           and t.pjid = t1.pjid
+           and t1.pjid = t2.pjid
+           ${whereSql}
+           and t.pjzt = #{pjzt}
+    </select>
+</mapper>
+	

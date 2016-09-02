@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.wjdc.dao.daointerface.IWjBaseDao">
+
+
+	<select id="getWjglModel" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel"
+			resultType="com.zfsoft.wjdc.dao.entites.WjglModel">
+		select * from WJDC_WJXXB where wjid=#{wjid}
+	</select>
+	
+	<!-- 获取问卷约束功能路径 -->
+	<select id="getWjYsgnPath" resultType="java.lang.String">
+		select to_char(wm_concat(a.ysgnpath)) from wjdc_wjgnysdmb a
+		left join wjdc_wjgnysb b on b.ysgndm=a.ysgndm
+		left join wjdc_wjxxb c on c.wjid=b.wjid
+		where c.wjzt='运行'
+	</select>
+	
+	<!-- 获取问卷约束功能路径对应的问卷 -->
+	<select id="getWjysgnPathWjList" parameterType="java.util.HashMap" resultType="com.zfsoft.wjdc.dao.entites.WjglModel">
+		select * from wjdc_wjgnysdmb a
+		left join wjdc_wjgnysb b on b.ysgndm=a.ysgndm
+		left join wjdc_wjxxb c on c.wjid=b.wjid
+		left join wjdc_djrffb d on d.wjid=c.wjid
+		where c.wjzt='运行' and d.djzt='未答卷' 
+		and a.ysgnpath=#{ysgnpath}
+		and d.zjz=#{zjz} and d.lxid=#{lxid}
+	</select>
+	
+	<!-- 获取问卷类型 -->
+	<select id="getWjlxList" resultType="java.util.HashMap">
+		select dm,mc from WJDC_WJLXB
+	</select>
+	
+	<!-- 获取问卷状态 -->	
+	<select id="getWjztList" resultType="java.util.HashMap">
+		select '草稿' dm,'草稿' mc from dual
+		union all
+		select '发布' dm,'发布' mc from dual
+		union all
+		select '运行' dm,'运行' mc from dual
+		union all
+		select '停止' dm,'停止' mc from dual
+	</select>
+	
+	<!-- 获取问卷配置_数据源类型列表 -->
+	<select id="getWjpzSjylxList" resultType="com.zfsoft.wjdc.dao.entites.WjpzSjylxModel">
+		select * from wjdc_sjypzlxb where sfqy='1' order by to_number(xssx)
+	</select>
+	
+	<!-- 获取问卷配置_数据源类型 -->
+	<select id="getWjpzSjylxModel" resultType="com.zfsoft.wjdc.dao.entites.WjpzSjylxModel">
+		select * from wjdc_sjypzlxb where lxid=#{lxid}
+	</select>
+	
+	<!-- 获取问卷配置_数据源类型_根据sessionlxid,如果需要支持多数据源对应一个用户类型，那么需要处理从session取值的地方 -->
+	<select id="getWjpzSjylxBySessionLxidModel" resultType="com.zfsoft.wjdc.dao.entites.WjpzSjylxModel">
+		select * from wjdc_sjypzlxb where sfqy='1' and sessionlxid=#{sessionlxid}
+	</select>
+	
+	<!-- 获取功能类别查询条件配置列表 -->
+	<select id="getGnlbCxtjPzList" resultType="com.zfsoft.wjdc.dao.entites.WjpzModel">
+		select a.zd,a.zdmc,a.bqlx,a.ylzd,a.yszd,b.sfqy from wjdc_sjypzzdb a left join wjdc_ffszcxtjpzb b 
+		on a.zd=b.zd and a.lxid = b.lxid where a.lxid=#{lxid} and b.gnlb=#{gnlb} and b.sfqy='1' order by to_number(b.xssx)
+	</select>
+	
+	<!-- 获取功能类别查询结果配置列表 -->
+	<select id="getGnlbCxjgPzList" resultType="com.zfsoft.wjdc.dao.entites.WjpzModel">
+		select a.zd,a.zdmc,a.bqlx,a.ylzd,a.yszd,b.sfqy from wjdc_sjypzzdb a left join wjdc_ffszcxjgpzb b 
+		on a.zd=b.zd and a.lxid=b.lxid where a.lxid=#{lxid} and b.gnlb=#{gnlb} and b.sfqy='1' order by to_number(b.xssx)
+	</select>
+	<!-- 获取查询字段值列表 -->
+	<select id="getCxtjzdzList" parameterType="com.zfsoft.wjdc.dao.entites.WjpzModel" resultType="java.util.HashMap">
+		select distinct ${zd} mc from ${bm} where ${zd} is not null order by ${zd}
+	</select>
+	
+	<!-- 根据SQL查询问卷分发结果列表 -->
+	<select id="getPagedWjdxList" parameterType="com.zfsoft.wjdc.dao.entites.WjffglModel" resultType="java.util.HashMap">
+		${sqls}
+	</select>
+	
+	<!-- 根据条件查询问卷对象表数据 -->
+	<select id ="getWjdxbsjByTj" parameterType="com.zfsoft.wjdc.dao.entites.WjpzModel" resultType="java.lang.String">
+		${sqls}
+	</select>
+	
+	<!-- 获取问试单个试题选项列表 -->
+	<select id="getWjOneStXxList" parameterType="com.zfsoft.wjdc.dao.entites.StglModel" 
+				  resultType="com.zfsoft.wjdc.dao.entites.XxglModel">
+		select * from wjdc_wjstxxb where wjid=#{wjid} and stid=#{stid} order by to_number(xssx)
+	</select>
+	
+</mapper>
+	

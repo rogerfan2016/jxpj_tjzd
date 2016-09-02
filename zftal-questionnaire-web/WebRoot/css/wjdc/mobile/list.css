@@ -1,0 +1,229 @@
+﻿
+.survey_list {
+    background-color: #fff;
+}
+.survey_list .list_li {
+    border-bottom: 1px solid #ededed;
+    color: #333;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding:0;
+}
+.survey_list .list_li > a {
+    color: #2e8ec1;
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+.survey_list .list_li .list_text {
+    height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+.survey_list .list_r {
+    position: absolute;
+    right: 10px;
+    text-align: right;
+    top: 15px;
+    width: 150px;
+}
+.survey_list .get_result {
+    color: #2e8ec1;
+    font-size: 16px;
+}
+.survey_list .wjNumber {
+    background-color: #a1d8f6;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 14px;
+    margin: 0 10px 0 0;
+    padding: 2px 5px;
+}
+.Fbk textarea {
+    border: 1px solid #bfbfbf;
+    height: 100px;
+    padding: 5px;
+    resize: none;
+    width: 100%;
+}
+.mot10 {
+    margin-top: 10px;
+}
+.Fbk input {
+    border: 1px solid #bfbfbf;
+    padding: 5px;
+    width: 100%;
+}
+.Fbk p {
+    font-size: 14px;
+    margin: 10px 0;
+}
+.Fbk input {
+    padding: 10px 5px;
+}
+.Fbk_con {
+    margin-bottom: 20px;
+}
+.addSurvey {
+    display: none;
+    padding-top: 3px;
+    position: fixed;
+    top: 50px;
+    width: 100%;
+    z-index: 99;
+}
+.mackbox ul {
+}
+.mackbox ul li {
+    float: left;
+    padding: 0;
+    width: 50%;
+}
+.mackbox ul li a {
+    color: #fff;
+    display: block;
+    padding: 15px 0;
+    text-align: center;
+}
+.mackbox ul li a div {
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 45px;
+    margin: 0 auto 5px;
+    width: 40px;
+}
+.mackbox ul li:first-child a {
+    border-left: 0 solid #6a7378;
+    border-right: 1px solid #6a7378;
+}
+.mackbox ul li:last-child a {
+    border-left: 1px solid #4b5258;
+    border-right: 0 solid #6a7378;
+}
+
+.morePage {
+    font-size: 14px;
+    padding: 5px 0;
+    text-align: center;
+}
+.share_result_menu {
+    float: left;
+    padding: 0;
+    width: 100%;
+}
+.share_result_menu ul a {
+    display: block;
+    height:60px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.share_result_menu ul li {
+    float: left;
+    width: 25%;
+}
+.share_result_menu ul li div {
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: block;
+    height: 50px;
+    margin: 15px auto;
+    padding: 0 10px;
+    width: 40px;
+}
+.list_li_conent {
+    padding: 15px 120px 15px 15px;
+}
+.nav_more {
+    top:50px;
+    display: none;
+    position: fixed;
+    left: 0;
+    width:150px;
+    z-index: 99;
+}
+.nav_more .mackbox ul li {
+    width: 100%;
+}
+.nav_more .mackbox ul li a {
+    border-bottom: 1px solid #6a7378;
+    border-top: 1px solid #4b5258;
+}
+.nav_more .mackbox ul li:first-child {
+}
+.nav_more .mackbox ul li:first-child a {
+    border-top: medium none;
+}
+.nav_more .mackbox ul li:last-child a {
+    border-bottom: medium none;
+}
+.mackbox ul li:first-child a {
+    border-left: 0 solid #6a7378;
+    border-right: 1px solid #6a7378;
+}
+
+.header_nav {
+    margin: 0 auto;
+    padding-top: 10px;
+    width: 140px;
+}
+.header_nav li {
+    border: 1px solid #fff;
+    float: left;
+    line-height: 21px;
+    padding: 3px 18px;
+}
+.header_nav li a {
+    color: #fff;
+    font-size: 16px;
+}
+.header_nav li:first-child {
+    border-radius: 5px 0 0 5px;
+}
+.header_nav li:last-child {
+    border-left: medium none;
+    border-radius: 0 5px 5px 0;
+}
+.nav_active {
+    background-color: #fff;
+}
+.nav_active a {
+    color: #308ec2 !important;
+}
+
+.tableResult td {
+    border-bottom: 1px solid #cacaca;
+    line-height: 22px;
+    overflow: hidden;
+    padding: 3px 10px;
+}
+.tableResult td {
+    border-left: 1px solid #cacaca;
+}
+.tableResult tr td:last-child {
+    border-right: 1px solid #cacaca;
+}
+
+.pagination .pageright .paging span.text {
+    border: 1px solid #9AC9EA;
+    color: #373737;
+    display: inline-block;
+    padding: 2px 8px 2px 8px;
+}
+
+.pagination .pageright .paging a {
+    background: url("../../../img/wjdc/mobile/btn_page.gif") repeat-x left; padding: 2px 8px 0px; border: 1px solid rgb(154, 201, 234); color: rgb(55, 55, 55); text-decoration: none; display: inline-block;
+}
+.pagination .pageright .paging a:hover {
+    background: url("../../../img/wjdc/mobile/btn_page_hover.gif") repeat-x left;
+}

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.evaluation.dao.daointerface.IClassInstructionsDao">
+	<resultMap id="classInstructionsMap" type="com.zfsoft.evaluation.entity.ClassInstructionsEntity">
+        <result property="id"       column="id" /> <!-- 存档记录ID -->
+        <result property="xn"       column="XN" /> <!-- 学年 -->
+        <result property="xq"       column="XQ" /> <!-- 学期 -->
+        <result property="yx"       column="YX" /> <!-- 院系 -->
+        <result property="zy"       column="ZY" /> <!-- 专业 -->
+        <result property="nj"     column="NJ" /> <!-- 年级 -->
+        <result property="bj"     column="BJ" /> <!-- 班级 -->
+        <result property="kcmc"     column="KCMC" /> <!-- 课程名称 -->
+        <result property="rkjs"    column="RKJS" /> <!-- 任课教师-->
+        <result property="jkzc"     column="JKZC" /> <!-- 讲课周次-->
+        <result property="ksz"     column="KSZ" /> <!-- 开始周-->
+        <result property="jsz"       column="JSZ" /> <!-- 结束周 -->
+        <result property="zxs"     column="ZXS" /> <!-- 总学时 -->
+        <result property="jkxs"     column="JKXS" /> <!-- 讲课学时 -->
+        <result property="xtxs"     column="XTXS" /> <!-- 习题学时-->
+        <result property="kttlxs"     column="KTTLXS" /> <!-- 课堂讨论学时 -->
+        <result property="aljxxs"     column="ALJXXS" /> <!-- 案例教学学时 -->
+        <result property="jxyq"    column="JXYQ" /> <!-- 教学要求-->
+        <result property="kczy"       column="KCZY" /> <!-- 课程在专业中的作用 -->
+        <result property="jccks"    column="JCCKS" /> <!-- 教材及参考书-->
+        <result property="yxshr"    column="YXSHR" /> <!-- 院系审核人 -->
+        <result property="yxshsj"    column="YXSHSJ" /> <!-- 院系审核时间 -->
+        <result property="cjr"    column="CJR" /> <!-- 创建人 -->
+        <result property="cjsj"    column="CJSJ" /> <!-- 创建时间-->
+        <result property="jysshr"    column="JYSSHR" /> <!-- 教研室审核人 -->
+        <result property="jysshsj"    column="JYSSHSJ" /> <!-- 教研室审核时间 -->
+        <result property="zt"    column="ZT" /> <!-- 状态（0未提交；1已提交；2教研室已审核；3院系已审核） -->
+        <result property="shyj"    column="SHYJ" /> <!-- 审核意见 -->
+        <collection property="detailList" column="{rksmsid=id}" select="getClassInstructionsDetailByFjid"/>
+    </resultMap>
+    
+    <resultMap id="classInstructionsDetailMap" type="com.zfsoft.evaluation.entity.ClassInstructionsDetailEntity">
+        <result property="id"       column="id" /> <!-- 记录ID -->
+        <result property="rksmsid"       column="RKSMSID" /> <!-- 任课说明书ID -->
+        <result property="zc"       column="ZC" /> <!-- 周次 -->
+        <result property="jxss"       column="JXSS" /> <!-- 教学时数 -->
+        <result property="jxnr"       column="JXNR" /> <!-- 教学内容 -->
+        <result property="xlfs"     column="XLFS" /> <!-- 训练方式 -->
+        <result property="yyzsxl"     column="YYZSXL" /> <!-- 相关英语知识训练 -->
+        <result property="xgsj"     column="XGSJ" /> <!-- 修改时间 -->
+    </resultMap>
+
+    <!-- 查询任课说明书数量 -->
+    <select id="getClassInstructionsCount" resultType="int">
+        SELECT COUNT(1) FROM jxpj_ywb_rksms t
+        <include refid="listWhere"/>
+    </select>
+    
+    <!-- 查询任课说明书内容列表 -->
+    <select id="getClassInstructionsList" resultMap="classInstructionsMap">
+        select * from (select a.*, rownum rn from (
+        SELECT * FROM jxpj_ywb_rksms t
+        <include refid="listWhere"/>
+      order by t.cjsj desc
+        ) a )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+    
+    <!-- 提取查询条件 -->	
+    <sql id="listWhere">
+    	<where>
+        	1 = 1
+          	<if test="xn != null and xn != ''">
+            	and t.xn = #{xn}
+          	</if>
+          	<if test="xq != null and xq != ''">
+            	and t.xq = #{xq}
+          	</if>
+          	<if test="yx != null and yx != ''">
+            	and t.yx = #{yx}
+          	</if>
+          	<if test="zy != null and zy != ''">
+            	and t.zy = #{zy}
+          	</if>
+          	<if test="nj != null and nj != ''">
+            	and t.nj = #{nj}
+          	</if>
+          	<if test="bj != null and bj != ''">
+            	and t.bj like '%' || #{bj} || '%'
+          	</if>
+          	<if test="kcmc != null and kcmc != ''">
+            	and t.kcmc like '%' || #{kcmc} || '%'
+          	</if>
+          	<if test="zt != null and zt != ''">
+            	and t.zt = #{zt}
+          	</if>
+          	<if test="cjr != null and cjr != ''">
+            	and t.cjr = #{cjr}
+          	</if>
+          	<if test="rkjs != null and rkjs != ''">
+            	and t.rkjs in (select o.gh from overall o where o.xm like '%' || #{rkjs} || '%')
+          	</if>
+          	<if test="condition != null and condition != ''">
+            	${condition}
+          	</if>
+        </where>
+    </sql>
+    
+    <!-- 查询任课说明书内容单条记录 -->
+    <select id="getClassInstructionsById" resultMap="classInstructionsMap">
+        SELECT * FROM jxpj_ywb_rksms t WHERE t.id = #{id}
+    </select>
+    
+    <!-- 查询任课说明书详情内容记录 -->
+    <select id="getClassInstructionsDetailByFjid" resultMap="classInstructionsDetailMap">
+        SELECT t.id, t.rksmsid, t.zc, t.jxss, t.jxnr, t.xlfs, t.yyzsxl
+		  FROM jxpj_ywb_rksmsxq t
+		 WHERE t.rksmsid = #{rksmsid}
+		 ORDER BY t.zc, t.xgsj
+    </select>
+    
+    <!-- 保存任课说明书内容 -->
+    <insert id="saveClassInstructions" parameterType="com.zfsoft.evaluation.entity.ClassInstructionsEntity">
+        <![CDATA[
+            INSERT INTO jxpj_ywb_rksms t 
+            (t.id,t.xn,t.xq,t.yx,t.zy,t.nj,t.bj,t.kcmc,t.rkjs,t.jkzc,t.ksz,t.jsz,t.zxs,t.jkxs,t.xtxs,t.kttlxs,t.aljxxs,t.jxyq,t.kczy,t.jccks,t.cjr,t.cjsj,t.zt)
+            values(
+                #{id},
+                #{xn,jdbcType=VARCHAR},
+                #{xq,jdbcType=VARCHAR},
+                #{yx,jdbcType=VARCHAR},
+                #{zy,jdbcType=VARCHAR},
+                #{nj,jdbcType=VARCHAR},
+                #{bj,jdbcType=VARCHAR},
+                #{kcmc,jdbcType=VARCHAR},
+                #{rkjs,jdbcType=VARCHAR},
+                #{jkzc,jdbcType=VARCHAR},
+                #{ksz,jdbcType=VARCHAR},
+                #{jsz,jdbcType=VARCHAR},
+                #{zxs,jdbcType=VARCHAR},
+                #{jkxs,jdbcType=VARCHAR},
+                #{xtxs,jdbcType=VARCHAR},
+                #{kttlxs,jdbcType=VARCHAR},
+                #{aljxxs,jdbcType=VARCHAR},
+                #{jxyq,jdbcType=VARCHAR},
+                #{kczy,jdbcType=VARCHAR},
+                #{jccks,jdbcType=VARCHAR},
+                #{cjr,jdbcType=VARCHAR},
+                sysdate,'0'
+            )
+        ]]>
+        <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="id">
+            <![CDATA[
+            SELECT SYS_GUID() ID FROM DUAL
+            ]]>
+        </selectKey>
+    </insert>
+    
+    <!-- 修改任课说明书内容 -->
+    <update id="modifyClassInstructions">
+        UPDATE jxpj_ywb_rksms t SET t.cjsj = SYSDATE
+        <if test="xn != null and xn != ''">
+            ,xn = #{xn}
+        </if>
+        <if test="xq != null and xq != ''">
+            ,xq = #{xq}
+        </if>
+        <if test="yx != null and yx != ''">
+            ,yx = #{yx}
+        </if>
+        <if test="zy != null and zy != ''">
+            ,zy = #{zy}
+        </if>
+        <if test="nj != null and nj != ''">
+            ,nj = #{nj}
+        </if>
+        <if test="bj != null and bj != ''">
+            ,bj = #{bj}
+        </if>
+        <if test="kcmc != null and kcmc != ''">
+            ,kcmc = #{kcmc}
+        </if>
+        <if test="rkjs != null and rkjs != ''">
+            ,rkjs = #{rkjs}
+        </if>
+        <if test="jkzc != null and jkzc != ''">
+            ,jkzc = #{jkzc}
+        </if>
+        <if test="ksz != null and ksz != ''">
+            ,ksz = #{ksz}
+        </if>
+        <if test="jsz != null and jsz != ''">
+            ,jsz = #{jsz}
+        </if>
+        <if test="zxs != null and zxs != ''">
+            ,zxs = #{zxs}
+        </if>
+        <if test="jkxs != null and jkxs != ''">
+            ,jkxs = #{jkxs}
+        </if>
+        <if test="xtxs != null and xtxs != ''">
+            ,xtxs = #{xtxs}
+        </if>
+        <if test="kttlxs != null and kttlxs != ''">
+            ,kttlxs = #{kttlxs}
+        </if>
+        <if test="aljxxs != null and aljxxs != ''">
+            ,aljxxs = #{aljxxs}
+        </if>
+        <if test="jxyq != null and jxyq != ''">
+            ,jxyq = #{jxyq}
+        </if>
+        <if test="kczy != null and kczy != ''">
+            ,kczy = #{kczy}
+        </if>
+        <if test="jccks != null and jccks != ''">
+            ,jccks = #{jccks}
+        </if>
+        <if test="zt != null and zt != ''">
+            ,zt = #{zt}
+        </if>
+        <if test="yxshr != null and yxshr != ''">
+            ,yxshr = #{yxshr},yxshsj = sysdate
+        </if>
+        <if test="jysshr != null and jysshr != ''">
+            ,jysshr = #{jysshr},jysshsj = sysdate
+        </if>
+        <if test="shyj != null and shyj != ''">
+            ,shyj = shyj || #{shyj}
+        </if>
+        where id = #{id}
+    </update>
+    
+    <!-- 删除任课说明书 -->
+    <delete id="deleteClassInstructions">
+        DELETE FROM jxpj_ywb_rksms t WHERE t.id = #{id}
+    </delete>
+
+<!-- ======================================================================================================================= -->
+  	
+  	<!-- 查询任课说明书详情内容单条记录 -->
+    <select id="getClassInstructionsDetailById" resultMap="classInstructionsDetailMap">
+        SELECT * FROM jxpj_ywb_rksmsxq t WHERE t.id = #{id}
+    </select>
+    
+    <!-- 保存任课说明书内容 -->
+    <insert id="saveClassInstructionsDetail" parameterType="com.zfsoft.evaluation.entity.ClassInstructionsDetailEntity">
+        <![CDATA[
+            INSERT INTO jxpj_ywb_rksmsxq
+            (id,rksmsid,zc,jxss,jxnr,xlfs,yyzsxl,xgsj)
+            values(
+                #{id},
+                #{rksmsid},
+                #{zc,jdbcType=VARCHAR},
+                #{jxss,jdbcType=VARCHAR},
+                #{jxnr,jdbcType=VARCHAR},
+                #{xlfs,jdbcType=VARCHAR},
+                #{yyzsxl,jdbcType=VARCHAR},
+                sysdate
+            )
+        ]]>
+        <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="id">
+            <![CDATA[
+            SELECT SYS_GUID() ID FROM DUAL
+            ]]>
+        </selectKey>
+    </insert>
+    
+    <!-- 修改任课说明书明细内容 -->
+    <update id="modifyClassInstructionsDetail">
+        UPDATE jxpj_ywb_rksmsxq t SET t.xgsj = SYSDATE
+        <if test="zc != null and zc != ''">
+            ,zc = #{zc}
+        </if>
+        <if test="jxss != null and jxss != ''">
+            ,jxss = #{jxss}
+        </if>
+        <if test="jxnr != null and jxnr != ''">
+            ,jxnr = #{jxnr}
+        </if>
+        <if test="xlfs != null and xlfs != ''">
+            ,xlfs = #{xlfs}
+        </if>
+        <if test="yyzsxl != null and yyzsxl != ''">
+            ,yyzsxl = #{yyzsxl}
+        </if>
+        where id = #{id}
+    </update>
+    
+    <!-- 删除任课说明书明细 -->
+    <delete id="deleteClassInstructionsDetail">
+        DELETE FROM jxpj_ywb_rksmsxq t WHERE t.id = #{id}
+    </delete>
+    
+    <!-- 删除任课说明书明细 -->
+    <delete id="deleteDetailByRksmsId">
+        DELETE FROM jxpj_ywb_rksmsxq t WHERE t.rksmsid = #{rksmsid}
+    </delete>
+ </mapper>

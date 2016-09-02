@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+    <!-- 教学评价 service -->
+    <bean id="evaluationService" class="com.zfsoft.evaluation.service.impl.EvaluationServiceImpl" scope="prototype">
+      <property name="evaluationDao" ref="evaluationDao"/>
+      <property name="questionNaireService" ref="questionNaireService"></property>
+    </bean>
+    
+    <!-- 教学评价数据清洗 service -->
+    <bean id="clearDataService" class="com.zfsoft.evaluation.service.impl.ClearDataServiceImpl" scope="prototype">
+      <property name="clearDataDao" ref="clearDataDao"/>
+    </bean>
+    
+    <!-- 任课说明书 service -->
+    <bean id="classInstructionsService" class="com.zfsoft.evaluation.service.impl.ClassInstructionsServiceImpl" scope="prototype">
+      <property name="classInstructionsDao" ref="classInstructionsDao"/>
+    </bean>
+</beans>

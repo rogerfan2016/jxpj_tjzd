@@ -10,3 +10,13 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+zftal-evaluation-core/.classpath
+zftal-questionnaire-core/.settings/
+zftal-questionnaire-core/.project
+zftal-questionnaire-core/.classpath
+zftal-questionnaire-core/.myumldata
+zftal-evaluation-core/.project
+zftal-evaluation-web/.settings/
+zftal-evaluation-web/.project
+zftal-evaluation-web/.mymetadata
+zftal-evaluation-web/.classpath

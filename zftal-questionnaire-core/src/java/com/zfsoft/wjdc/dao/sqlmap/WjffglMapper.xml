@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.wjdc.dao.daointerface.IWjffglDao" >
+	<!-- 查询问卷发放列表列表 -->
+	<select id="getPagedList" parameterType="com.zfsoft.wjdc.dao.entites.WjffglModel"
+			resultType="com.zfsoft.wjdc.dao.entites.WjffglModel">
+				select a.*,CASE WHEN DJRS=0 THEN 0 ELSE ROUND(WJDF / DJRS, 1) END pjdf from (
+				select a.wjid,a.wjmc,a.wjlx,a.wjzt,a.cjr,a.cjsj,b.mc wjlxmc,c.xm cjrxm,
+				(select count(*) from wjdc_djrffb c where a.wjid=c.wjid and c.djzt='已答卷') djrs,
+				(select count(*) from wjdc_djrffb c where a.wjid=c.wjid) ffrs from wjdc_wjxxb a,wjdc_wjlxb b,
+				zftal_xtgl_yhb c where a.wjlx=b.dm
+				and a.cjr=c.zgh) a
+				left join
+				(SELECT sum(nvl(xxfz,0)) wjdf,t1.wjid as t1_wjid FROM wjdc_wjhdb t1 LEFT JOIN wjdc_wjstxxb t2 ON (t1.wjid=t2.wjid AND t1.xxid = t2.xxid) GROUP BY t1.wjid) wjfsb
+				on (a.wjid=wjfsb.t1_wjid)
+		<where>
+		    	and wjzt in ('发布','运行')
+			<if test="wjmc != null and wjmc != ''">
+				and a.wjmc like '%'||#{wjmc}||'%'
+			</if>
+			<if test="wjlx != null and wjlx != ''">
+				and a.wjlx = #{wjlx}
+			</if>
+			<if test="wjzt != null and wjzt != ''">
+				and a.wjzt = #{wjzt}
+			</if>
+			<if test="cjrxm != null and cjrxm != ''">
+				and a.cjrxm like  '%'||#{cjrxm}||'%'
+			</if>
+			<if test="cjkssj != null and cjkssj != ''">
+				and to_date(a.cjsj,'yyyy-MM-dd') &gt;= to_date(#{cjkssj},'yyyy-MM-dd')
+			</if>
+			<if test="cjjssj != null and cjjssj != ''">
+				and to_date(a.cjsj,'yyyy-MM-dd') &lt;= to_date(#{cjjssj},'yyyy-MM-dd')
+			</if>
+		</where>
+	</select>
+
+	<!-- 批量删除问卷发放对象 -->
+	<delete id="batchDeleteWjffdx" parameterType="java.util.HashMap">
+		delete wjdc_djrffb where sfff = '0' and wjid=#{wjid} and lxid=#{lxid} and
+		<foreach collection="list" item="item" index="index"
+				 open="(" separator="or" close=") " >
+					    zjz = #{item.zjz}
+				</foreach>
+	</delete>
+	
+	<!-- 根据查询条件批量删除问卷发放对象 -->
+	<delete id="batchDeleteWjffdxBytj" parameterType="com.zfsoft.wjdc.dao.entites.WjffglModel">
+		delete wjdc_djrffb a where sfff = '0' and wjid=#{wjid} and lxid=#{lxid} and
+		exists (${sqls})
+	</delete>
+	
+	<!-- 批量插入问卷发放对象 -->
+	<insert id="batchInsertWjffdx" parameterType="java.util.HashMap">
+		insert into wjdc_djrffb (wjid,lxid,zjz)
+	    <foreach collection="list" item="item" index="index"   
+                separator=" union " >  
+           		select #{item.wjid}, #{item.lxid}, #{item.zjz} from dual 
+           		where (select count(0) from wjdc_djrffb t where t.wjid=#{item.wjid} and zjz=#{item.zjz})=0
+       	</foreach>
+	</insert>
+	
+	<!-- 根据条件插入问卷发放对象 -->
+	<insert id="batchInsertWjffdxBytj" parameterType="com.zfsoft.wjdc.dao.entites.WjffglModel">
+		insert into wjdc_djrffb (wjid,lxid,zjz) 
+		(${sqls})
+	</insert>
+	
+	<!-- 批量删除已发放问卷对象 -->
+	<delete id="batchDeleteYffwjffdx" parameterType="java.util.HashMap">
+		delete wjdc_djrffb where sfff = '0' and djzt = '未答卷' and wjid=#{wjid} and lxid=#{lxid} and
+		<foreach collection="list" item="item" index="index"
+				 open="(" separator="or" close=") " >
+					    zjz = #{item.zjz}
+				</foreach>
+	</delete>
+	
+	<!-- 批量发放问卷对象标志为已发放 
+	<update id="updateWjffdxbz" parameterType="com.zfsoft.wjdc.dao.entites.WjffglModel">
+		update wjdc_djrffb set sfff='1' where wjid=#{wjid}
+	</update>
+	-->
+	<!-- 批量发放问卷对象标志为已发放 -->
+	<update id="updateWjffdxbz" parameterType="java.util.HashMap">
+		update wjdc_djrffb set sfff='1' where 
+		<foreach collection="list" item="item" index="index"
+				 open="(" separator="or" close=") " >
+					    zjz = #{item.zjz}
+		</foreach>
+	    and wjid=#{wjid} and djzt = '未答卷'
+	</update>
+	
+	<!-- 批量发放问卷对象标志为未发放 -->
+	<update id="updateWjffdxbzWff" parameterType="java.util.HashMap">
+		update wjdc_djrffb set sfff='0' where 
+		<foreach collection="list" item="item" index="index"
+				 open="(" separator="or" close=") " >
+					    zjz = #{item.zjz}
+		</foreach>
+	    and wjid=#{wjid} and djzt = '未答卷'
+	</update>
+</mapper>

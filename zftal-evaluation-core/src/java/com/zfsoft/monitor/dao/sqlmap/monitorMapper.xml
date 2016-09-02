@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.monitor.dao.daointerface.IMonitorDao">
+    <resultMap id="PatrolMap" type="com.zfsoft.monitor.entity.PatrolEntity">
+        <result property="globalid"       column="GLOBALID" /> <!-- 全局ID -->
+        <result property="xslx"           column="XSLX" /> <!-- 巡视类型（dept学院school学校） -->
+        <result property="xsrq"           column="XSRQ" /> <!-- 巡视日期 -->
+        <result property="jxz"            column="JXZ" /> <!-- 教学周 -->
+        <result property="xsry"           column="XSRY" /> <!-- 巡视人员 -->
+        <result property="xsryxm"         column="XSRRYXM" /> <!-- 巡视人员姓名 -->
+        <result property="xscddm"         column="XSCDDM" /> <!-- 巡视场地代码 -->
+        <result property="xscdmc"         column="XSCDMC" /> <!-- 巡视场地名称 -->
+        <result property="xsdw"           column="XSDW" /> <!-- 巡视单位 -->
+        <result property="kcjc"           column="KCJC" /> <!-- 课程节次 -->
+        <result property="zcsj"           column="ZCSJ" /> <!-- 作成时间 -->
+        <result property="zcry"           column="ZCRY" /> <!-- 作成人员 -->
+        <result property="zcryxm"         column="ZCRYXM" /> <!-- 作成人员姓名 -->
+        <result property="xgsj"           column="XGSJ" /> <!-- 修改时间 -->
+        <result property="xgry"           column="XGRY" /> <!-- 修改人员 -->
+        <result property="xgryxm"         column="XGRYXM" /> <!-- 修改人员姓名 -->
+        <result property="weekOfDay"      column="WEEKOFDAY" /> <!-- 星期 -->
+        <result property="zt"             column="ZT" /> <!-- 状态（0删除，1正常） -->
+        <result property="sfkxs"             column="sfkxs" /> <!-- 是否可巡视（0否，1是） -->
+        <collection property="patrolDetailEntityList" column="{globalid=GLOBALID}" select="com.zfsoft.monitor.dao.daointerface.IMonitorDao.findPatrolDetailListById"/>
+    </resultMap>
+    <resultMap id="PatrolDetailMap" type="com.zfsoft.monitor.entity.PatrolDetailEntity">
+    	<result property="id"             column="ID" /> <!-- 巡视记录ID -->
+        <result property="globalid"       column="GLOBALID" /> <!-- 巡视任务ID -->
+        <result property="xsry"           column="XSRY" /> <!-- 巡视人员  -->
+        <result property="xsryxm"         column="XSRRYXM" /> <!-- 巡视人员姓名 -->
+        <result property="dddm"           column="DDDM" /> <!-- 巡视地点代码 -->
+        <result property="xsdd"           column="XSDD" /> <!-- 巡视地点(教室) -->
+        <result property="kcdm"           column="KCDM" /> <!-- 课程代码 -->
+        <result property="kcmc"           column="KCMC" /> <!-- 课程名称 -->
+        <result property="jsgh"           column="JSGH" /> <!-- 教师工号 -->
+        <result property="jsxm"           column="JSXM" /> <!-- 教师姓名 -->
+        <result property="ztqk"           column="ZTQK" /> <!-- 总体情况 -->
+        <result property="czwt"           column="CZWT" /> <!-- 存在问题 -->
+        <result property="cljg"           column="CLJG" /> <!-- 处理结果 -->
+        <result property="bz"             column="BZ" /> <!-- 备注 -->
+        <result property="sbsj"           column="SBSJ" /> <!-- 上报时间 -->
+        <result property="zt"             column="ZT" /> <!-- 状态（0未上报；1已上报）-->
+        <result property="skxss"          column="SKXSS" /> <!-- 上课学生数 -->
+        <result property="yxclyj"         column="YXCLYJ" /> <!-- 院系处理意见 -->
+        <result property="yxclr"          column="YXCLR" /> <!-- 院系处理人 -->
+        <result property="yxclsj"         column="YXCLSJ" /> <!-- 院系处理时间 -->
+        <result property="xxclyj"         column="XXCLYJ" /> <!-- 学校处理意见 -->
+        <result property="xxclr"          column="XXCLR" /> <!-- 学校处理人 -->
+        <result property="xxclsj"         column="XXCLSJ" /> <!-- 学校处理时间 -->
+        <result property="jxl"            column="JXL" /> <!-- 教学楼 -->
+        <result property="kkxy"           column="KKXY" /> <!-- 开课学院 -->
+        <result property="skbj"           column="SKBJ" /><!-- 上课班级 -->
+        <!-- =============================================================================== -->
+        <result property="xslx"           column="XSLX" /> <!-- 巡视类型（dept学院school学校） -->
+        <result property="xsrq"           column="XSRQ" /> <!-- 巡视日期 -->
+        <result property="xscdmc"         column="XSCDMC" /> <!-- 巡视场地名称 -->
+        <result property="xsdw"           column="XSDW" /> <!-- 巡视单位 -->
+        <result property="kcjc"           column="KCJC" /> <!-- 课程节次 -->
+        <!-- =============================================================================== -->
+        <result property="xsrws"           column="xsrws" /><!-- 巡视任务数 -->
+        <result property="xsjls"           column="xsjls" /><!-- 巡视记录数 -->
+        <result property="xsdw"           column="xsdw" /><!-- 巡视单位 -->
+        <result property="zcs"           column="zcs" /><!-- 巡视正常数 -->
+        <result property="czwts"           column="czwts" /><!-- 巡视存在问题数 -->
+        <result property="zcbl"           column="zcbl" /><!-- 正常比例 -->
+    </resultMap>
+    
+    <!-- 查询巡视任务数量 -->
+    <select id="getPatrolsCount" resultType="int">
+        select count(*)
+         from jxpj_rcjxjk_xsrw t
+        <where>
+        	(t.zt = '1' or t.zt = '2')
+          <if test="xsrq != null and xsrq != ''">
+            and xsrq = #{xsrq}
+          </if>
+          <if test="jxz != null and jxz != ''">
+            and t.jxz = #{jxz}
+          </if>
+          <if test="kcjc != null and kcjc != ''">
+            and t.kcjc = #{kcjc}
+          </if>
+          <if test="xscdmc != null and xscdmc != ''">
+            and t.xscdmc = #{xscdmc}
+          </if>
+          <if test="xsdw != null and xsdw != ''">
+            and t.xsdw = #{xsdw}
+          </if>
+          <if test="xslx != null and xslx != ''">
+            and t.xslx = #{xslx}
+          </if>
+          <if test="condition != null and condition != ''">
+            ${condition}
+          </if>
+        </where>
+    </select>
+    
+    <!-- 查询巡视任务内容列表 -->
+    <select id="getPatrols" resultMap="PatrolMap">
+        select * from (select a.*, rownum rn from (
+        select t.globalid,
+               t.xslx,
+               t.xsrq,
+               t.jxz,
+               t.xsry,
+               t.xscddm,
+               t.xscdmc,
+               t.xsdw,
+               t.kcjc,
+               t.weekOfDay,
+               to_char(zcsj, 'yyyy-MM-dd') zcsj,
+               t.zcry,
+               (select xm from zftal_xtgl_yhb where zgh = t.zcry) zcryxm,
+               to_char(xgsj, 'yyyy-MM-dd') xgsj,
+               t.xgry,
+               (select xm from zftal_xtgl_yhb where zgh = t.xgry) xgryxm,
+               t.xsryxm,
+               t.zt
+          from jxpj_rcjxjk_xsrw t
+        <where>
+        	(t.zt = '1' or t.zt = '2')
+          <if test="xsrq != null and xsrq != ''">
+            and xsrq = #{xsrq}
+          </if>
+          <if test="jxz != null and jxz != ''">
+            and t.jxz = #{jxz}
+          </if>
+          <if test="kcjc != null and kcjc != ''">
+            and t.kcjc = #{kcjc}
+          </if>
+          <if test="xscdmc != null and xscdmc != ''">
+            and t.xscdmc = #{xscdmc}
+          </if>
+          <if test="xsdw != null and xsdw != ''">
+            and t.xsdw = #{xsdw}
+          </if>
+          <if test="xslx != null and xslx != ''">
+            and t.xslx = #{xslx}
+          </if>
+          <if test="condition != null and condition != ''">
+            ${condition}
+          </if>
+        </where>
+      order by t.xsrq desc
+        ) a )
+        <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+    
+    <!-- 手机端查询巡视任务内容列表 -->
+    <select id="getPatrolsByMobile" resultMap="PatrolMap">
+    	<![CDATA[
+        select t.globalid,
+               t.xslx,
+               t.xsrq,
+               t.jxz,
+               t.xsry,
+               t.xscddm,
+               t.xscdmc,
+               t.xsdw,
+               t.kcjc,
+               t.weekOfDay,
+               to_char(zcsj, 'yyyy-MM-dd') zcsj,
+               t.zcry,
+               (select xm from zftal_xtgl_yhb where zgh = t.zcry) zcryxm,
+               to_char(xgsj, 'yyyy-MM-dd') xgsj,
+               t.xgry,
+               (select xm from zftal_xtgl_yhb where zgh = t.xgry) xgryxm,
+               t.xsryxm,
+               t.zt,
+               (case when to_date(t.xsrq, 'yyyy-MM-dd') > SYSDATE and t.zt = '1' then '0' 
+               		 when to_date(t.xsrq, 'yyyy-MM-dd') < SYSDATE - 2 and t.zt = '1' then '2' 
+               	else '1' end) sfkxs
+          from jxpj_rcjxjk_xsrw t
+          ]]>
+        <where>
+        	(t.zt = '1' or t.zt = '2')
+        	and to_date(t.xsrq, 'yyyy-MM-dd') between SYSDATE - 3 and SYSDATE + 7
+          <if test="jxz != null and jxz != ''">
+            and t.jxz = #{jxz}
+          </if>
+          <if test="kcjc != null and kcjc != ''">
+            and t.kcjc = #{kcjc}
+          </if>
+          <if test="xscdmc != null and xscdmc != ''">
+            and t.xscdmc = #{xscdmc}
+          </if>
+          <if test="xsdw != null and xsdw != ''">
+            and t.xsdw = #{xsdw}
+          </if>
+          <if test="xslx != null and xslx != ''">
+            and t.xslx = #{xslx}
+          </if>
+          <if test="condition != null and condition != ''">
+            ${condition}
+          </if>
+        </where>
+        ORDER BY t.xsrq,t.xscdmc
+    </select>
+    
+    <!-- 查询巡视任务内容单条记录 -->
+    <select id="getPatrolById" resultMap="PatrolMap">
+        select t.globalid,
+               t.xslx,
+               t.xsrq,
+               t.jxz,
+               t.xsry,
+               t.xscddm,
+               t.xscdmc,
+               t.xsdw,
+               t.kcjc,
+               t.weekOfDay,
+               to_char(zcsj, 'yyyy-MM-dd') zcsj,
+               t.zcry,
+               (select xm from zftal_xtgl_yhb where zgh = t.zcry) zcryxm,
+               to_char(xgsj, 'yyyy-MM-dd') xgsj,
+               t.xgry,
+               (select xm from zftal_xtgl_yhb where zgh = t.xgry) xgryxm,
+               t.xsryxm,
+               t.zt
+          from jxpj_rcjxjk_xsrw t
+         where t.globalid = #{globalid}
+    </select>
+    
+    <!-- 保存巡视任务内容 -->
+    <insert id="savePatrol" parameterType="com.zfsoft.monitor.entity.PatrolEntity">
+        <![CDATA[
+            insert into
+                jxpj_rcjxjk_xsrw (
+                    globalid,
+                    xslx,
+                    xsrq,
+                    jxz,
+                    xsry,
+                    xscddm,
+                    xscdmc,
+                    kcjc,
+                    weekOfDay,
+                    xsdw,
+                    zcsj,
+                    zcry,
+                    xgsj,
+                    xgry,
+                    xsryxm,
+                    zt
+                )
+            values(
+                #{globalid},
+                #{xslx,jdbcType=VARCHAR},
+                #{xsrq,jdbcType=VARCHAR},
+                #{jxz,jdbcType=VARCHAR},
+                #{xsry,jdbcType=VARCHAR},
+                #{xscddm,jdbcType=VARCHAR},
+                #{xscdmc,jdbcType=VARCHAR},
+                #{kcjc,jdbcType=VARCHAR},
+                #{weekOfDay,jdbcType=VARCHAR},
+                #{xsdw,jdbcType=VARCHAR},
+                sysdate,
+                #{zcry,jdbcType=VARCHAR},
+                sysdate,
+                #{xgry,jdbcType=VARCHAR},
+                #{xsryxm,jdbcType=VARCHAR},
+                '1'
+            )
+        ]]>
+        <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="globalid">
+            <![CDATA[
+            SELECT SYS_GUID() ID FROM DUAL
+            ]]>
+        </selectKey>
+    </insert>
+    
+    <!-- 修改巡视任务内容 -->
+    <update id="modifyPatrol">
+        update jxpj_rcjxjk_xsrw 
+        set xgsj = sysdate
+            ,xgry = #{xgry,jdbcType=VARCHAR}
+        <if test="xsrq != null and xsrq != ''">
+            ,xsrq = #{xsrq}
+        </if>
+        <if test="jxz != null and jxz != ''">
+            ,jxz = #{jxz}
+        </if>
+        <if test="kcjc != null and kcjc != ''">
+            ,kcjc = #{kcjc}
+        </if>
+        <if test="weekOfDay != null and weekOfDay != ''">
+            ,weekOfDay = #{weekOfDay}
+        </if>
+        <if test="xsry != null and xsry != ''">
+            ,xsry = #{xsry}
+        </if>
+        <if test="xsryxm != null and xsryxm != ''">
+            ,xsryxm = #{xsryxm}
+        </if>
+        <if test="xscddm != null and xscddm != ''">
+            ,xscddm = #{xscddm}
+        </if>
+        <if test="xscdmc != null and xscdmc != ''">
+            ,xscdmc = #{xscdmc}
+        </if>
+        <if test="zt != null and zt != ''">
+            ,zt = #{zt}
+        </if>
+        where globalid = #{globalid}
+    </update>
+    
+    <!-- 删除巡视任务内容 -->
+    <update id="removePatrol">
+        update jxpj_rcjxjk_xsrw set zt='0' where globalid = #{globalid}
+    </update>
+    
+    <!-- ===================================================================================================================== -->
+    <!-- 查询巡视记录数量 -->
+    <select id="findPatrolDetailCount" resultType="int">
+        SELECT COUNT(1)
+		  FROM jxpj_rcjxjk_xsjl j, jxpj_rcjxjk_xsrw t
+		<where>
+        	j.globalid = t.globalid and j.czwt != '教学秩序正常'
+          <if test="globalid != null and globalid != ''">
+            and t.globalid = #{globalid}
+          </if>
+          <if test="xsrq != null and xsrq != ''">
+            and t.xsrq = #{xsrq}
+          </if>
+          <if test="jxl != null and jxl != ''">
+            and j.jxl = #{jxl}
+          </if>
+          <if test="zt != null and zt != ''">
+            and j.zt = #{zt}
+          </if>
+          <if test="cllx == '1'">
+            and j.zt in ('1','2','3','4')
+          </if>
+          <if test="cllx == '2'">
+            and j.zt in ('2','3','4')
+          </if>
+          <if test="jxz != null and jxz != ''">
+            and t.jxz = #{jxz}
+          </if>
+          <if test="kcjc != null and kcjc != ''">
+            and t.kcjc = #{kcjc}
+          </if>
+          <if test="xsdw != null and xsdw != ''">
+            and t.xsdw = #{xsdw}
+          </if>
+          <if test="xslx != null and xslx != ''">
+            and t.xslx = #{xslx}
+          </if>
+          <if test="condition != null and condition != ''">
+            ${condition}
+          </if>
+        </where>
+    </select>
+    <!-- 查询巡视记录列表 -->
+    <select id="findPatrolDetailList" resultMap="PatrolDetailMap">
+    select * from (select a.*, rownum rn from (
+        SELECT j.id,j.globalid,j.xsry,j.xsryxm,j.dddm,j.xsdd,j.sbsj,j.skxss,j.kcmc,j.kcdm,j.jsgh,j.jsxm,j.ztqk,j.czwt,j.cljg,j.kkxy,j.skbj,
+		       j.bz,j.zt,j.yxclyj,(SELECT o.xm FROM overall o WHERE o.gh=j.yxclr) yxclr,j.yxclsj,j.xxclyj,(SELECT o.xm FROM overall o WHERE o.gh=j.xxclr) xxclr,j.xxclsj,j.jxl,t.xslx,t.xsdw,t.xscdmc,t.xsrq,t.kcjc
+		  FROM jxpj_rcjxjk_xsjl j,jxpj_rcjxjk_xsrw t 
+		<where>
+        	j.globalid = t.globalid and j.czwt != '教学秩序正常'
+          <if test="globalid != null and globalid != ''">
+            and t.globalid = #{globalid}
+          </if>
+          <if test="xsrq != null and xsrq != ''">
+            and t.xsrq = #{xsrq}
+          </if>
+          <if test="jxl != null and jxl != ''">
+            and j.jxl = #{jxl}
+          </if>
+          <if test="zt != null and zt != ''">
+            and j.zt = #{zt}
+          </if>
+          <if test="cllx == '1'">
+            and j.zt in ('1','2','3','4')
+          </if>
+          <if test="cllx == '2'">
+            and j.zt in ('2','3','4')
+          </if>
+          <if test="kcjc != null and kcjc != ''">
+            and t.kcjc = #{kcjc}
+          </if>
+          <if test="xsdw != null and xsdw != ''">
+            and t.xsdw = #{xsdw}
+          </if>
+          <if test="xslx != null and xslx != ''">
+            and t.xslx = #{xslx}
+          </if>
+          <if test="condition != null and condition != ''">
+            ${condition}
+          </if>
+    	</where>
+		 ORDER BY t.xsrq desc,j.zt,j.xsdd
+		 ) a )
+		 <![CDATA[
+        where rn >= #{startRow} and rn <= #{endRow}
+        ]]>
+    </select>
+    <!-- 根据巡视ID查询巡视记录列表 -->
+    <select id="findPatrolDetailListById" resultMap="PatrolDetailMap">
+        select id,globalid,xsry,xsryxm,dddm,xsdd,sbsj,skxss,kcmc,kcdm,jsgh,jsxm,ztqk,czwt,cljg,bz,
+			   zt,yxclyj,yxclr,yxclsj,xxclyj,xxclr,xxclsj,jxl,kkxy
+          from jxpj_rcjxjk_xsjl t
+         where t.globalid = #{globalid} order by xsdd
+    </select>
+    <!-- 根据巡视ID查询巡视单条记录 -->
+    <select id="getPatrolDetailById" resultMap="PatrolDetailMap">
+        select id,globalid,xsry,xsryxm,dddm,xsdd,sbsj,skxss,kcmc,kcdm,jsgh,jsxm,ztqk,czwt,cljg,bz,
+			   zt,yxclyj,yxclr,yxclsj,xxclyj,xxclr,xxclsj,jxl,kkxy
+          from jxpj_rcjxjk_xsjl
+         where id = #{id}
+    </select>
+    <!-- 保存巡视记录内容 -->
+    <insert id="savePatrolDetail" parameterType="com.zfsoft.monitor.entity.PatrolDetailEntity">
+        <![CDATA[
+           INSERT INTO jxpj_rcjxjk_xsjl
+			  (globalid,dddm,xsdd,kcmc,kcdm,jsgh,jsxm,ztqk,czwt,cljg,xsry,xsryxm,sbsj,zt,bz,skxss,jxl,kkxy)
+			  SELECT #{globalid},'',t.skdd,t.kcmc,substr(t.kcid, 15, 8),t.rklsgh,(SELECT o.xm FROM overall o WHERE o.gh = t.rklsgh),
+			  		 '','','','','','','0','',(select COUNT(1) from jxpj_jcsj_xsxkb s WHERE s.xkkh=t.kcid),
+			  		 (SELECT lh FROM jxpj_jcsj_jxcdxx x WHERE jsmc=t.skdd AND rownum = 1),
+			  		 (SELECT g.bmdm FROM jxpj_jcsj_jxrwb w LEFT JOIN hrm_bzgl_zzjgb g ON g.bmmc=w.kkxy WHERE w.kcdm = substr(t.kcid, 15, 8) AND rownum = 1)
+			    FROM jxpj_jcsj_kcbxx t
+			   WHERE t.kcsj = #{kcsj}
+			   	 AND t.kcjc = #{kcjc}
+			   	 and (t.dsz is null or
+		       		t.dsz = (case when (select  MOD(t.djz,2) from jxpj_jcsj_rqkszb t WHERE t.nyr=to_char(SYSDATE,'yyyy-MM-dd'))= 0 then '双' else '单' end))
+		]]>
+		<if test="xsdw != null and xsdw != ''">
+            AND substr(t.kcid, 15, 8) in (SELECT DISTINCT kcdm FROM jxpj_jcsj_jxrwb WHERE kkxy = (SELECT bmmc FROM hrm_bzgl_zzjgb WHERE bmdm = #{xsdw}))
+        </if>
+		<if test="xscdmc != null and xscdmc != ''">	   	 
+			AND t.skdd IN (SELECT j.jsmc FROM jxpj_jcsj_jxcdxx j WHERE j.lh = #{xscdmc} AND j.kyf = 'T')
+		</if>	   
+    </insert>
+    <!-- 修改巡视记录内容 -->
+    <update id="updatePatrolDetail">
+        update jxpj_rcjxjk_xsjl 
+        set sbsj = sysdate
+        <if test="zt != null and zt != ''">
+            ,zt = #{zt}
+        </if>
+        <if test="ztqk != null and ztqk != ''">
+            ,ztqk = #{ztqk}
+        </if>
+        <if test="czwt != null and czwt != ''">
+            ,czwt = #{czwt}
+        </if>
+        <if test="xsry != null and xsry != ''">
+            ,xsry = #{xsry}
+        </if>
+        <if test="xsryxm != null and xsryxm != ''">
+            ,xsryxm = #{xsryxm}
+        </if>
+        <if test="cljg != null and cljg != ''">
+            ,cljg = #{cljg}
+        </if>
+        <if test="bz != null and bz != ''">
+            ,bz = #{bz}
+        </if>
+        where id = #{id}
+    </update>
+    
+    <!-- 反馈或审核巡视记录 -->
+    <update id="modifyPatrolDetail">
+        update jxpj_rcjxjk_xsjl 
+        set zt = #{zt}
+        <if test="yxclyj != null and yxclyj != ''">
+            ,yxclyj = #{yxclyj},yxclr = #{yxclr},yxclsj = sysdate
+        </if>
+        <if test="xxclyj != null and xxclyj != ''">
+            ,xxclyj = #{xxclyj},xxclr = #{xxclr},xxclsj = sysdate
+        </if>
+        where id = #{id}
+    </update>
+
+    <!-- 根据任务ID删除所有巡视记录内容 -->
+    <delete id="removePatrolDetailByGlobalid">
+        delete from jxpj_rcjxjk_xsjl where globalid = #{globalid}
+    </delete>
+<!-- ================================================================================== -->
+	 <!-- 按学院汇总统计巡视情况 -->
+    <select id="getPatrolDetailSummary" resultMap="PatrolDetailMap">
+    	<![CDATA[
+		select t2.kkxy xsdw,
+			   count(DISTINCT t.globalid) xsrws,
+		       count(1) xsjls,
+		       sum(CASE when t.czwt IS null OR t.czwt = '教学秩序正常' THEN 1 ELSE 0 end) zcs,
+		       sum(CASE when t.czwt is not null and t.czwt <> '教学秩序正常' THEN 1 ELSE 0 end) czwts,
+		       round(sum(CASE when t.czwt IS null OR t.czwt = '教学秩序正常' THEN 1 ELSE 0 end)/count(1),3)*100 zcbl
+		  from jxpj_rcjxjk_xsjl t, jxpj_jcsj_jxrwb t2, jxpj_rcjxjk_xsrw t1
+		]]>
+		 <where>
+			t.globalid = t1.globalid(+) AND t.kcdm = t2.kcdm(+) AND t2.kkxy IS NOT NULL
+		 	<if test="firstDay != null and firstDay != '' and lastDay != null and lastDay != ''">
+           		and to_date(t1.xsrq, 'yyyy-MM-dd') between to_date(#{firstDay}, 'yyyy-MM-dd') and to_date(#{lastDay}, 'yyyy-MM-dd')
+           	</if>
+           	<if test="(firstDay == null or firstDay == '') and lastDay != null and lastDay != ''">
+           		and to_date(t1.xsrq, 'yyyy-MM-dd') between to_date('0001-01-01', 'yyyy-MM-dd') and to_date(#{lastDay}, 'yyyy-MM-dd')
+           	</if>
+           	<if test="firstDay != null and firstDay != '' and (lastDay == null or lastDay == '')">
+           		and to_date(t1.xsrq, 'yyyy-MM-dd') between to_date(#{firstDay}, 'yyyy-MM-dd') and to_date('9999-12-31', 'yyyy-MM-dd')
+           	</if>
+           	<if test="xslx != null and xslx != ''">
+            	and t1.xslx = #{xslx}
+          	</if>
+		 </where>
+		 group by t2.kkxy
+		 ORDER BY count(DISTINCT t.globalid) DESC,sum(CASE when t.czwt IS null OR t.czwt = '教学秩序正常' THEN 1 ELSE 0 end) DESC	   		
+    </select>
+</mapper>

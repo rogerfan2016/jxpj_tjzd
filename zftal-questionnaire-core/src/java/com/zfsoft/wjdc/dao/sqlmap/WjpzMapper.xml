@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.wjdc.dao.daointerface.IWjpzDao">
+	
+	<!-- 获取功能类别查询条件配置列表(用于问卷设置配置信息) -->
+	<select id="getGnlbCxtjPzAllList" resultType="com.zfsoft.wjdc.dao.entites.WjpzModel">
+		select a.zd,a.zdmc,a.bqlx,a.ylzd,a.yszd,b.sfqy from 
+		(select * from wjdc_sjypzzdb where lxid=#{lxid}) a 
+		left join 
+		(select * from wjdc_ffszcxtjpzb where gnlb=#{gnlb}) b 
+		on a.lxid=b.lxid and a.zd=b.zd order by to_number(b.xssx)
+	</select>
+	
+	<!-- 获取功能类别查询结果配置列表 (用于问卷设置配置信息)-->
+	<select id="getGnlbCxjgPzAllList" resultType="com.zfsoft.wjdc.dao.entites.WjpzModel">
+		select a.zd,a.zdmc,a.bqlx,a.ylzd,a.yszd,b.sfqy from 
+		(select * from wjdc_sjypzzdb where lxid=#{lxid}) a 
+		left join 
+		(select * from wjdc_ffszcxjgpzb where gnlb=#{gnlb}) b 
+		on a.lxid=b.lxid and a.zd=b.zd order by to_number(b.xssx)
+	</select>
+	
+	<!-- 删除查询条件配置信息 -->
+	<delete id="deleteCxtjPzxx" parameterType="com.zfsoft.wjdc.dao.entites.WjpzModel">
+		delete from wjdc_ffszcxtjpzb where lxid=#{lxid}
+	</delete>
+	
+	<!-- 插入查询条件配置信息 -->
+	<insert id="insertCxtjPzxx">
+		insert into wjdc_ffszcxtjpzb(lxid,gnlb,zd,xssx,sfqy) 
+		 	<foreach collection="list" item="item" index="index"
+					separator=" union all ">
+			   select #{item.lxid},#{item.gnlb},#{item.zd},#{item.xssx},#{item.sfqy} from dual  
+			</foreach>
+	</insert>
+	
+	<!-- 删除查询结果配置信息 -->
+	<delete id="deleteCxjgPzxx" parameterType="com.zfsoft.wjdc.dao.entites.WjpzModel">
+		delete from wjdc_ffszcxjgpzb where lxid=#{lxid}
+	</delete>
+	
+	<!-- 插入查询结果配置信息 -->
+	<insert id="insertCxjgPzxx">
+		insert into wjdc_ffszcxjgpzb(lxid,gnlb,zd,xssx,sfqy) 
+		 	<foreach collection="list" item="item" index="index"
+					separator=" union all ">
+			   select #{item.lxid},#{item.gnlb},#{item.zd},#{item.xssx},#{item.sfqy} from dual  
+			</foreach>
+	</insert>
+		
+</mapper>
+	

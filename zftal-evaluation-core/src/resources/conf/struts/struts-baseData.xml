@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+  <package name="basedata" namespace="/basedata" extends="configuration">
+    <!-- 基础数据 -->
+    <action name="basedata_*" class="baseDataAction" method="{1}" >
+      <result name="synBaseData">/WEB-INF/pages/pjBaseData/synchronize/synchronize_synBaseData.jsp</result>
+      <result name="setProcedure">/WEB-INF/pages/pjBaseData/synchronize/synchronize_setProcedure.jsp</result>
+      <result name="regular">/WEB-INF/pages/pjBaseData/synchronize/synchronize_regular.jsp</result>
+      <result name="setView">/WEB-INF/pages/pjBaseData/synchronize/synchronize_setView.jsp</result>
+    </action>
+  </package>
+</struts>

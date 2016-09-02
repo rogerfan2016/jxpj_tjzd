@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 外部系统访问 -->
+	<package name="outAccess" extends="configuration" namespace="/outAccess">
+	  <!-- 外部访问验证ACTION -->
+	  <action name="out_*" class="outAction" method="{1}">
+	  	 <interceptor-ref name="defaultStack" />
+	     <result name="success" type="redirect">/xtgl/index_initMenu.html</result>
+	     <result name="false">/WEB-INF/pages/globalweb/login.jsp</result>
+	  </action>
+		
+	</package>
+
+</struts>

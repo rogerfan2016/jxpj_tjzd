@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.wjdc.dao.daointerface.IQuestionNaireDao">
+     
+     <!-- 复制试题大类信息 -->
+     <insert id="copyStdlxx">
+                insert into WJDC_STFLB(wjid,flid,flmc,xssx) 
+                select #{wjid},flid,flmc,xssx from WJDC_STFLB where wjid = #{modelId}
+     </insert>
+
+     <!-- 复制试题信息 -->
+     <insert id="copyStxx">
+                insert into WJDC_WJSTB(wjid,stid,stmc,stlx,dags,sfbd,stzf,xssx,flid,xxkzdxzs) 
+                select #{wjid},stid,stmc,stlx,dags,sfbd,stzf,xssx,flid,xxkzdxzs 
+                from WJDC_WJSTB where wjid = #{modelId}
+     </insert>
+
+     <!-- 复制试题选项信息 -->
+     <insert id="copyXxxx">
+                insert into WJDC_WJSTXXB(wjid,stid,xxid,xxmc,xxfz,xssx) 
+                select #{wjid},stid,xxid,xxmc,xxfz,xssx
+                from WJDC_WJSTXXB where wjid = #{modelId}
+     </insert>
+
+     <!-- 复制问卷信息 -->
+     <insert id="copyWjxx" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel">
+            insert into WJDC_WJXXB(wjid,wjmc,wjlx,wjzt,jsy,jwy,wjzf,dags,cjr,autoaddstbh,model_id) 
+        select #{wjid},#{wjmc},wjlx,#{wjzt},#{jsy},#{jwy},wjzf,dags,cjr,autoaddstbh,wjid
+        from WJDC_WJXXB where wjid = #{modelId}
+     </insert>
+
+    <select id="findModelSummer" resultType="hashmap">
+        SELECT COUNT(1) ALL_NUM, SUM(ZT) ANSWER_NUM
+		FROM(
+		SELECT  B.* ,(CASE WHEN DJZT='已答卷' THEN 1 ELSE 0 END) ZT 
+		FROM WJDC_DJRFFB B)
+		WHERE WJID = #{modelId}
+    </select>
+</mapper>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.wjdc.dao.daointerface.IStglDao">
+
+	<!-- 删除试题大类信息表中的记录 -->
+	<delete id="deleteStdlxx" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel">
+		delete from WJDC_STFLB where wjid=#{wjid}
+	 </delete>
+	 
+	 <!-- 插入试题大类信息 -->
+	 <insert id="insertStdlxx">
+				insert into WJDC_STFLB(wjid,flid,flmc,xssx) 
+		 	<foreach collection="list" item="item" index="index"
+					separator=" union all ">
+			   select #{item.wjid},#{item.stdlid},#{item.stdlmc},#{item.xssx} from dual  
+			</foreach>
+	 </insert>
+	 
+	 <!-- 删除试题信息表中的记录 -->
+	<delete id="deleteStxx" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel">
+		delete from WJDC_WJSTB where wjid=#{wjid}
+	 </delete>
+	 
+	 <!-- 插入试题信息 -->
+	 <insert id="insertStxx">
+				insert into WJDC_WJSTB(wjid,stid,stmc,stlx,dags,sfbd,stzf,xssx,flid,xxkzdxzs) 
+		 	<foreach collection="list" item="item" index="index"
+					separator=" union all ">
+			   select #{item.wjid},#{item.stid},#{item.stmc},#{item.stlx},#{item.dhxxgs},
+			   #{item.sfbd},#{item.stzf},#{item.xssx},#{item.stdlid},#{item.xxkzdxzs} from dual  
+			</foreach>
+	 </insert>
+	 
+	 <!-- 删除试题选项信息表中的记录 -->
+	<delete id="deleteXxxx" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel">
+		delete from WJDC_WJSTXXB where wjid=#{wjid}
+	 </delete>
+	 
+	 <!-- 插入试题选项信息 -->
+	 <insert id="insertXxxx">
+				insert into WJDC_WJSTXXB(wjid,stid,xxid,xxmc,xxfz,xssx) 
+		 	<foreach collection="list" item="item" index="index"
+					separator=" union all ">
+			   select #{item.wjid},#{item.stid},#{item.xxid},#{item.xxmc},#{item.xxfz},#{item.xssx} from dual  
+			</foreach>
+	 </insert>
+	 
+	 <!-- 获取试题和试题大类排序后的列表 -->
+	 <select id="getStxxAndStdlXxList" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel"
+	 		 resultType="com.zfsoft.wjdc.dao.entites.StglModel">
+	 	select * from (
+			select a.wjid,a.stid,a.stmc,a.stlx,a.dags dhxxgs,a.sfbd,a.stzf,a.xssx,a.xxkzdxzs from wjdc_wjstb a where a.wjid=#{wjid}
+			union all
+			select b.wjid,b.flid stid,b.flmc stmc,'STDL' stlx,'' dags,'' sfbd,'' stzf,b.xssx,'' xxkzdxzs from wjdc_stflb b where b.wjid=#{wjid}
+		) order by to_number(xssx)
+	 </select>
+	 
+	 <!-- 获取试题选项信息列表 -->
+	 <select id="getStXxxxList" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel"
+	 		 resultType="com.zfsoft.wjdc.dao.entites.XxglModel">
+	 	select * from wjdc_wjstxxb where wjid=#{wjid} order by stid,to_number(xssx)
+	 </select>
+	 
+	 <!-- 获取试题信息的列表 -->
+	 <select id="getStxxList" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel"
+	 		 resultType="com.zfsoft.wjdc.dao.entites.StglModel">
+			select a.wjid,a.stid,a.stmc,a.stlx,a.dags dhxxgs,a.sfbd,a.stzf,a.xssx,a.xxkzdxzs from wjdc_wjstb a where a.wjid=#{wjid} 
+			order by to_number(xssx)
+	 </select>
+	 
+	<!-- 删除问卷答案信息表中的记录 -->
+	<delete id="deleteWjDaxx" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel">
+		delete from WJDC_WJHDB where wjid=#{wjid} and djrid=#{djrid}
+	 </delete>
+	 
+	 <!-- 插入问卷答案信息 -->
+	 <insert id="insertWjDaxx">
+				insert into WJDC_WJHDB(djrid,wjid,stid,xxid,txnr,plsx) 
+		 	<foreach collection="list" item="item" index="index"
+					separator=" union all ">
+			   select #{item.djrid},#{item.wjid},#{item.stid},#{item.xxid},#{item.txnr},#{item.plsx} from dual  
+			</foreach>
+	 </insert>
+	 
+	 <!-- 更改用户答卷状态 -->
+	 <update id="updateYhdjzt" parameterType="com.zfsoft.wjdc.dao.entites.YhdjglModel">
+	 	UPDATE wjdc_djrffb 
+		 SET djzt = #{djzt},
+		 df = (SELECT SUM(nvl(xx.xxfz, 0))
+		               FROM wjdc_wjhdb hd
+		               LEFT JOIN wjdc_wjstxxb xx ON (xx.wjid = hd.wjid AND
+		                                            hd.stid = xx.stid AND
+		                                            hd.xxid = xx.xxid)
+		              WHERE hd.wjid = #{wjid}
+		                AND hd.djrid = #{djrid})
+		 WHERE wjid = #{wjid}
+		   AND zjz = #{djrid}
+	 </update>
+	 
+	 <select id="getFzSum" resultType="int">
+        SELECT SUM(nvl(xx.xxfz, 0)) AS fz
+		  FROM xc_task_result res
+		  LEFT JOIN wjdc_wjhdb hd ON (hd.djrid = res.ID)
+		  LEFT JOIN wjdc_wjstxxb xx ON (xx.wjid = hd.wjid AND hd.stid = xx.stid AND
+		                               hd.xxid = xx.xxid)
+		 WHERE res.id = #{id}
+    </select>
+	 
+	 <!-- 获取问卷答案信息列表 -->
+	 <select id="getWjDaList" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel"
+	 		 resultType="com.zfsoft.wjdc.dao.entites.XxglModel">
+	 	select * from wjdc_wjhdb where djrid=#{djrid} and wjid=#{wjid} order by stid,plsx,xxid
+	 </select>
+	
+	<!-- 获取试题类型列表 --> 
+	<select id="getStlxList" resultType="java.util.HashMap">
+		select dm,mc from WJDC_STLXB
+	</select>
+	
+	<!-- 获取用户答卷信息 -->
+	<select id="getYhdjxx" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel"
+	 		 resultType="com.zfsoft.wjdc.dao.entites.WjglModel">
+		select djzt from wjdc_djrffb where wjid=#{wjid} and zjz=#{djrid} 
+	</select>
+	
+	<!-- 更新问卷自动增加试题编号信息 -->
+	<update id="updateWjxxAutoAddStbh" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel">
+		update wjdc_wjxxb set autoaddstbh=#{autoaddstbh} where wjid=#{wjid}
+	 </update>
+	 
+	 <!-- 获取问卷答案信息列表 (按题目id)-->
+     <select id="getTextPageListByStid" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel"
+             resultType="com.zfsoft.wjdc.dao.entites.XxglModel">
+         select * from (select a.*, rownum rn from(
+        select * from wjdc_wjhdb where stid=#{stid} and wjid=#{wjid}
+        and xxid='0'
+     ) a )
+        <![CDATA[
+            where rn>#{queryModel.currentResult}  and rn<=(#{queryModel.currentResult}+#{queryModel.showCount})
+        ]]>
+     </select>
+      <!-- 获取问卷答案信息列表 (按题目id)-->
+     <select id="getTextPageCountByStid" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel"
+            resultType="int">
+        select count(0) from wjdc_wjhdb where stid=#{stid} and wjid=#{wjid} and xxid='0'
+     </select>
+     <!-- 获取问卷试题信息 (按题目id)-->
+     <select id="getModel" parameterType="com.zfsoft.wjdc.dao.entites.WjglModel"
+             resultType="com.zfsoft.wjdc.dao.entites.StglModel">
+        select * from WJDC_WJSTB where stid=#{stid} and wjid=#{wjid}
+     </select>
+
+</mapper>
